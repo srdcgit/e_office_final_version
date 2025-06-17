@@ -1,0 +1,45 @@
+{
+    "private": true,
+    "scripts": {
+        "dev": "npm run development",
+        "development": "mix",
+        "watch": "mix watch",
+        "watch-poll": "mix watch -- --watch-options-poll=1000",
+        "hot": "mix watch --hot",
+        "prod": "npm run production",
+        "production": "mix --production"
+    },
+    "devDependencies": {
+        "@ckeditor/ckeditor5-basic-styles": "^41.4.2",
+        "@ckeditor/ckeditor5-build-classic": "^41.4.2",
+        "@ckeditor/ckeditor5-clipboard": "^41.4.2",
+        "@ckeditor/ckeditor5-dev-utils": "^40.2.0",
+        "@ckeditor/ckeditor5-essentials": "^41.4.2",
+        "@ckeditor/ckeditor5-paragraph": "^41.4.2",
+        "@ckeditor/ckeditor5-table": "^41.4.2",
+        "axios": "^1.7.1",
+        "bootstrap": "^4.6.0",
+        "css-loader": "^7.1.2",
+        "jquery": "^3.6",
+        "laravel-mix": "^6.0.6",
+        "lodash": "^4.17.19",
+        "popper.js": "^1.16.1",
+        "postcss": "^8.1.14",
+        "postcss-loader": "^8.1.1",
+        "resolve-url-loader": "^5.0.0",
+        "sass": "^1.32.11",
+        "sass-loader": "^11.0.1",
+        "style-loader": "^4.0.0",
+        "ts-loader": "^9.5.1"
+    },
+    "dependencies": {
+        "@ckeditor/ckeditor5-build-balloon": "^41.4.2",
+        "@ckeditor/ckeditor5-build-balloon-block": "^41.4.2",
+        "@ckeditor/ckeditor5-build-decoupled-document": "^41.4.2",
+        "@ckeditor/ckeditor5-build-inline": "^41.4.2",
+        "@ckeditor/ckeditor5-document-outline": "^41.4.2",
+        "@ckeditor/ckeditor5-font": "^41.4.2",
+        "datatables.net-bs4": "^3.2.2",
+        "datatables.net-buttons-bs4": "^1.7.1"
+    }
+}

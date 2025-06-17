@@ -1,0 +1,1519 @@
+:root,
+body {
+    margin: 0;
+    padding: 0;
+    --head-blue: #0085dc;
+    --backgroud-blue: #a4daf4;
+    --card-head: #0199e5;
+    --page-bg: #0c4faa;
+}
+
+.file_description {
+    font-size: small;
+    text-decoration: none;
+    margin-left: 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 66%;
+    font-weight: 500;
+}
+
+.file_description_date {
+    font-size: small;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 66%;
+    font-weight: 500;
+}
+
+.file-card-header {
+    background-color: lightslategray !important;
+    border-radius: 8px !important;
+    padding-top: 5px;
+    padding-bottom: 3px;
+    display: flex;
+    justify-content: center !important;
+    align-items: center !important;
+}
+
+.file-nature {
+    height: 28px;
+    text-align: center;
+    background-color: white;
+    width: 74%;
+    display: flex;
+    justify-content: center;
+    flex-direction: row !important;
+    /* Arrange items vertically */
+    align-items: center !important;
+    /* Center items horizontally */
+    text-align: center !important;
+    /* Center text inside labels and paragraph */
+    /* height: auto; Adjust height to fit content */
+    padding: 10px;
+    /* Add some space inside the container */
+}
+
+.type-contents {
+    padding-left: 5px;
+    background-color: #bfc5ca;
+    display: flex;
+    border-radius: 5px;
+    align-items: center;
+    height: 24px;
+    margin-left: 4%;
+}
+
+.file-card-header-container {
+    border-radius: 8px !important;
+    justify-content: center !important;
+    margin: auto !important;
+}
+
+.file-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.file-form {
+    border-radius: 5px;
+    background-color: #E2CEE3
+}
+
+.document_description_date {
+    font-size: small;
+    text-decoration: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 29%;
+    font-weight: 500;
+}
+
+.card-text-notes {
+    font-weight: 400;
+    font-size: medium;
+    white-space: nowrap;
+    /* overflow: hidden; */
+    text-overflow: ellipsis;
+    display: inline-block;
+    width: 100%;
+    margin-top: 3px;
+}
+
+.file_card {
+    display: flex;
+    align-items: center;
+    /* Vertical alignment */
+    justify-content: center;
+    /* Horizontal alignment */
+    height: 100%;
+    /* Full height for centering */
+    padding: 20px;
+    /* Optional padding */
+}
+
+#modal-file-datatable tbody tr {
+    border: 1px solid #251f1f !important;
+}
+
+#modal-file-datatable tbody tr:hover {
+    background-color: #f2f2f2;
+    /* Optional: Add hover effect */
+}
+
+/* .custom-toast{
+    width: 500px;
+} */
+#todo_details {
+    margin-left: -6%;
+}
+
+.fas {
+    font-weight: 800;
+    font-size: small;
+}
+
+li .icons {
+    display: none;
+    /* Initially hidden */
+}
+
+li:hover .icons {
+    display: flex;
+    /* Show icons when hovering */
+}
+
+.icons i {
+    transition: color 0.3s ease;
+    /* Smooth hover effect on icons */
+}
+
+.icons i:hover {
+    color: #000;
+    /* Change color when hovering over an icon */
+}
+
+li .notes-icon {
+    display: none;
+    /* Initially hidden */
+}
+
+li:hover .notes-icon {
+    display: flex;
+    /* Show notes-icon when hovering */
+}
+
+.notes-icon i {
+    transition: color 0.3s ease;
+    /* Smooth hover effect on notes-icon */
+}
+
+.notes-icon i:hover {
+    color: #000;
+    /* Change color when hovering over an icon */
+}
+
+.notes-title {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.card-notes-text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: inline-block;
+    max-width: 66%;
+    font-weight: 500;
+    cursor: pointer;
+    /* Optional: makes it clear that it's hoverable */
+    transition: all 0.3s ease;
+    /* Optional: smooth transition */
+}
+
+.file_card-content {
+    list-style: none;
+    /* Remove default list styling */
+    margin: 0;
+    /* Reset margin */
+    padding: 0;
+    /* Reset padding */
+    width: 100%;
+    /* Full width */
+    text-align: center;
+    /* Center text */
+}
+
+.file_no-data {
+    font-size: small;
+    /* Adjust text size */
+    color: #333;
+    /* Text color */
+    font-weight: 500;
+}
+
+h1,
+p,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin-bottom: 13px;
+}
+
+i,
+li {
+    cursor: pointer;
+}
+
+
+.border-right {
+    border-right: 1px solid black;
+}
+
+/* header section start  */
+header nav {
+    display: flex;
+    justify-content: space-between;
+    padding-inline: 1rem;
+    background: var(--head-blue);
+    align-items: center;
+    height: 100px;
+}
+
+header nav .head-logo {
+    max-height: 80px;
+}
+
+header nav .resize-etc {
+    color: white;
+    text-align: end;
+}
+
+header nav .resize-etc .social-icon {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    margin-left: 8px;
+    border-radius: 50%;
+}
+
+header nav .resize-etc .social-icon:hover {
+    color: blue;
+}
+
+header nav .resize-etc .social-icon i {
+    font-size: 14px;
+}
+
+
+/* siderbar css start */
+aside {
+    background: var(--backgroud-blue);
+    width: 280px;
+    height: calc(124vh - 100px);
+    position: absolute;
+}
+
+aside .sidebar {
+    padding-block: 1rem;
+}
+
+aside .sidebar .profile-img {
+    display: flex;
+    /* flex-direction: column; */
+    align-items: center;
+    /* justify-content: center; */
+}
+
+aside .sidebar .profile-img h4 {
+    color: black;
+    font-size: 1rem;
+    margin-bottom: 1.5%;
+}
+
+aside .sidebar .profile-img p {
+    color: black;
+    font-size: .8rem;
+}
+
+aside .sidebar .links {
+    max-height: 60vh;
+}
+
+aside .sidebar .links ul {
+    list-style: none;
+    padding-left: 0;
+}
+
+aside .sidebar .links ul li {
+    margin-bottom: 2px;
+}
+
+aside .sidebar .links ul li a {
+    display: flex;
+    gap: 10px;
+    background: var(--head-blue);
+    text-decoration: none;
+    color: white;
+    padding-left: 2rem;
+    padding-block: 5px;
+    font-weight: 400;
+    font-size: 15px;
+}
+
+aside .sidebar .links ul li a:hover {
+    border-bottom: 2px solid black;
+}
+
+aside .sidebar .links ul li a i {
+    color: black;
+    font-size: 1.2rem;
+}
+
+/* main css start */
+main {
+    padding-left: 280px;
+    overflow: hidden;
+}
+
+main .inner-head {
+    height: 60px;
+    background: var(--backgroud-blue);
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    padding-inline-end: 1rem;
+}
+
+main .inner-head .left-side {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+main .inner-head .left-side p {
+    background: var(--card-head);
+    height: 60px;
+    align-content: center;
+    color: white;
+    padding-inline: 10px;
+}
+
+main .inner-head .left-side ul {
+    display: flex;
+    list-style: none;
+    gap: 1rem;
+    margin-bottom: 0;
+}
+
+main .inner-head .left-side ul li {
+    color: black;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: .8rem;
+    padding-right: 1rem;
+    align-content: center;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    cursor: pointer;
+}
+
+main .inner-head .left-side ul li i {
+    font-size: 1.8rem;
+}
+
+main .inner-head .right-side {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid black;
+}
+
+main .inner-head .right-side ul {
+
+    display: flex;
+    align-items: center;
+    margin-bottom: 0;
+    list-style: none;
+    gap: 1rem;
+}
+
+main .inner-head .right-side ul li {
+    color: black;
+    font-weight: 500;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+main .inner-head .right-side ul li a {
+    color: black;
+    font-weight: 500;
+    font-size: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+main .inner-head .right-side ul li i {
+    font-size: 1.2rem;
+}
+
+.card {
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+
+}
+
+.notes-card {
+    margin-top: 0.1vh;
+    margin-left: 1.5vh;
+    width: 100%;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.notes-nav {
+    padding-top: 1vh;
+}
+
+.card-header {
+    background: var(--card-head);
+    height: 35px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    padding-top:5px !important;
+}
+
+.notes-card-header {
+    border-radius: 0.8vh 0.8vh 0 0;
+    padding: 1vh;
+    background: var(--card-head);
+    height: 7.3vh;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+}
+
+.card-body {
+    padding-top: 0;
+    background: rgb(238, 238, 238);
+}
+
+.table-responsive {
+    padding-top: 0.5rem !important;
+}
+
+.corespondense-card-body,
+.notes-card-body,
+.file-share-card-body,
+.sent-card-body,
+.share-view-card-body {
+    padding-left: 2vh;
+    padding-top: 0;
+    background: rgb(238, 238, 238);
+}
+
+.notes-btn {
+    padding: 0.5vh;
+    margin-top: -0.5vh;
+}
+
+.file-menu-btn {
+    width: 43vh !important;
+}
+
+.file-inbox-card-body {
+    padding-top: 0;
+    height: 66.3vh;
+    overflow: scroll;
+    background: rgb(238, 238, 238);
+}
+
+.card-tabs {
+    gap: .6rem;
+    width: fit-content;
+    display: flex;
+    padding-top: 5px;
+}
+
+.card-tabs p.active,
+.card-tabs p:hover {
+    background: var(--card-head);
+    color: white;
+}
+
+.card-tabs p {
+    background: lightgray;
+    padding: 2px 10px;
+    border-radius: 0px 5px 0px 5px;
+    cursor: pointer;
+}
+
+/* notice board card css  */
+/* .notice-board-card ul {
+    margin-top: 10px;
+} */
+
+/* .notice-board-card ul li {
+    margin-bottom: 5px;
+} */
+
+.notice-board-card ul li h5 {
+    font-size: 1rem;
+}
+
+/* .notice-board-card ul li p {
+    font-size: .8rem;
+    color: var(--head-blue);
+} */
+
+/* team card css start  */
+.team-card .card-body {
+    background: var(--backgroud-blue);
+}
+
+.team-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+}
+
+.team-card ul li {
+    border-bottom: 1px solid rgb(133, 41, 41);
+    margin-bottom: 8px;
+}
+
+.team-card .profile {
+    position: relative;
+    display: inline-block;
+}
+
+.team-card .profile img {
+    border: 3px solid transparent;
+    height: 40px;
+    width: 40px;
+    /* Green border for active status */
+}
+
+.team-card .profile::after {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -5px;
+    width: 15px;
+    height: 15px;
+    background-color: rgb(124, 120, 120);
+    /* Default status - offline */
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+.team-card .profile.active::after {
+    background-color: #28a745;
+    /* Green dot for active status */
+}
+
+/* connect-card css start  */
+.connect-card ul {
+    list-style: none;
+    padding-left: 0;
+    margin-top: 10px;
+
+}
+
+.connect-card ul li {
+    color: black;
+    background: var(--backgroud-blue);
+    border: 1px solid lightgray;
+    border-radius: 7px;
+    padding: 5px;
+    margin-bottom: 7px;
+}
+
+.connect-card ul li a {
+    color: black;
+    font-weight: 600;
+    text-decoration: none;
+    font-size: 1.2rem;
+}
+
+.connect-card ul li a i {
+    margin-right: 9px;
+}
+
+.foot {
+    background: var(--backgroud-blue);
+    padding-left: 1rem;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+}
+
+.foot div {
+    display: flex;
+    width: 100%;
+    gap: 1rem;
+}
+
+.foot div a,
+.foot div p {
+    padding-right: 1rem;
+}
+
+
+/* page css start here  */
+
+/* Sidebar Styles */
+#sidebar {
+    width: 213px;
+    background-color: var(--page-bg);
+    color: white;
+    position: fixed;
+    top: 72px;
+    left: 0;
+    height: 100%;
+    padding: .5rem;
+    transition: width 0.3s;
+    z-index: 100;
+    margin-top:50px;
+}
+
+#sidebar.collapsed {
+    padding: 0;
+}
+
+/* #sidebar ul {
+    margin-top: 60px;
+} */
+
+#sidebar ul li {
+    height:50px;
+}
+
+#sidebar.collapsed ul li {
+    border-bottom: 1px solid transparent;
+}
+
+#sidebar.collapsed ul li a {
+    padding-right: 0;
+}
+
+#sidebar.collapsed ul li .sidebar-icon {
+    margin-right: 0;
+    width: 100%;
+    display: block;
+
+}
+
+#sidebar.collapsed {
+    width: 40px;
+}
+
+#sidebar.collapsed .nav-link {
+    padding-left: 0;
+}
+
+#sidebar.collapsed .sidebar-text {
+    display: none;
+}
+
+#sidebar.collapsed .sidebar-icon {
+    text-align: center;
+}
+
+#sidebar .sidebar-icon {
+    margin-right: 0.9rem;
+    height: 50px;
+    font-size: 1.3rem;
+}
+
+#sidebar .nav-link {
+    color: white;
+    margin-bottom: 1rem;
+}
+
+#content {
+    margin-left: 15.5%;
+    transition: margin-left 0.3s;
+    padding-top: 0;
+    padding-left: 0;
+    overflow-y: scroll;
+    max-height: calc(100vh - 160px);
+
+}
+
+#content.collapsed {
+    margin-left: 30px;
+}
+
+.footer {
+    text-align: end;
+    padding-inline: 1rem;
+    background-color: white;
+    color: rgb(0, 0, 0);
+    position: fixed;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    border-top: 1px solid lightgray;
+}
+
+/* Toggle Button */
+#toggle-btn {
+
+    background-color: #0b3164;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: left 0.3s;
+    height: 50px;
+    font-size: 2rem;
+    z-index: 201;
+    border: none;
+
+}
+
+#toggle-btn.collapsed {
+    left: 60px;
+    width: 40px;
+    padding:0px!important;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #474b4f;
+    padding-inline: 1rem;
+    margin-left: -4px;
+    margin-right: 0px;
+    gap: 1rem;
+}
+
+file-view {
+    margin-right: 1rem;
+}
+
+#close-action-btn {
+    position: relative;
+    color: black;
+    text-decoration: none;
+    margin-left: 5px;
+    padding: 0px 0px;
+    display: inline-block;
+    border-radius: -3px;
+    overflow: hidden;
+    z-index: 1;
+    background-color: transparent;
+    transition: color 0.3s ease-in-out;
+}
+
+.send-back-btn {
+    background-color: rgb(5, 121, 175);
+    color: white;
+    width: 85px;
+    height: 32px;
+    border: none;
+    border-radius: 4px;
+    padding: 0px;
+}
+
+.submit {
+    height: 45px;
+    display: flex;
+    gap: 9px;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 11px;
+}
+
+#close-action-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: #D3D3D3;
+
+    ;
+    z-index: -1;
+    border-radius: 50%;
+    transition: all 0.4s ease-in-out;
+    transform: translate(-50%, -50%);
+}
+
+/* On hover, expand the background */
+#close-action-btn:hover::before,
+#close-action-btn:focus::before {
+    width: 200%;
+    /* Expands the background beyond the button size */
+    height: 200%;
+}
+
+#close-action-btn:hover,
+#close-action-btn:focus {
+    color: black;
+    /* Change text and icon color */
+}
+
+/* Icon hover effect */
+#close-action-btn:hover i,
+#close-action-btn:focus i {
+    color: black;
+}
+
+#put-in-file-btn {
+    position: relative;
+    color: black;
+    text-decoration: none;
+    margin-left: 5px;
+    /* padding: 0px 0px; */
+    display: inline-block;
+    border-radius: -3px;
+    overflow: hidden;
+    /* z-index: 1; */
+    background-color: transparent;
+    transition: color 0.3s ease-in-out;
+}
+
+#put-in-file-btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background-color: #D3D3D3;
+    ;
+    z-index: -1;
+    border-radius: 50%;
+    transition: all 0.4s ease-in-out;
+    transform: translate(-50%, -50%);
+}
+
+#put-in-file-btn:hover::before,
+#put-in-file-btn:focus::before {
+    width: 200%;
+    /* Expands the background beyond the button size */
+    height: 200%;
+}
+
+#put-in-file-btn:hover,
+#put-in-file-btn:focus {
+    color: black;
+    /* Change text and icon color */
+}
+
+/* Icon hover effect */
+#put-in-file-btn:hover i,
+#put-in-file-btn:focus i {
+    color: black;
+}
+
+.toolbar button {
+    background: #474b4f;
+    color: white;
+    border: none;
+    border-right: 1px solid lightgray;
+    border-radius: 0;
+}
+
+th {
+    background: #0d77ca !important;
+    color: white !important;
+    text-wrap: nowrap;
+
+}
+
+/* page-header css start  */
+.page-header {
+    background: var(--page-bg);
+    height: 80px;
+}
+
+.page-header .logo img {
+    max-height: 50px;
+}
+
+.page-header nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 1rem;
+}
+
+.page-pro-drop button {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+    background: transparent;
+
+}
+
+.page-pro-drop button h6 {
+    text-transform: uppercase;
+}
+
+.page-pro-drop img {
+    max-height: 50px;
+}
+
+/* tabbed heaed css start  */
+.tabbed-head {
+    background: #252729;
+    z-index: 201;
+    position: relative;
+    height: 50px;
+    display: flex;
+}
+
+.tabbed-head {
+    color: white;
+
+}
+
+
+.icon-file {
+    font-size: 12px;
+    color: black;
+    align-items: center;
+}
+
+.icon-text i {
+    margin-right: 8px;
+}
+
+
+
+.button-group {
+    /* margin-left: 1.5%; */
+    margin-right: -1.5%;
+    margin-left: 0%;
+    display: flex;
+}
+
+.button-group .arrow-btns {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-left:8px;
+    /* Change cursor to hand on hover */
+}
+
+.button-group .arrow-btns p {
+    height: 35px;
+    text-transform: uppercase;
+}
+
+.button-group .arrow-btns button {
+    background: #236eaa;
+    padding-left: 25px;
+    padding-right: 10px;
+    text-transform: capitalize;
+    color: white;
+
+}
+
+.button-group .arrow-btns p {
+    position: relative;
+    display: inline-block;
+    padding: 6px 20px;
+    background-color: #474b4f;
+    /* Background color */
+    color: white;
+    margin-bottom: 14px;
+    margin-top: 12px;
+    font-size:12px;
+    align-content: center;
+    /* Optional for rounded corners */
+}
+
+/* Arrow behind the p tag */
+.button-group .arrow-btns p::after {
+    content: '';
+    position: absolute;
+    bottom: -1px;
+    /* Adjust this value to move the arrow */
+    right: -35px;
+    transform: rotate(90deg);
+    border-width: 18px;
+    border-style: solid;
+    border-color: transparent transparent #474b4f transparent;
+    /* Only the top border has a color */
+}
+
+.button-group .arrow-btns a {
+    background: #236eaa;
+    color: white;
+    text-decoration: none;
+    border-right: 1px solid rgb(156, 156, 156);
+    padding-inline: 12px;
+    height: 35px;
+    align-content: center;
+    width: max-content;
+    padding-left: 20px;
+    font-size:12px;
+    margin-top:-1px;
+}
+
+#autoComeplete-dropdown-menu {
+    background-color: #e9ecef;
+    height: fit-content;
+    margin-left: 1%;
+    width: 100%;
+    position: absolute;
+    z-index: 1000;
+}
+
+#phone-autoComplete-dropdown-menu {
+    background-color: #e9ecef;
+    height: fit-content;
+    margin-left: 1%;
+    width: 100%;
+    position: absolute;
+    z-index: 1000;
+}
+
+#autoComeplete-dropdown-menu .dropdown-item,
+#phone-autoComplete-dropdown-menu .dropdown-item {
+    margin-top: -2%;
+    font-size: smaller;
+    padding-top: 3%;
+    display: block;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    clear: both;
+    text-align: inherit;
+    white-space: nowrap;
+    background: none;
+    border: 0;
+}
+
+#autoComeplete-dropdown-menu .dropdown-item:hover,
+#phone-autoComplete-dropdown-menu .dropdown-item:hover {
+    background-color: #f8f9fa;
+    cursor: pointer;
+}
+
+/* dashboard Teams searchbar */
+.search-input {
+    width: 50%;
+    height: 2.7vh;
+    border-radius: 5px;
+    margin-left: 21%;
+    display: none;
+}
+
+#closeSearch {
+    display: none;
+}
+
+/* .team-details {
+    display: flex;
+}
+
+.team-name {
+    font-size: 14px;
+    font-weight: 500;
+    margin-bottom: 5px;
+} */
+
+.sender_details_contents {
+    display: inline-block;
+    width: 38%;
+    background-color: lightgrey;
+    padding-left: 5px;
+}
+
+.status {
+    font-size: 10px;
+    /* Reduce font size for status */
+    margin-top: auto;
+    /* Keep the same behavior */
+    float: inline-end;
+}
+
+#custom-dialog {
+    width: 200px;
+    background: #f9f9f9;
+    border-radius: 5px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    font-size: 14px;
+}
+
+#custom-dialog ul {
+    list-style: none;
+    margin: 0;
+    padding: 10px;
+}
+
+#custom-dialog ul li {
+    margin: 5px 0;
+}
+
+#custom-dialog ul li a {
+    text-decoration: none;
+    color: #007bff;
+    cursor: pointer;
+}
+
+#custom-dialog ul li a:hover {
+    text-decoration: underline;
+    color: #0056b3;
+}
+
+.filter {
+    align-content: center;
+    padding-right: 11px;
+}
+
+.search-bar {
+    display: flex;
+}
+
+.filter-form {
+    width: 500px;
+    margin: 30px auto;
+    background: #ffffff;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.section {
+    margin-bottom: 15px;
+}
+
+.section-title {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 5px;
+    color: #333;
+    background-color: lightgray;
+    padding-left: 6px;
+    width: 100%;
+}
+
+label {
+    display: inline-block;
+    margin: 5px 10px 5px 0;
+    font-size: 14px;
+    color: #555;
+}
+
+input[type="radio"],
+input[type="checkbox"] {
+    margin-right: 1px;
+}
+
+.date-section .date-inputs {
+    display: flex;
+    gap: 20px;
+}
+
+.date-inputs div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.date-input {
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-size: 14px;
+}
+
+/* Buttons */
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn {
+    border: none;
+    padding: 8px 15px;
+    font-size: 14px;
+    cursor: pointer;
+
+    transition: background-color 0.3s ease;
+}
+
+.btn-ok {
+    background-color: #007bff;
+    color: white;
+}
+
+.btn-ok:hover {
+    background-color: #0056b3;
+}
+
+.btn-clear {
+    background-color: #e0e0e0;
+    color: #333;
+}
+
+.btn-clear:hover {
+    background-color: #ccc;
+}
+
+
+@media screen and (max-width:866px) {
+    .button-group {
+        max-width: 580px;
+    }
+}
+
+@media screen and (max-width:1166px) {
+    .button-group {
+        max-width: 880px;
+    }
+}
+
+@media screen and (min-width:1580px) {
+    .button-group {
+        max-width: 100%;
+    }
+}
+
+@media screen and (min-width:1680px) {
+    .button-group {
+        max-width: 1400px;
+    }
+}
+
+@media screen and (min-width:1880px) {
+    .button-group {
+        max-width: 1600px;
+    }
+}
+
+/* @media screen and (min-width: 1280)and (max-width: 1440px) {
+    aside {
+        background: var(--backgroud-blue);
+        height: calc(103vh - 100px);
+        position: absolute;
+    }
+} */
+@media screen and (min-width: 1366px)and (max-width: 1440px) {
+    aside {
+        background: var(--backgroud-blue);
+        height: calc(103vh - 100px);
+        position: absolute;
+    }
+
+    .search-input {
+        width: 50%;
+        height: 2.7vh;
+        border-radius: 5px;
+        margin-left: 17%;
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1280px)and (max-width: 1367px) {
+
+    /* Your styles here */
+    body {
+        --head-blue: #0085dc;
+        --backgroud-blue: #a4daf4;
+        --card-head: #0199e5;
+        --page-bg: #0c4faa;
+    }
+
+    @media screen and (min-height: 900px) {
+        aside {
+            height: calc(100vh - 100px);
+        }
+    }
+
+    /* For screens with height between 768px and 800px */
+    @media screen and (min-height: 768px) and (max-height: 800px) {
+        aside {
+            height: calc(111vh - 100px);
+            /* Adjust as necessary for this height range */
+        }
+    }
+
+    aside {
+        background: var(--backgroud-blue);
+        width: 18.5%;
+        position: absolute;
+    }
+
+    main {
+        padding-left: 18.5%;
+        overflow: hidden;
+    }
+
+    main .inner-head {
+        height: 50px;
+        /* Adjusted for smaller screen height */
+        padding-inline-end: 0.5rem;
+        /* Reduced padding */
+        margin-bottom: 5px;
+        /* Reduced margin */
+    }
+
+    main .inner-head .left-side p {
+        height: 50px;
+        /* Adjusted to match the reduced inner-head height */
+        font-size: 0.9rem;
+        /* Reduced font size */
+        padding-inline: 8px;
+        /* Adjusted padding */
+    }
+
+    main .inner-head .left-side ul {
+        gap: 0.5rem;
+        padding-left: 20px;
+        /* Reduced gap between list items */
+    }
+
+    main .inner-head .left-side ul li {
+        font-size: 0.7rem;
+        /* Smaller font for better fit */
+        padding-right: 0.5rem;
+        /* Reduced padding */
+        gap: 8px;
+        /* Smaller gap between elements */
+    }
+
+    main .inner-head .left-side ul li i {
+        font-size: 1.5rem;
+        /* Slightly reduced icon size */
+    }
+
+    main .inner-head .right-side {
+        border-left: none;
+        /* Removed border for cleaner look on smaller screens */
+        gap: 0.5rem;
+        /* Reduced gap between elements */
+        border-left: 1px solid black;
+    }
+
+    main .inner-head .right-side ul li {
+        font-size: 0.7rem;
+    }
+
+    main .inner-head .right-side ul li a {
+        font-size: 0.7rem;
+        /* Adjusted font size */
+    }
+
+    main .inner-head .right-side ul li i {
+        font-size: 1rem;
+        /* Reduced icon size */
+    }
+
+    header nav {
+        height: 78px;
+        /* Reduced height for better fit */
+        padding-inline: 0.5rem;
+        /* Reduced padding */
+    }
+
+
+
+    header nav .resize-etc {
+        font-size: 0.8rem;
+        /* Reduced text size */
+        text-align: end;
+    }
+
+    header nav .resize-etc .social-icon {
+        font-size: 0.7rem;
+        /* Smaller font size for social icons */
+        margin-left: 5px;
+        /* Reduced margin between icons */
+        border-radius: 50%;
+    }
+
+    header nav .resize-etc .social-icon i {
+        font-size: 12px;
+        /* Slightly smaller icon size */
+    }
+
+    .row {
+        padding: 2px;
+        /* Keep consistent padding */
+    }
+
+    /* Adjusting card columns */
+    .col-md-9 {
+        width: 100%;
+        /* Occupy full width for the main content */
+        padding-right: 10px;
+    }
+
+    .col-md-6 {
+        width: 48%;
+        /* Make cards smaller for better spacing */
+        padding-left: 10px !important;
+        padding-right: 10px !important;
+    }
+
+    .col-md-3 {
+        width: 100%;
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        /* Occupy full width for the right-side content */
+    }
+
+    .col-12 {
+        padding-left: 0px !important;
+        padding-right: 0px !important;
+        /* Occupy full width for the right-side content */
+    }
+
+    /* Adjust team and connect cards */
+    .team-card,
+    .connect-card {
+        width: 90%;
+        /* Center the cards within the column */
+        margin: 0 auto;
+    }
+
+    /* Card headers */
+    .card-header {
+        font-size: 0.8rem;
+        /* Reduce font size for header text */
+    }
+
+    .card-header i {
+        font-size: 0.9rem;
+        /* Reduce size of icons */
+    }
+
+    /* Card body */
+    .card-body ul {
+        font-size: 0.8rem;
+        /* Reduce font size for list items */
+    }
+
+    /* Team card adjustments */
+    .team-card .search-input {
+        width: 50%;
+        /* Ensure the search bar fits within the reduced width */
+    }
+
+    /* Connect card list adjustments */
+    .connect-card ul li a {
+        font-size: 0.8rem;
+        /* Reduce font size for connect card links */
+    }
+
+    .connect-card ul li a i {
+        font-size: 1rem;
+        /* Adjust icon size */
+    }
+
+    .team-name {
+        font-size: 14px;
+        /* Slightly smaller font size */
+        font-weight: 500;
+        margin-bottom: 5px;
+        /* Add some space between team name and status */
+    }
+
+    .status {
+        font-size: 10px;
+        /* Reduce font size for status */
+        margin-top: auto;
+        /* Keep the same behavior */
+        float: inline-end;
+    }
+
+    .search-input {
+        width: 50%;
+        height: 2.7vh;
+        border-radius: 5px;
+        margin-left: 21% !important;
+        display: none;
+    }
+}
