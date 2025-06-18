@@ -19,7 +19,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <button id="create-putin-file" data-url="{{ route('file.create') }}"
+                    {{-- <button id="create-putin-file" data-url="{{ route('file.create') }}"
                         style=" background-color: rgb(15, 129, 196);
                     color: white;
                     border: 2px solid rgb(15, 129, 196);
@@ -31,17 +31,18 @@
                     transition: all 0.3s ease;">
                         <span><i class="fa-solid fa-plus" style="color: white; font-size: 10px;"></i></span> Create File
 
-                    </button>
+                    </button> --}}
 
                     <a href="{{ route('file.create') }}" id="create-putin-file" 
                         style=" background-color: rgb(15, 129, 196);
-                    color: white;
+                     color: white;
                     border: 2px solid rgb(15, 129, 196);
                     border-radius: 8px;
                     height:31px;
-                    padding: 0px 10px;
+                    padding: 5px;
                     font-size: 14px;
                     cursor: pointer;
+                    text-decoration: none;
                     transition: all 0.3s ease;">
                         <span><i class="fa-solid fa-plus" style="color: white; font-size: 10px;"></i></span> Create File
 
