@@ -78,7 +78,7 @@ class FileController extends Controller
         $document->metatags = $request->input('metatags');
         $document->save();
 
-        return redirect()->route('file.index')->with('success', 'File saved successfully.');
+        return redirect()->route('file.notes', $document->id)->with('success', 'File saved successfully.');
         // $publicPath = public_path('documents/' . $request->input('file_name'));
         // if (!file_exists($publicPath)) {
 

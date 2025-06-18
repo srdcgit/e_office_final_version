@@ -12,13 +12,13 @@ use App\Models\File;
 <div class="container-fluid" style="justify-items: center; width: 50%;">
     <div class="row">
         <div class="section-body">
-            {{ Form::open(['url' => 'file', 'method' => 'post', 'enctype' => 'multipart/form-data']) }}
+            {{ Form::open(['url' => 'file', 'method' => 'post', 'enctype' => 'multipart/form-data', 'id' => 'fileCreateForm']) }}
             <div class="col-md-12 m-auto file-container">
                 <div class="card file-card-header-container">
                     <div class="card-header file-card-header">
                         <div class="file-nature">
                             <p style="color: black;margin-top: 2px; margin-right: 4px;font-size:11px;">Nature:</p>
-                            <input type="radio" id="electronics" name="nature" value="{{File::FILE_TYPE_ELECTRONIC}}"
+                            <input type="radio" checked id="electronics" name="nature" value="{{File::FILE_TYPE_ELECTRONIC}}"
                                 style="font-size:11px;">
                             <label for="electronics" style="margin-left:2px; font-size:11px;">Electronics</label>
                             <input type="radio" value="{{File::FILE_TYPE_PHYSICAL}}" id="physical" name="nature"
@@ -28,7 +28,7 @@ use App\Models\File;
 
                             <div class="type-contents">
                                 <p style="color: black;margin-top: 2px; margin-right: 4px;font-size:11px;">Type:</p>
-                                <input type="radio" id="non-sfs" name="type" value="nonsfs"
+                                <input type="radio" checked id="non-sfs" name="type" value="nonsfs"
                                     style="font-size:11px;">
                                 <label for="non-sfs" style="font-size:11px;">NON SFS</label>
                                 <input type="radio" id="sfs" name="type" value="sfs"
@@ -198,21 +198,12 @@ use App\Models\File;
                     </div>
                 </div>
                 <div class="float-end" style="margin: auto; ">
-                    <button type="submit"
-                        style="background: #945880;
-                            color: white;
-                            height: 23px;
-                            font-size: 11px;
-                            border: 2px solid #7b4765;
-                            padding: 7px 13px;
-                            border-radius: 5px;
-                            display: inline-flex;
-                            align-items: center;
-                            justify-content: center;
-                            cursor: pointer;
-                            box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
-                            transition: all 0.3s ease;" class="">{{ __('Continue Working') }}
-                        <i class="fa-solid fa-play" style="font-size:8px; margin-left: 5px; align-items:center"></i></button>
+                    <button type="button"
+                        id="continueWorkingBtn"
+                        style="background: #945880; color: white; height: 23px; font-size: 11px; border: 2px solid #7b4765; padding: 7px 13px; border-radius: 5px; display: inline-flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1); transition: all 0.3s ease;">
+                        {{ __('Continue Working') }}
+                        <i class="fa-solid fa-play" style="font-size:8px; margin-left: 5px; align-items:center"></i>
+                    </button>
                 </div>
                 {!! Form::close() !!}
             </div>
@@ -226,6 +217,7 @@ use App\Models\File;
 </div>
 </div>
 <script src="{{ asset('js/jquery.min.js') }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
     // Include jQuery library in your HTML
     $(document).ready(function() {
@@ -277,6 +269,38 @@ use App\Models\File;
                 }
             });
         });
+
+        // Show modal on button click
+        $('#continueWorkingBtn').on('click', function(e) {
+            e.preventDefault();
+            var modal = new bootstrap.Modal(document.getElementById('fileConfirmModal'));
+            modal.show();
+        });
+
+        // On proceed, submit the form
+        $('#proceedBtn').on('click', function() {
+            $('#fileConfirmModal').modal('hide');
+            $('#fileCreateForm').submit();
+        });
     });
 </script>
+
+<!-- Confirmation Modal -->
+<div class="modal fade" id="fileConfirmModal" tabindex="-1" aria-labelledby="fileConfirmModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="border-radius: 10px;">
+      <div class="modal-header bg-primary text-light">
+        <h5 class="modal-title" id="fileConfirmModalLabel">Confirmation</h5>
+        <button type="button" class="btn-close text-light" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body" style="font-size: 16px;">
+        File No. will be generated(Number generated will be final and cannot be edited). Do you wish to proceed?
+      </div>
+      <div class="modal-footer">
+          <button type="button" id="proceedBtn" class="btn text-light" style="background-color: #d5a000; transition: all 0.3s ease;">Proceed</button>
+          <button type="button" class="btn text-light" data-bs-dismiss="modal" style="background-color: #d5a000; transition: all 0.3s ease;">Cancel</button>
+      </div>
+    </div>
+  </div>
+</div>
 @endsection
