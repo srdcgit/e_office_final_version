@@ -4,11 +4,24 @@
 
 <div class="row">
     <div class="col-lg-12">
-        <div class="row">
-            <div class="col-md-6">
+        <div id="resizable-container" style="display: flex; width: 100%; min-height: 500px;">
+            {{-- coloumn 1  --}}
+            <div id="left-panel" style="flex: 1 1 0; min-width: 200px; background: #f6fff6; transition: flex-basis 0.2s;">
+                <button id="expand-left" class="expand-btn" title="Expand Left Panel">
+                    <i class="fas fa-expand"></i>
+                </button>
                 @include('file.ckeditor')
             </div>
-            <div class="col-md-6">
+            <div id="divider" style="width: 16px; cursor: ew-resize; display: flex; align-items: center; justify-content: center; background: #eee; border-left: 1px solid #ccc; border-right: 1px solid #ccc; position: relative; z-index: 2;">
+                <span style="display: block; width: 28px; height: 28px; background: #fffbe6; border-radius: 50%; box-shadow: 0 1px 4px #ccc; display: flex; align-items: center; justify-content: center; border: 1px solid #e0c97f;">
+                    <i class="fas fa-grip-lines-vertical" style="color: #bfa13a;"></i>
+                </span>
+            </div>
+            {{-- coloumn 2  --}}
+            <div id="right-panel" style="flex: 1 1 0; min-width: 200px; background: #fff; transition: flex-basis 0.2s;">
+                <button id="expand-right" class="expand-btn" title="Expand Right Panel">
+                    <i class="fas fa-expand"></i>
+                </button>
                 <div class="card">
                     <div class="notes-card-header">
                         <h5>{{ __('List Of Correspondences') }} </h5>
@@ -78,27 +91,6 @@
                                         <th>{{ __('Documentpath') }}</th>
                                     </tr>
                                 </thead>
-                                {{-- <tbody>
-                                        @foreach ($correspondence as $correspondences)
-                                            @if ($correspondences->doc_id != null)
-                                                <tr>
-                                                    <td>{{ $correspondences->file->file_name }}</td>
-                                <td>{{ $correspondences->document->dtype }}</td>
-                                <td>{{ $correspondences->document->document_name }}</td>
-                                <td>{{ $correspondences->document->meta_title }}</td>
-                                <td>{{ $correspondences->document->documentpath }}</td>
-                                </tr>
-                                @elseif ($correspondences->doc_id == null)
-                                <tr>
-                                    <td>{{ $correspondences->file->file_name }}</td>
-                                    <td>{{ $correspondences->document->dtype }}</td>
-                                    <td>{{ $correspondences->document->document_name }}</td>
-                                    <td>{{ $correspondences->document->meta_title }}</td>
-                                    <td>{{ $correspondences->document->documentpath }}</td>
-                                </tr>
-                                @endif
-                                @endforeach
-                                </tbody> --}}
                                 <tbody>
                                     @foreach ($correspondence as $correspondences)
                                     @if ($correspondences->doc_id != null && $correspondences->document != null)
@@ -112,7 +104,6 @@
                                     @endif
                                     @endforeach
                                 </tbody>
-
                             </table>
                         </div>
                         <div id="notesttable">
@@ -183,24 +174,6 @@
                                 </thead>
                                 <tbody>
                                     {{ Form::open(['route' => 'correspondance.store', 'method' => 'post']) }}
-                                    {{-- @foreach ($document as $documents)
-                                            <tr>
-                                                <td><input type="checkbox" name="document_id[]" value="{{ $documents->id }}">
-                                    </td>
-                                    <td>{{ $document->dtype }}</td>
-                                    @if ($documents->dtype == 'create')
-                                    <td>{{ $documents->document_name }}
-
-                                    </td>
-                                    @if ($documents->dtype == 'upload')
-                                    <td>{{ $documents->uploadmetatitle }}</td>
-                                    @endif
-                                    @endif
-
-                                    <td>{{ $documents->meta_title }}</td>
-                                    <td>{{ $documents->documentpath }}</td>
-                                    </tr>
-                                    @endforeach --}}
                                     @if ($document != null)
                                     @foreach ($document as $documents)
                                     <tr>
@@ -267,53 +240,178 @@
         </div>
     </div>
 </div>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+
 <style>
-    .ckeditor-textarea {
-        width: 100%;
+    #resizable-container {
+        min-width: 400px;
+        max-width: 100vw;
+        height: 70vh;
+        background: #f8f9fa;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        overflow: hidden;
+    }
+    #divider {
+        min-width: 16px;
+        max-width: 24px;
+        background: #eee;
+        cursor: ew-resize;
+        user-select: none;
+        z-index: 10;
+        transition: background 0.2s;
+    }
+    #divider:hover span {
+        background: #ffe066;
+        border-color: #e0c97f;
+    }
+    #divider span {
+        margin: 0 auto;
+        transition: background 0.2s, border-color 0.2s;
+    }
+    #left-panel, #right-panel {
+        transition: flex-basis 0.2s, width 0.2s;
+        overflow: auto;
+    }
+    @media (max-width: 900px) {
+        #resizable-container { flex-direction: column; height: auto; }
+        #divider { display: none; }
+        #left-panel, #right-panel { min-width: 100px; width: 100% !important; }
+    }
+    .expand-btn {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        z-index: 20;
+        background: #fffbe6;
+        border: 1px solid #e0c97f;
+        border-radius: 50%;
+        width: 32px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        box-shadow: 0 1px 4px #ccc;
+    }
+    #left-panel, #right-panel {
+        position: relative;
     }
 </style>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
 <script>
-    $(document).ready(function() {
-        CKEDITOR.replace('ydescription');
+$(document).ready(function() {
+    CKEDITOR.replace('ydescription');
 
-        $('#showReceipt').on('click', function(event) {
-            event.preventDefault();
-            $('#receipttable').show();
-            $('#table').hide();
-            $('#add').show();
-            $('#reload').hide();
-            $('#documenttable').hide();
-            $('#notesttable').hide();
-            $('#greenNotesSection').hide();
-            $('#filettable').hide();
-        });
+    // Resizable divider logic
+    const container = document.getElementById('resizable-container');
+    const left = document.getElementById('left-panel');
+    const right = document.getElementById('right-panel');
+    const divider = document.getElementById('divider');
+    let isDragging = false;
 
-        $('#shownotes').on('click', function(event) {
-            event.preventDefault();
-            $('#receipttable').hide();
-            $('#add').hide();
-            $('#table').hide();
-            $('#reload').hide();
-            $('#documenttable').hide();
-            $('#notesttable').hide();
-            $('#greenNotesSection').show();
-            $('#filettable').hide();
-        });
-
-        $('#file').on('click', function(event) {
-            event.preventDefault();
-            $('#receipttable').hide();
-            $('#add').show();
-            $('#table').hide();
-            $('#reload').show();
-            $('#documenttable').hide();
-            $('#notesttable').hide();
-            $('#filettable').show();
-            $('#greenNotesSection').hide();
-        });
+    divider.addEventListener('mousedown', function(e) {
+        isDragging = true;
+        document.body.style.cursor = 'ew-resize';
+        document.body.style.userSelect = 'none';
     });
+    document.addEventListener('mousemove', function(e) {
+        if (!isDragging) return;
+        const rect = container.getBoundingClientRect();
+        let offsetX = e.clientX - rect.left;
+        // Minimum and maximum widths
+        const min = 180;
+        const max = rect.width - 180;
+        if (offsetX < min) offsetX = min;
+        if (offsetX > max) offsetX = max;
+        left.style.flex = 'none';
+        right.style.flex = 'none';
+        left.style.width = offsetX + 'px';
+        right.style.width = (rect.width - offsetX - divider.offsetWidth) + 'px';
+    });
+    document.addEventListener('mouseup', function(e) {
+        if (isDragging) {
+            isDragging = false;
+            document.body.style.cursor = '';
+            document.body.style.userSelect = '';
+        }
+    });
+
+    // Existing dropdown functionality
+    $('#showReceipt').on('click', function(event) {
+        event.preventDefault();
+        $('#receipttable').show();
+        $('#table').hide();
+        $('#add').show();
+        $('#reload').hide();
+        $('#documenttable').hide();
+        $('#notesttable').hide();
+        $('#greenNotesSection').hide();
+        $('#filettable').hide();
+    });
+    $('#shownotes').on('click', function(event) {
+        event.preventDefault();
+        $('#receipttable').hide();
+        $('#add').hide();
+        $('#table').hide();
+        $('#reload').hide();
+        $('#documenttable').hide();
+        $('#notesttable').hide();
+        $('#greenNotesSection').show();
+        $('#filettable').hide();
+    });
+    $('#file').on('click', function(event) {
+        event.preventDefault();
+        $('#receipttable').hide();
+        $('#add').show();
+        $('#table').hide();
+        $('#reload').show();
+        $('#documenttable').hide();
+        $('#notesttable').hide();
+        $('#filettable').show();
+        $('#greenNotesSection').hide();
+    });
+
+    let expanded = null; // 'left', 'right', or null
+
+    $('#expand-left').on('click', function() {
+        if (expanded === 'left') {
+            // Restore
+            $('#left-panel').css({ width: '', flex: '1 1 0' });
+            $('#right-panel').css({ width: '', flex: '1 1 0', display: '' });
+            $('#divider').show();
+            $(this).find('i').removeClass('fa-compress').addClass('fa-expand');
+            expanded = null;
+        } else {
+            // Expand left
+            $('#left-panel').css({ width: 'calc(100% - 16px)', flex: 'none' });
+            $('#right-panel').css({ display: 'none' });
+            $('#divider').hide();
+            $(this).find('i').removeClass('fa-expand').addClass('fa-compress');
+            $('#expand-right').find('i').removeClass('fa-compress').addClass('fa-expand');
+            expanded = 'left';
+        }
+    });
+
+    $('#expand-right').on('click', function() {
+        if (expanded === 'right') {
+            // Restore
+            $('#right-panel').css({ width: '', flex: '1 1 0' });
+            $('#left-panel').css({ width: '', flex: '1 1 0', display: '' });
+            $('#divider').show();
+            $(this).find('i').removeClass('fa-compress').addClass('fa-expand');
+            expanded = null;
+        } else {
+            // Expand right
+            $('#right-panel').css({ width: 'calc(100% - 16px)', flex: 'none' });
+            $('#left-panel').css({ display: 'none' });
+            $('#divider').hide();
+            $(this).find('i').removeClass('fa-expand').addClass('fa-compress');
+            $('#expand-left').find('i').removeClass('fa-compress').addClass('fa-expand');
+            expanded = 'right';
+        }
+    });
+});
 </script>
 <script>
     // Include jQuery library in your HTML
