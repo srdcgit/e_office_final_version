@@ -19,9 +19,6 @@
             </div>
             {{-- coloumn 2  --}}
             <div id="right-panel" style="flex: 1 1 0; min-width: 200px; background: #fff; transition: flex-basis 0.2s;">
-                <button id="expand-right" class="expand-btn" title="Expand Right Panel">
-                    <i class="fas fa-expand"></i>
-                </button>
                 <div class="card">
                     <div class="notes-card-header">
                         <h5>{{ __('List Of Correspondences') }} </h5>
