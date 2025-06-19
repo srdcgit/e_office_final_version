@@ -128,9 +128,8 @@
             <li>File No.: {{ $file->fileno ?? 'N/A' }}</li>
             <li>File Name: {{ $file->file_name ?? 'N/A' }}</li>
             <li><button class="btn btn-dark text-white"
-                    style="width:300px; height:22px;margin-bottom:4px; padding-block:0px; padding-inline:10px;white-space: nowrap; overflow: hidden; text-overflow:ellipsis;">File
-                    Type:
-                    {{ $file->file_type ?? 'N/A' }}</button></li>
+                    style="width:300px; height:22px;margin-bottom:4px; padding-block:0px; padding-inline:10px;white-space: nowrap; overflow: hidden; text-overflow:ellipsis;">Description:
+                    {{ $file->description ?? 'N/A' }}</button></li>
         </ul>
     </div>
 
