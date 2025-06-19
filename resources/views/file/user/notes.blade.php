@@ -135,162 +135,175 @@
     </div>
 
 
-<div class="row">
-    <div class="col-lg-12">
-        <div id="resizable-container" style="display: flex; width: 100%; min-height: 500px;">
-            {{-- coloumn 1  --}}
-            <div id="left-panel" style="flex: 1 1 0; min-width: 200px; background: #f6fff6; transition: flex-basis 0.2s;">
-                <button id="expand-left" class="expand-btn" title="Expand Left Panel">
-                    <i class="fas fa-expand"></i>
-                </button>
-                @include('file.ckeditor')
-            </div>
-            <div id="divider" style="width: 16px; cursor: ew-resize; display: flex; align-items: center; justify-content: center; background: #eee; border-left: 1px solid #ccc; border-right: 1px solid #ccc; position: relative; z-index: 2;">
-                <span style="display: block; width: 28px; height: 28px; background: #fffbe6; border-radius: 50%; box-shadow: 0 1px 4px #ccc; display: flex; align-items: center; justify-content: center; border: 1px solid #e0c97f;">
-                    <i class="fas fa-grip-lines-vertical" style="color: #bfa13a;"></i>
-                </span>
-            </div>
-            {{-- coloumn 2  --}}
-            <div id="right-panel" style="flex: 1 1 0; min-width: 200px; background: #fff; transition: flex-basis 0.2s;">
-                <button id="expand-right" class="expand-btn" title="Expand Right Panel">
-                    <i class="fas fa-expand"></i>
-                </button>
-                <div class="card">
-                    <div class="notes-card-header">
-                        <h5>{{ __('List Of Correspondences') }} </h5>
-                        @if($file_share != null)
-                        @if($file_share->status >= 1 && $file_share->sender_id != Auth::user()->id && $file_share->actiontype == \App\Models\Fileshare::EDIT)
-                        <div class="dropdown ">
-                            <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('All') }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#" id="showReceipt">{{ __('Receipt') }}</a></li>
-                                <li><a class="dropdown-item" href="#" id="shownotes">{{ __('Previous Notes') }}</a></li>
-                                <li><a class="dropdown-item" href="#" id="file">{{ __('Document Details') }}</a></li>
-                            </ul>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="resizable-container" style="display: flex; width: 100%; min-height: 500px;">
+                {{-- coloumn 1  --}}
+                <div id="left-panel"
+                    style="flex: 1 1 0; min-width: 200px; background: #f6fff6; transition: flex-basis 0.2s;">
+                    <button id="expand-left" class="expand-btn" title="Expand Left Panel">
+                        <i class="fas fa-expand"></i>
+                    </button>
+                    @include('file.ckeditor')
+                </div>
+                <div id="divider"
+                    style="width: 16px; cursor: ew-resize; display: flex; align-items: center; justify-content: center; background: #eee; border-left: 1px solid #ccc; border-right: 1px solid #ccc; position: relative; z-index: 2;">
+                    <span
+                        style="display: block; width: 28px; height: 28px; background: #fffbe6; border-radius: 50%; box-shadow: 0 1px 4px #ccc; display: flex; align-items: center; justify-content: center; border: 1px solid #e0c97f;">
+                        <i class="fas fa-grip-lines-vertical" style="color: #bfa13a;"></i>
+                    </span>
+                </div>
+                {{-- coloumn 2  --}}
+                <div id="right-panel" style="flex: 1 1 0; min-width: 200px; background: #fff; transition: flex-basis 0.2s;">
+                    <div class="card">
+                        <div class="notes-card-header">
+                            <h5>{{ __('List Of Correspondences') }} </h5>
+                            @if ($file_share != null)
+                                @if (
+                                    $file_share->status >= 1 &&
+                                        $file_share->sender_id != Auth::user()->id &&
+                                        $file_share->actiontype == \App\Models\Fileshare::EDIT)
+                                    <div class="dropdown ">
+                                        <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button"
+                                            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                            {{ __('All') }}
+                                        </button>
+                                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                            <li><a class="dropdown-item" href="#"
+                                                    id="showReceipt">{{ __('Receipt') }}</a></li>
+                                            <li><a class="dropdown-item" href="#"
+                                                    id="shownotes">{{ __('Previous Notes') }}</a></li>
+                                            <li><a class="dropdown-item" href="#"
+                                                    id="file">{{ __('Document Details') }}</a></li>
+                                        </ul>
+                                    </div>
+                                @endif
+                            @else
+                                <div class="dropdown ">
+                                    <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button"
+                                        id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                        {{ __('All') }}
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                        <li><a class="dropdown-item" href="#"
+                                                id="showReceipt">{{ __('Receipt') }}</a></li>
+                                        <li><a class="dropdown-item" href="#"
+                                                id="shownotes">{{ __('Previous Notes') }}</a></li>
+                                        <li><a class="dropdown-item" href="#"
+                                                id="file">{{ __('Document Details') }}</a></li>
+                                    </ul>
+                                </div>
+                            @endif
                         </div>
-                        @endif
-                        @else
-                        <div class="dropdown ">
-                            <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-                                {{ __('All') }}
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                                <li><a class="dropdown-item" href="#" id="showReceipt">{{ __('Receipt') }}</a></li>
-                                <li><a class="dropdown-item" href="#" id="shownotes">{{ __('Previous Notes') }}</a></li>
-                                <li><a class="dropdown-item" href="#" id="file">{{ __('Document Details') }}</a></li>
-                            </ul>
-                        </div>
-                        @endif
-                    </div>
-                    <div class="corespondense-card-body h-66">
-                        <div id="table">
-                            <h4>Receipts</h4>
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>{{ __('Receipt/Issue No') }}</th>
-                                        <th>{{ __('Subject') }}</th>
-                                        <th>{{ __('Attachment') }}</th>
-                                        <th>{{ __('Issue On') }}</th>
-                                        <th>{{ __('Remarks') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($correspondence as $correspondences)
-                                    @if ($correspondences->receipt_id != null)
-                                    <tr>
-                                        <td>{{ $correspondences->receipt->dairy_date }}</td>
-                                        <td>{{ $correspondences->receipt->subject }}</td>
-                                        <td>{{ $correspondences->receipt->receved_date }}</td>
-                                        <td>{{ $correspondences->receipt->letter_ref_no }}</td>
-                                        <td>{{ $correspondences->receipt->remarks }}</td>
-                                    </tr>
-                                    @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="documenttable">
-                            <h4>Documents</h4>
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>{{ __('File name') }}</th>
-                                        <th>{{ __('Dtype') }}</th>
-                                        <th>{{ __('Document name') }}</th>
-                                        <th>{{ __('Metatitle') }}</th>
-                                        <th>{{ __('Documentpath') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($correspondence as $correspondences)
-                                    @if ($correspondences->doc_id != null && $correspondences->document != null)
-                                    <tr>
-                                        <td>{{ $correspondences->file->file_name }}</td>
-                                        <td>{{ $correspondences->document->dtype }}</td>
-                                        <td>{{ $correspondences->document->document_name }}</td>
-                                        <td>{{ $correspondences->document->meta_title }}</td>
-                                        <td>{{ $correspondences->document->documentpath }}</td>
-                                    </tr>
-                                    @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="notesttable">
-                            <h4>Notes</h4>
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>{{ __('Notes name') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($correspondence as $correspondences)
-                                    @if ($correspondences->notes_id != null)
-                                    <tr>
-                                        <td>{!! $correspondences->notes->description !!}</td>
-                                    </tr>
-                                    @endif
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
-                        <div id="receipttable" style="display: none;">
-                            <table class="table table-bordered table-hover">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>{{ __('Select') }}</th>
-                                        <th>{{ __('Receipt/Issue No') }}</th>
-                                        <th>{{ __('Subject') }}</th>
-                                        <th>{{ __('Attachment') }}</th>
-                                        <th>{{ __('Issue On') }}</th>
-                                        <th>{{ __('Remarks') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {{ Form::open(['route' => 'correspondance.store', 'method' => 'post']) }}
-                                    @foreach ($receipt as $receipts)
-                                    <tr>
-                                        <td><input type="checkbox" name="receipt_id[]" value="{{ $receipts->id }}">
-                                        </td>
-                                        <td>{{ $receipts->dairy_date }}</td>
-                                        <td>{{ $receipts->subject }}</td>
-                                        <td>{{ $receipts->receved_date }}</td>
-                                        <td>{{ $receipts->letter_ref_no }}</td>
-                                        <td>{{ $receipts->remarks }}</td>
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                            <div class="col-md-2 mt-3" id="add" style="display: none;">
-                                <input type="hidden" name="file_id" id="file" value="{{ $file->id }}">
-                                <button type="submit" class="btn btn-primary btn-block">{{ __('Add Receipt') }}</button>
+                        <div class="corespondense-card-body h-66">
+                            <div id="table">
+                                <h4>Receipts</h4>
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>{{ __('Receipt/Issue No') }}</th>
+                                            <th>{{ __('Subject') }}</th>
+                                            <th>{{ __('Attachment') }}</th>
+                                            <th>{{ __('Issue On') }}</th>
+                                            <th>{{ __('Remarks') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($correspondence as $correspondences)
+                                            @if ($correspondences->receipt_id != null)
+                                                <tr>
+                                                    <td>{{ $correspondences->receipt->dairy_date }}</td>
+                                                    <td>{{ $correspondences->receipt->subject }}</td>
+                                                    <td>{{ $correspondences->receipt->receved_date }}</td>
+                                                    <td>{{ $correspondences->receipt->letter_ref_no }}</td>
+                                                    <td>{{ $correspondences->receipt->remarks }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </div>
-                            {!! Form::close() !!}
-                        </div>
+                            <div id="documenttable">
+                                <h4>Documents</h4>
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>{{ __('File name') }}</th>
+                                            <th>{{ __('Dtype') }}</th>
+                                            <th>{{ __('Document name') }}</th>
+                                            <th>{{ __('Metatitle') }}</th>
+                                            <th>{{ __('Documentpath') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($correspondence as $correspondences)
+                                            @if ($correspondences->doc_id != null && $correspondences->document != null)
+                                                <tr>
+                                                    <td>{{ $correspondences->file->file_name }}</td>
+                                                    <td>{{ $correspondences->document->dtype }}</td>
+                                                    <td>{{ $correspondences->document->document_name }}</td>
+                                                    <td>{{ $correspondences->document->meta_title }}</td>
+                                                    <td>{{ $correspondences->document->documentpath }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="notesttable">
+                                <h4>Notes</h4>
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>{{ __('Notes name') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($correspondence as $correspondences)
+                                            @if ($correspondences->notes_id != null)
+                                                <tr>
+                                                    <td>{!! $correspondences->notes->description !!}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div id="receipttable" style="display: none;">
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>{{ __('Select') }}</th>
+                                            <th>{{ __('Receipt/Issue No') }}</th>
+                                            <th>{{ __('Subject') }}</th>
+                                            <th>{{ __('Attachment') }}</th>
+                                            <th>{{ __('Issue On') }}</th>
+                                            <th>{{ __('Remarks') }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {{ Form::open(['route' => 'correspondance.store', 'method' => 'post']) }}
+                                        @foreach ($receipt as $receipts)
+                                            <tr>
+                                                <td><input type="checkbox" name="receipt_id[]"
+                                                        value="{{ $receipts->id }}">
+                                                </td>
+                                                <td>{{ $receipts->dairy_date }}</td>
+                                                <td>{{ $receipts->subject }}</td>
+                                                <td>{{ $receipts->receved_date }}</td>
+                                                <td>{{ $receipts->letter_ref_no }}</td>
+                                                <td>{{ $receipts->remarks }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                                <div class="col-md-2 mt-3" id="add" style="display: none;">
+                                    <input type="hidden" name="file_id" id="file" value="{{ $file->id }}">
+                                    <button type="submit"
+                                        class="btn btn-primary btn-block">{{ __('Add Receipt') }}</button>
+                                </div>
+                                {!! Form::close() !!}
+                            </div>
 
                             <div id="filettable" style="display: none;">
                                 <button type="submit" onClick="refreshPage()" id="reload"
