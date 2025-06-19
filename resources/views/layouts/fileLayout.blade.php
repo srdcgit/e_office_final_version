@@ -111,6 +111,17 @@
             left:7px !important;
         }
 
+        #sidebar.collapsed .sidebar-text
+        {
+            display:none !important;
+        }
+
+         #sidebar:not(.collapsed) .nav-link
+        {
+            display:flex !important;
+            align-items: baseline !important;
+            gap:8px !important;
+        }
 
 
     </style>
