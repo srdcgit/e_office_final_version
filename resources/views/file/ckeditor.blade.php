@@ -1,120 +1,126 @@
 @php
 use App\Models\Fileshare;
 @endphp
-<div class="notes-card">
-    @if ($notes != null && Route::currentRouteName() == 'file.view' )
-    <div class="notes-card-header">
-        <h5>{{ __('Green Notes') }}</h5>
+<div class="notes-card" id="mainContainer" style="background-color: #b8dbb8; min-height: 400px; padding: 10px;">
+    <div class="notes-buttons" style="margin-bottom: 10px;">
+        <button type="button" class="btn btn-success" id="addGreenNote" style="margin-right: 10px;">
+            <i class="fas fa-plus"></i> Add Green Note
+        </button>
+        <button type="button" class="btn btn-warning" id="addYellowNote">
+            <i class="fas fa-plus"></i> Add Yellow Note
+        </button>
     </div>
-    @else
-    <div class="notes-card-header">
-        <h5>{{ __('File Created') }}</h5>
-    </div>
-    @endif
+
     {{ Form::open(['route' => 'store.notes', 'method' => 'post']) }}
-    <div class="notes-card-body">
-        <input type="hidden" name="file_id" value="{{ $file->id }}">
-        <ul class="notes-nav nav nav-tabs" role="tablist">
-            <li class="nav-item">
-                <a class="nav-link active" data-toggle="tab" href="#greenNotesTab">{{ __('Green Notes') }}</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" data-toggle="tab" href="#yellowNotesTab">{{ __('Yellow Notes') }}</a>
-            </li>
-            {{-- <li class="nav-item">
-                            <a class="nav-link" data-toggle="tab" href="#templateTab">{{ __('Template') }}</a>
-            </li> --}}
-            @if ($gnotes != null)
-            <li class="nav-item">
-                <a class="nav-link" href="{{ route('file.share', $gnotes->id) }}">{{ __('Send') }}</a>
-            </li>
-            @endif
-        </ul>
+    <input type="hidden" name="file_id" value="{{ $file->id }}">
+    
+    <div id="greenNoteEditor" style="display: none; background-color: #b8dbb8; padding: 10px;">
+        @php
+        $description = $gnotes->description ?? '';
+        $id = $gnotes->id ?? '';
+        @endphp
+        <div class="form-group">
+            {{ Form::textarea('gdescription', $description, ['class' => 'form-control', 'id' => 'gdescription', 'rows' => '8', 'style' => 'background-color: #b8dbb8;']) }}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+            <button type="button" class="btn btn-secondary closeEditor">{{ __('Close') }}</button>
+        </div>
+    </div>
 
-        <div class="tab-content">
-            <div id="greenNotesTab" class="tab-pane active">
-                <br>
-                @php
-                $description = $gnotes->description ?? '';
-                $id = $gnotes->id ?? '';
-                @endphp
-                <div class="form-group">
-                    <label for="gdescription">{{ __('Green Notes') }}</label>
-                    <button type="button" class="btn btn-primary float-right"
-                        id="upload">{{ __('Upload From Template') }}</button>
-                    <div class="row d-none" id="uploadtemplate">
-                        <br>
-                        <div class="col-md-3">
-                            {{ Form::label('category', __('Category')), ['class' => 'form-label'] }}
-                            <select name="category_id" id="category" class="form-control">
-                                <option value="">Select Category</option>
-                                @foreach ($categories as $category)
-                                <option value="{{ $category->id }}">{{ $category->name }}</option>
-                                @endforeach
-                            </select>
-
-                            @error('category')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            {{ Form::label('subcategory_id', __('SubCategory')), ['class' => 'form-label'] }}
-                            <select name="subcategory_id" id="subcategory" class="form-control">
-                                <option value="">Select SubCategory</option>
-                            </select>
-                            @error('subcategory')
-                            <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="col-md-3">
-                            {{ Form::label('template', __('Template')), ['class' => 'form-label'] }}
-                            <select name="template" id="template" class="form-control">
-                                <option value="">Select Template</option>
-                            </select>
-                        </div>
-                    </div>
-                    {{ Form::textarea('gdescription', $description, ['class' => 'form-control ckeditor-textarea', 'id' => 'gdescription', 'rows' => '8']) }}
-                    @error('description')
-                    <span class="invalid-name" role="alert">
-                        <strong class="text-danger">{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                @if($file_share != null)
-                    @if($file_share->status >= 1 && $file_share->sender_id != Auth::user()->id && $file_share->actiontype == \App\Models\Fileshare::EDIT)
-                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
-                    <a class="btn btn-secondary" href="{{ route('discard.notes', $id) }}">{{ __('Discard') }}</a>
-                    @elseif(Route::currentRouteName() == 'file.view')
-                    <a class="btn btn-secondary" href="{{ route('discard.notes', $id) }}">{{ __('Discard') }}</a>
-                    @endif
-                @else
-                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
-                    <a class="btn btn-secondary" href="{{ route('discard.notes', $id) }}">{{ __('Discard') }}</a>
-                @endif
-
-            </div>
-            <div id="yellowNotesTab" class="tab-pane fade">
-                <br>
-                @php
-                $ydescription = $ynotes->description ?? '';
-                $yid = $ynotes->id ?? '';
-                @endphp
-                <div class="form-group">
-                    <label for="ydescription">{{ __('Yellow Notes') }}</label>
-                    {{ Form::textarea('ydescription', $ydescription, ['class' => 'form-control ckeditor-textarea', 'id' => 'ydescription', 'rows' => '8']) }}
-                    @error('description')
-                    <span class="invalid-name" role="alert">
-                        <strong class="text-danger">{{ $message }}</strong>
-                    </span>
-                    @enderror
-                </div>
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
-                    <a class="btn btn-secondary"
-                        href="{{ route('discard.notes', $yid) }}">{{ __('Discard') }}</a>
-                </div>
-            </div>
+    <div id="yellowNoteEditor" style="display: none; background-color: #f8f67b; padding: 10px;">
+        @php
+        $ydescription = $ynotes->description ?? '';
+        $yid = $ynotes->id ?? '';
+        @endphp
+        <div class="form-group">
+            {{ Form::textarea('ydescription', $ydescription, ['class' => 'form-control', 'id' => 'ydescription', 'rows' => '8', 'style' => 'background-color: #f8f67b;']) }}
+        </div>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
+            <button type="button" class="btn btn-secondary closeEditor">{{ __('Close') }}</button>
         </div>
     </div>
     {!! Form::close() !!}
 </div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    let greenEditor = null;
+    let yellowEditor = null;
+    const mainContainer = document.getElementById('mainContainer');
+
+    // Function to set CKEditor background color
+    function setCKEditorStyles(editor, backgroundColor) {
+        if (editor && editor.document && editor.document.$) {
+            editor.document.$.body.style.backgroundColor = backgroundColor;
+            editor.document.$.body.style.color = '#000000';
+            
+            // Add custom CSS to style the editor container
+            const editorElement = editor.element.$;
+            editorElement.style.backgroundColor = backgroundColor;
+            
+            // Style the CKEditor iframe container
+            const editorContainer = editor.container.$;
+            if (editorContainer) {
+                editorContainer.style.backgroundColor = backgroundColor;
+            }
+        }
+    }
+
+    // Add Green Note button click handler
+    document.getElementById('addGreenNote').addEventListener('click', function() {
+        document.getElementById('greenNoteEditor').style.display = 'block';
+        document.getElementById('yellowNoteEditor').style.display = 'none';
+        mainContainer.style.backgroundColor = '#b8dbb8';
+        if (!greenEditor) {
+            greenEditor = CKEDITOR.replace('gdescription', {
+                on: {
+                    instanceReady: function(ev) {
+                        setCKEditorStyles(greenEditor, '#b8dbb8');
+                    }
+                }
+            });
+        }
+        if (yellowEditor) {
+            yellowEditor.destroy();
+            yellowEditor = null;
+        }
+    });
+
+    // Add Yellow Note button click handler
+    document.getElementById('addYellowNote').addEventListener('click', function() {
+        document.getElementById('yellowNoteEditor').style.display = 'block';
+        document.getElementById('greenNoteEditor').style.display = 'none';
+        mainContainer.style.backgroundColor = '#f8f67b';
+        if (!yellowEditor) {
+            yellowEditor = CKEDITOR.replace('ydescription', {
+                on: {
+                    instanceReady: function(ev) {
+                        setCKEditorStyles(yellowEditor, '#f8f67b');
+                    }
+                }
+            });
+        }
+        if (greenEditor) {
+            greenEditor.destroy();
+            greenEditor = null;
+        }
+    });
+
+    // Close button handlers
+    document.querySelectorAll('.closeEditor').forEach(button => {
+        button.addEventListener('click', function() {
+            const parentEditor = this.closest('div[id$="Editor"]');
+            parentEditor.style.display = 'none';
+            if (parentEditor.id === 'greenNoteEditor' && greenEditor) {
+                greenEditor.destroy();
+                greenEditor = null;
+            } else if (parentEditor.id === 'yellowNoteEditor' && yellowEditor) {
+                yellowEditor.destroy();
+                yellowEditor = null;
+            }
+        });
+    });
+});
+</script>
