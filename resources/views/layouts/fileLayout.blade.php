@@ -270,12 +270,12 @@
             {{-- drop down end  --}}
     
             <!-- Search -->
-            <li class="nav-item">
+            {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
                     <span class="sidebar-icon">🔍</span>
                     <span class="sidebar-text">Search</span>
                 </a>
-            </li>
+            </li> --}}
     
         </ul>
     </div>
