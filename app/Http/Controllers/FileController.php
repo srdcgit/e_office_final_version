@@ -224,6 +224,7 @@ class FileController extends Controller
         $file_share =  Fileshare::where('file_id', $id)->latest()->first();
         $file_read_status = Fileshare::where('id', $file_share_id)
             ->where('file_id', $id)
+            
             ->where('recever_id', Auth::id())
             ->latest('id')
             ->first();
@@ -578,10 +579,10 @@ class FileController extends Controller
             ->orderBy('id', 'DESC')
             ->get()
             ->map(function ($item) {
-                $item->file_name = $item->files->file_name;
-                $item->send_to = $item->sendto->name;
-                $item->department = $item->department->name;
-                $item->section = $item->section->name;
+                $item->file_name = $item->files?->file_name ?? '';
+                $item->send_to = $item->sendto?->name ?? '';
+                $item->department = $item->department?->name ?? '';
+                $item->section = $item->section?->name ?? '';
                 return $item;
             });
         $url = 'file';

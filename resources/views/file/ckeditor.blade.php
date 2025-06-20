@@ -9,6 +9,11 @@ use App\Models\Fileshare;
         <button type="button" class="btn btn-warning" id="addYellowNote">
             <i class="fas fa-plus"></i> Add Yellow Note
         </button>
+        @if ($gnotes != null)
+        <button type="button" class="btn btn-warning" id="addYellowNote">
+            <a class="nav-link" href="{{ route('file.share', $gnotes->id) }}">{{ __('Send') }}</a>
+        </button>
+        @endif
     </div>
 
     {{ Form::open(['route' => 'store.notes', 'method' => 'post']) }}

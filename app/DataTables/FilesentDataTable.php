@@ -25,7 +25,8 @@ class FilesentDataTable extends DataTable
             })
             ->editColumn('file_id', function (Fileshare $fileshare) {
                 $url = route('file.notes', $fileshare->file_id);
-                return '<a href="' . $url . '">' . $fileshare->files->file_name . '</a>';
+                $fileName = $fileshare->files ? $fileshare->files->file_name : '-';
+                return '<a href="' . $url . '">' . $fileName . '</a>';
             })
             ->editColumn('created_at', function (Fileshare $fileshare) {
                 Log::info($fileshare->created_at);
