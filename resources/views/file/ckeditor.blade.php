@@ -33,13 +33,13 @@ use App\Models\Fileshare;
         </div>
     </div>
 
-    <div id="yellowNoteEditor" style="display: none; background-color: #f8f67b; padding: 10px;">
+    <div id="yellowNoteEditor" style="display: none; background-color: #f3e99f; padding: 10px;">
         @php
         $ydescription = $ynotes->description ?? '';
         $yid = $ynotes->id ?? '';
         @endphp
         <div class="form-group">
-            {{ Form::textarea('ydescription', $ydescription, ['class' => 'form-control', 'id' => 'ydescription', 'rows' => '8', 'style' => 'background-color: #f8f67b;']) }}
+            {{ Form::textarea('ydescription', $ydescription, ['class' => 'form-control', 'id' => 'ydescription', 'rows' => '8', 'style' => 'background-color: #f3e99f;']) }}
         </div>
         <div class="form-group">
             <button type="submit" class="btn btn-primary">{{ __('Save') }}</button>
@@ -97,12 +97,12 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('addYellowNote').addEventListener('click', function() {
         document.getElementById('yellowNoteEditor').style.display = 'block';
         document.getElementById('greenNoteEditor').style.display = 'none';
-        mainContainer.style.backgroundColor = '#f8f67b';
+        mainContainer.style.backgroundColor = '#f3e99f';
         if (!yellowEditor) {
             yellowEditor = CKEDITOR.replace('ydescription', {
                 on: {
                     instanceReady: function(ev) {
-                        setCKEditorStyles(yellowEditor, '#f8f67b');
+                        setCKEditorStyles(yellowEditor, '#f3e99f');
                     }
                 }
             });
