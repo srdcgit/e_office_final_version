@@ -422,7 +422,8 @@
         #left-panel,
         #right-panel {
             transition: flex-basis 0.2s, width 0.2s;
-            overflow: auto;
+            overflow-y: hidden;
+            overflow-x: hidden;
         }
 
         @media (max-width: 900px) {
