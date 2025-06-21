@@ -183,6 +183,19 @@
         #right-panel {
             border-bottom: 7px solid #636363 !important;
         }
+
+        #right-panel .card{
+            height:100% !important;
+        }
+
+        #right-panel .corespondense-card-body {
+            height:100% !important;
+        }
+
+        #right-panel .corespondense-card-body .table-responsive{
+            max-height:350px !important;
+        }
+
     </style>
     <div class="d-flex align-items-center p-1 gap-2 bg-dark flex-wrap" style="border-bottom: 1px solid #dee2e6;">
         <a href="{{ route('file.index') }}">
@@ -836,9 +849,9 @@
                         </div>
 
 
-                        <div class="corespondense-card-body h-66" style="padding-left:0px;">
+                        <div class="corespondense-card-body h-66" style="padding-left:0px;" >
 
-                            <div class="table-responsive">
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
                                 {{ $dataTable->table() }}
                             </div>
 
