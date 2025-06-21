@@ -1,7 +1,7 @@
 @php
 use App\Models\Fileshare;
 @endphp
-<div class="notes-card" id="mainContainer" style="background-color: #b8dbb8; min-height: 400px; padding: 10px;">
+<div class="notes-card" id="mainContainer" style="background-color: #b8dbb8;  padding: 10px;">
     <div class="notes-buttons" style="margin-bottom: 10px;">
         <button type="button" class="btn btn-success" id="addGreenNote" style="margin-right: 10px;">
             <i class="fas fa-plus"></i> Add Green Note
@@ -19,7 +19,7 @@ use App\Models\Fileshare;
     {{ Form::open(['route' => 'store.notes', 'method' => 'post']) }}
     <input type="hidden" name="file_id" value="{{ $file->id }}">
     
-    <div id="greenNoteEditor" style="display: none; background-color: #b8dbb8; padding: 10px;">
+    <div id="greenNoteEditor" style="display: none; background-color: #b8dbb8; ">
         @php
         $description = $gnotes->description ?? '';
         $id = $gnotes->id ?? '';
@@ -33,7 +33,7 @@ use App\Models\Fileshare;
         </div>
     </div>
 
-    <div id="yellowNoteEditor" style="display: none; background-color: #f3e99f; padding: 10px;">
+    <div id="yellowNoteEditor" style="display: none; background-color: #f3e99f; ">
         @php
         $ydescription = $ynotes->description ?? '';
         $yid = $ynotes->id ?? '';
@@ -54,6 +54,7 @@ document.addEventListener('DOMContentLoaded', function() {
     let greenEditor = null;
     let yellowEditor = null;
     const mainContainer = document.getElementById('mainContainer');
+    const leftpanel = document.getElementById('left-panel');
 
     // Function to set CKEditor background color
     function setCKEditorStyles(editor, backgroundColor) {
@@ -78,6 +79,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('greenNoteEditor').style.display = 'block';
         document.getElementById('yellowNoteEditor').style.display = 'none';
         mainContainer.style.backgroundColor = '#b8dbb8';
+        leftpanel.style.backgroundColor = '#b8dbb8';
         if (!greenEditor) {
             greenEditor = CKEDITOR.replace('gdescription', {
                 on: {
@@ -98,6 +100,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('yellowNoteEditor').style.display = 'block';
         document.getElementById('greenNoteEditor').style.display = 'none';
         mainContainer.style.backgroundColor = '#f3e99f';
+        leftpanel.style.backgroundColor = '#f3e99f';
         if (!yellowEditor) {
             yellowEditor = CKEDITOR.replace('ydescription', {
                 on: {

@@ -167,6 +167,22 @@
             color: white !important;
             height: 100% !important;
         }
+
+        #resizable-container {
+            min-width: 400px;
+            max-width: 100vw;
+            height: 66vh !important;
+            background: #f8f9fa;
+            border-radius: 0px !important;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+
+        }
+
+        #left-panel,
+        #right-panel {
+            border-bottom: 7px solid #636363 !important;
+        }
     </style>
     <div class="d-flex align-items-center p-1 gap-2 bg-dark flex-wrap" style="border-bottom: 1px solid #dee2e6;">
         <a href="{{ route('file.index') }}">
@@ -260,7 +276,7 @@
             <div id="resizable-container" style="display: flex; width: 100%; min-height: 500px;">
                 {{-- coloumn 1  --}}
                 <div id="left-panel"
-                    style="flex: 1 1 0; min-width: 200px; background: #f6fff6; transition: flex-basis 0.2s;">
+                    style="flex: 1 1 0; min-width: 200px; background: #b8dbb8; transition: flex-basis 0.2s;">
                     <button id="expand-left" class="expand-btn" title="Expand Left Panel">
                         <i class="fas fa-expand"></i>
                     </button>
@@ -805,7 +821,7 @@
 
 
 
-                            {{-- <div class="dropdown ">
+                            <div class="dropdown ">
         <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button"
             id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
             {{ __('All') }}
@@ -818,13 +834,13 @@
             <li><a class="dropdown-item" href="#"
                     id="file">{{ __('Document Details') }}</a></li>
         </ul>
-    </div> --}}
+    </div>
                         </div>
 
 
                         <div class="corespondense-card-body h-66" style="padding-left:0px;">
 
-                            <div id="table">
+                            <div id="table" class="table-responsive">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -863,25 +879,30 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{-- @foreach ($correspondence as $correspondences)
-                    @if ($correspondences->receipt_id != null)
-                        <tr>
-                            <td>{{ $correspondences->receipt->dairy_date }}</td>
-                            <td>{{ $correspondences->receipt->subject }}</td>
-                            <td>{{ $correspondences->receipt->receved_date }}</td>
-                            <td>{{ $correspondences->receipt->letter_ref_no }}</td>
-                            <td>{{ $correspondences->receipt->remarks }}</td>
-                        </tr>
-                    @endif
-                @endforeach --}}
+                                        @foreach ($correspondence as $correspondences)
+                                            @if ($correspondences->receipt_id != null)
+                                                <tr>
+                                                    <td>{{ $correspondences->receipt->dairy_date }}</td>
+                                                    <td>{{ $correspondences->receipt->subject }}</td>
+                                                    <td>{{ $correspondences->receipt->receved_date }}</td>
+                                                    <td>{{ $correspondences->receipt->letter_ref_no }}</td>
+                                                    <td>{{ $correspondences->receipt->remarks }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
 
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                <button class="btn btn-warning font-bold">Add Receipt</button>
+                            </div>
 
+                            <br>
                             {{-- code by sumit ends  --}}
 
                         </div>
+                        
                     </div>
                 </div>
             </div>
