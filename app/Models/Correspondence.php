@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\User;
 
 class Correspondence extends Model
 {
@@ -26,5 +27,9 @@ class Correspondence extends Model
     public function notes()
     {
         return $this->belongsTo(Notes::class, 'notes_id');
+    }
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'createdBy');
     }
 }

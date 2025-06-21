@@ -822,91 +822,131 @@
 
 
                             <div class="dropdown ">
-        <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button"
-            id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
-            {{ __('All') }}
-        </button>
-        <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-            <li><a class="dropdown-item" href="#" id="showReceipt">{{ __('Receipt') }}</a>
-            </li>
-            <li><a class="dropdown-item" href="#"
-                    id="shownotes">{{ __('Previous Notes') }}</a></li>
-            <li><a class="dropdown-item" href="#"
-                    id="file">{{ __('Document Details') }}</a></li>
-        </ul>
-    </div>
+                                <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button"
+                                    id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                                    {{ __('All') }}
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                                    <li><a class="dropdown-item" href="#"
+                                            id="shownotes">{{ __('Previous Notes') }}</a></li>
+                                    <li><a class="dropdown-item" href="#"
+                                            id="file">{{ __('Document Details') }}</a></li>
+                                </ul>
+                            </div>
                         </div>
 
 
                         <div class="corespondense-card-body h-66" style="padding-left:0px;">
 
-                            <div id="table" class="table-responsive">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>
-
-                                                <div class="btn-group">
-                                                    <button class="btn" id="dropdownMenuButton2"
-                                                        style="background:#0a5fa0; padding-right:0px;">
-                                                        <input type="checkbox" class="form-check-input" value=""
-                                                            id="checkboxall">
-                                                    </button>
-                                                    <button type="button"
-                                                        class="btn dropdown-toggle dropdown-toggle-split"
-                                                        data-bs-toggle="dropdown" aria-expanded="false"
-                                                        style="background:#0a5fa0;">
-                                                        <span class="visually-hidden">Toggle Dropdown</span>
-                                                    </button>
-                                                    <ul class="dropdown-menu"
-                                                        style="background:white; border:1px solid rgb(196, 196, 196);">
-                                                        <li><a class="dropdown-item" href="#">Mark as PUC</a></li>
-                                                        <li><a class="dropdown-item" href="#">Mark as FR</a>
-                                                        </li>
-                                                        <li><a class="dropdown-item" href="#">Unmark</a></li>
-                                                        <li><a class="dropdown-item" href="#">Detach</a></li>
-                                                        <li><a class="dropdown-item" href="#">Close</a></li>
-                                                    </ul>
-                                                </div>
-
-                                            </th>
-                                            <th></th>
-                                            <th>Receipt/Issue No</th>
-                                            <th>Subject</th>
-                                            <th>Attachment</th>
-                                            <th>Issue On</th>
-                                            <th>Remarks</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($correspondence as $correspondences)
-                                            @if ($correspondences->receipt_id != null)
-                                                <tr>
-                                                    <td>{{ $correspondences->receipt->dairy_date }}</td>
-                                                    <td>{{ $correspondences->receipt->subject }}</td>
-                                                    <td>{{ $correspondences->receipt->receved_date }}</td>
-                                                    <td>{{ $correspondences->receipt->letter_ref_no }}</td>
-                                                    <td>{{ $correspondences->receipt->remarks }}</td>
-                                                </tr>
-                                            @endif
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="table-responsive">
+                                {{ $dataTable->table() }}
                             </div>
 
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold">Add Receipt</button>
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
 
                             <br>
                             {{-- code by sumit ends  --}}
 
                         </div>
-                        
+
                     </div>
                 </div>
             </div>
         </div>
+
+        {{-- Attach Receipt Modal --}}
+        <div class="modal fade" id="attachReceiptModal" tabindex="-1" aria-labelledby="attachReceiptModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="attachReceiptModalLabel">Attach Receipt(s)</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                {{-- Left Panel: Available Receipts --}}
+                                <div class="d-flex justify-content-between align-items-center mb-2">
+                                    <b>Receipt(s)</b>
+                                    <div class="d-flex gap-1">
+                                        <select class="form-control form-control-sm" id="year-filter"
+                                            style="width:100px;">
+                                            <option value="2024">2024</option>
+                                            {{-- Add other years if needed --}}
+                                        </select>
+                                        <input type="text" class="form-control form-control-sm"
+                                            id="receipt-search-input" placeholder="Search Here...">
+                                    </div>
+                                </div>
+                                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+                                    <table class="table table-bordered" id="available-receipts-table">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th><input type="checkbox" id="select-all-receipts"></th>
+                                                <th>Nature</th>
+                                                <th>Comp. No.</th>
+                                                <th>Receipt No.</th>
+                                                <th>Subject</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach ($receipt as $receipts)
+                                                <tr data-id="{{ $receipts->id }}">
+                                                    <td><input type="checkbox" class="receipt-checkbox"
+                                                            value="{{ $receipts->id }}"></td>
+                                                    <td>{{ $receipts->nature ?? 'E' }}</td>
+                                                    <td>{{ $receipts->id }}</td>
+                                                    <td>{{ $receipts->receipt_no ?? $receipts->id . '/' . date('Y') . '/ESST' }}
+                                                    </td>
+                                                    <td>{{ $receipts->subject }}</td>
+                                                </tr>
+                                            @endforeach
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                            <div class="col-md-6">
+                                {{-- Right Panel: Selected Receipts --}}
+                                <b>Selected Receipt(s)</b>
+                                <div class="table-responsive" style="max-height: 300px; overflow-y: auto;">
+
+                                    <table class="table table-bordered" id="selected-receipts-table">
+                                        <thead class="table-primary">
+                                            <tr>
+                                                <th>Nature</th>
+                                                <th>Comp. No.</th>
+                                                <th>Receipt No.</th>
+                                                <th>Subject</th>
+                                                <th>Actions</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {{-- Selected receipts will be added here --}}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <label for="remarks">Remarks <span class="text-danger">*</span></label>
+                                <textarea id="remarks" class="form-control" rows="3" placeholder="part..."></textarea>
+                                <small>Total 1000 | 995 Character left</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="attach-receipt-btn-modal">Attach</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- End Attach Receipt Modal --}}
 
         <style>
             #resizable-container {
@@ -987,6 +1027,9 @@
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+        
+        {{ $dataTable->scripts() }}
+
         <script>
             $(document).ready(function() {
                 CKEDITOR.replace('ydescription');
@@ -1026,17 +1069,6 @@
                 });
 
                 // Existing dropdown functionality
-                $('#showReceipt').on('click', function(event) {
-                    event.preventDefault();
-                    $('#receipttable').show();
-                    $('#table').hide();
-                    $('#add').show();
-                    $('#reload').hide();
-                    $('#documenttable').hide();
-                    $('#notesttable').hide();
-                    $('#greenNotesSection').hide();
-                    $('#filettable').hide();
-                });
                 $('#shownotes').on('click', function(event) {
                     event.preventDefault();
                     $('#receipttable').hide();
@@ -1123,6 +1155,118 @@
                         expanded = 'right';
                     }
                 });
+
+
+                // New modal logic for attaching receipts
+                function updateSelectedReceiptsTable() {
+                    $('#selected-receipts-table tbody').empty();
+                    $('#available-receipts-table tbody tr:hidden').each(function() {
+                        const id = $(this).data('id');
+                        const nature = $(this).find('td:eq(1)').text();
+                        const compNo = $(this).find('td:eq(2)').text();
+                        const receiptNo = $(this).find('td:eq(3)').text();
+                        const subject = $(this).find('td:eq(4)').text();
+
+                        const newRow = `
+                    <tr data-id="${id}">
+                        <td>${nature}</td>
+                        <td>${compNo}</td>
+                        <td>${receiptNo}</td>
+                        <td>${subject}</td>
+                        <td>
+                            <button class="btn btn-sm btn-link move-up">🔼</button>
+                            <button class="btn btn-sm btn-link move-down">🔽</button>
+                            <button class="btn btn-sm btn-link remove-receipt text-danger">❌</button>
+                        </td>
+                    </tr>
+                `;
+                        $('#selected-receipts-table tbody').append(newRow);
+                    });
+                }
+
+                $('#available-receipts-table').on('change', '.receipt-checkbox', function() {
+                    const row = $(this).closest('tr');
+                    if (this.checked) {
+                        row.hide();
+                    } else {
+                        row.show();
+                    }
+                    updateSelectedReceiptsTable();
+                });
+
+                $('#select-all-receipts').on('change', function() {
+                    const isChecked = $(this).prop('checked');
+                    $('#available-receipts-table .receipt-checkbox').prop('checked', isChecked).trigger(
+                        'change');
+                });
+
+                $('#selected-receipts-table').on('click', '.remove-receipt', function() {
+                    const row = $(this).closest('tr');
+                    const id = row.data('id');
+                    row.remove();
+                    const availableRow = $(`#available-receipts-table tr[data-id="${id}"]`);
+                    availableRow.show();
+                    availableRow.find('.receipt-checkbox').prop('checked', false);
+                });
+
+                $('#selected-receipts-table').on('click', '.move-up', function() {
+                    const row = $(this).closest('tr');
+                    row.prev().before(row);
+                });
+
+                $('#selected-receipts-table').on('click', '.move-down', function() {
+                    const row = $(this).closest('tr');
+                    row.next().after(row);
+                });
+
+                $('#receipt-search-input').on('keyup', function() {
+                    const value = $(this).val().toLowerCase();
+                    $("#available-receipts-table tbody tr").filter(function() {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                    });
+                });
+
+                $('#attach-receipt-btn-modal').on('click', function() {
+                    const selectedIds = [];
+                    $('#selected-receipts-table tbody tr').each(function() {
+                        selectedIds.push($(this).data('id'));
+                    });
+
+                    if (selectedIds.length === 0) {
+                        alert('Please select at least one receipt.');
+                        return;
+                    }
+
+                    const remarks = $('#remarks').val();
+                    if (!remarks) {
+                        alert('Remarks field is required.');
+                        return;
+                    }
+
+                    const fileId = '{{ $file->id }}';
+
+                    $.ajax({
+                        url: '{{ route('correspondance.store') }}',
+                        type: 'POST',
+                        data: {
+                            _token: '{{ csrf_token() }}',
+                            receipt_id: selectedIds,
+                            file_id: fileId,
+                            remarks: remarks, // you may need a remarks field
+                        },
+                        success: function(response) {
+                            // Handle success (e.g., close modal, refresh part of the page)
+                            $('#attachReceiptModal').modal('hide');
+                            location.reload(); // Simple page reload
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.error('Error attaching receipts:', error);
+                            alert('An error occurred while attaching receipts.');
+                        }
+                    });
+                });
+
             });
         </script>
         <script>
