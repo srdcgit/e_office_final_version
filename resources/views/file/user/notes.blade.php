@@ -624,7 +624,6 @@
                                             </g>
                                         </svg>
                                     </button>
-
                                     <ul class="dropdown-menu bars-dropdown-menu" aria-labelledby="dropdownMenu2">
                                         <li>
                                             <a href="#" class="dropdown-item btn">TOC
@@ -827,14 +826,11 @@
                                     </ul>
 
                                 </div>
-
-
-
                             </div>
 
 
 
-                            <div class="dropdown ">
+                            {{-- <div class="dropdown ">
                                 <button class="btn btn-secondary dropdown-toggle mt-0 p-1" type="button"
                                     id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                                     {{ __('All') }}
@@ -845,11 +841,11 @@
                                     <li><a class="dropdown-item" href="#"
                                             id="file">{{ __('Document Details') }}</a></li>
                                 </ul>
-                            </div>
+                            </div> --}}
                         </div>
 
 
-                        <div class="corespondense-card-body h-66" style="padding-left:0px;" >
+                        <div class="corespondense-card-body h-66" id="toc" style="padding-left:0px;" >
 
                             <div class="table-responsive" style="overflow-y:scroll !important;" >
                                 {{ $dataTable->table() }}
@@ -863,6 +859,268 @@
                             <br>
                             {{-- code by sumit ends  --}}
 
+                        </div>
+
+                        {{-- Recent Section --}}
+                        <div class="corespondense-card-body h-66" id="recent-section" style="padding-left:0px; display:none;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Receipt/Issue No</th>
+                                            <th>Subject</th>
+                                            <th>Attachment</th>
+                                            <th>Issue On</th>
+                                            <th>Remarks</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($correspondence as $correspondences)
+                                            @if ($correspondences->receipt_id != null && $correspondences->created_at >= now()->subDays(7))
+                                                <tr>
+                                                    <td>{{ $correspondences->receipt->letter_ref_no ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->receipt->subject ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->receipt->receved_date ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->receipt->dairy_date ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->receipt->remarks ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->creator->name ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->created_at->format('d-m-Y H:i:s') }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                            </div>
+                        </div>
+
+                        {{-- All Section --}}
+                        <div class="corespondense-card-body h-66" id="all-section" style="padding-left:0px; display:none;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Type</th>
+                                            <th>Receipt/Issue No</th>
+                                            <th>Subject</th>
+                                            <th>Attachment</th>
+                                            <th>Issue On</th>
+                                            <th>Remarks</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($correspondence as $correspondences)
+                                            <tr>
+                                                <td>
+                                                    @if($correspondences->receipt_id != null)
+                                                        Receipt
+                                                    @elseif($correspondences->doc_id != null)
+                                                        Document
+                                                    @elseif($correspondences->notes_id != null)
+                                                        Notes
+                                                    @else
+                                                        Other
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($correspondences->receipt_id != null)
+                                                        {{ $correspondences->receipt->letter_ref_no ?? 'N/A' }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($correspondences->receipt_id != null)
+                                                        {{ $correspondences->receipt->subject ?? 'N/A' }}
+                                                    @elseif($correspondences->doc_id != null)
+                                                        {{ $correspondences->document->document_name ?? 'N/A' }}
+                                                    @elseif($correspondences->notes_id != null)
+                                                        {{ Str::limit(strip_tags($correspondences->notes->description ?? ''), 50) }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($correspondences->receipt_id != null)
+                                                        {{ $correspondences->receipt->receved_date ?? 'N/A' }}
+                                                    @elseif($correspondences->doc_id != null)
+                                                        {{ $correspondences->document->documentpath ?? 'N/A' }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($correspondences->receipt_id != null)
+                                                        {{ $correspondences->receipt->dairy_date ?? 'N/A' }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
+                                                <td>
+                                                    @if($correspondences->receipt_id != null)
+                                                        {{ $correspondences->receipt->remarks ?? 'N/A' }}
+                                                    @else
+                                                        N/A
+                                                    @endif
+                                                </td>
+                                                <td>{{ $correspondences->creator->name ?? 'N/A' }}</td>
+                                                <td>{{ $correspondences->created_at->format('d-m-Y H:i:s') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                            </div>
+                        </div>
+
+                        {{-- Previous Notes Section --}}
+                        <div class="corespondense-card-body h-66" id="previous-notes-section" style="padding-left:0px; display:none;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Notes Description</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($correspondence as $correspondences)
+                                            @if ($correspondences->notes_id != null)
+                                                <tr>
+                                                    <td>{!! $correspondences->notes->description ?? 'N/A' !!}</td>
+                                                    <td>{{ $correspondences->creator->name ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->created_at->format('d-m-Y H:i:s') }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                            </div>
+                        </div>
+
+                        {{-- Migrated Notes Section --}}
+                        <div class="corespondense-card-body h-66" id="migrated-notes-section" style="padding-left:0px; display:none;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Migrated Notes</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($greennote as $greennotes)
+                                            <tr>
+                                                <td>{!! $greennotes->description !!}</td>
+                                                <td>{{ $greennotes->user->name ?? 'N/A' }}</td>
+                                                <td>{{ $greennotes->created_at->format('d-m-Y H:i:s') }}</td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                            </div>
+                        </div>
+
+                        {{-- Draft List Section --}}
+                        <div class="corespondense-card-body h-66" id="draft-list-section" style="padding-left:0px; display:none;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Draft Title</th>
+                                            <th>Status</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="text-center">No drafts available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                            </div>
+                        </div>
+
+                        {{-- Draft Document Section --}}
+                        <div class="corespondense-card-body h-66" id="draft-document-section" style="padding-left:0px; display:none;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Document Name</th>
+                                            <th>Type</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($correspondence as $correspondences)
+                                            @if ($correspondences->doc_id != null)
+                                                <tr>
+                                                    <td>{{ $correspondences->document->document_name ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->document->dtype ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->creator->name ?? 'N/A' }}</td>
+                                                    <td>{{ $correspondences->created_at->format('d-m-Y H:i:s') }}</td>
+                                                </tr>
+                                            @endif
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                            </div>
+                        </div>
+
+                        {{-- References Section --}}
+                        <div class="corespondense-card-body h-66" id="references-section" style="padding-left:0px; display:none;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                                <table class="table table-bordered table-hover">
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Reference Type</th>
+                                            <th>Reference Details</th>
+                                            <th>Created By</th>
+                                            <th>Created At</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="4" class="text-center">No references available</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="d-flex justify-content-end mt-3 p-3">
+                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                            </div>
                         </div>
 
                     </div>
@@ -1081,28 +1339,75 @@
                     }
                 });
 
-                // Existing dropdown functionality
-                $('#shownotes').on('click', function(event) {
-                    event.preventDefault();
-                    $('#receipttable').hide();
-                    $('#add').hide();
-                    $('#table').hide();
-                    $('#reload').hide();
-                    $('#documenttable').hide();
-                    $('#notesttable').hide();
-                    $('#greenNotesSection').show();
-                    $('#filettable').hide();
+                // Function to hide all sections
+                function hideAllSections() {
+                    $('#toc, #recent-section, #all-section, #previous-notes-section, #migrated-notes-section, #draft-list-section, #draft-document-section, #references-section').hide();
+                }
+
+                // Function to show specific section
+                function showSection(sectionId) {
+                    hideAllSections();
+                    $('#' + sectionId).show();
+                }
+
+                // Dropdown click handlers
+                $('.bars-dropdown-menu .dropdown-item').on('click', function(e) {
+                    e.preventDefault();
+                    const text = $(this).text().trim();
+                    const svg = $(this).find('svg').clone();
+                    
+                    // Update the TOC container only
+                    $('.toc-container span').text(text);
+                    $('.toc-container a svg').replaceWith(svg);
+                    
+                    // Show appropriate section based on selection
+                    switch(text) {
+                        case 'TOC':
+                            showSection('toc');
+                            break;
+                        case 'Recent':
+                            showSection('recent-section');
+                            break;
+                        case 'All':
+                            showSection('all-section');
+                            break;
+                        case 'Previous Notes':
+                            showSection('previous-notes-section');
+                            break;
+                        case 'Migrated Notes':
+                            showSection('migrated-notes-section');
+                            break;
+                        case 'Draft List':
+                            showSection('draft-list-section');
+                            break;
+                        case 'Draft Document':
+                            showSection('draft-document-section');
+                            break;
+                        case 'References':
+                            showSection('references-section');
+                            break;
+                        default:
+                            showSection('toc'); // Default to TOC
+                    }
                 });
-                $('#file').on('click', function(event) {
-                    event.preventDefault();
-                    $('#receipttable').hide();
-                    $('#add').show();
-                    $('#table').hide();
-                    $('#reload').show();
-                    $('#documenttable').hide();
-                    $('#notesttable').hide();
-                    $('#filettable').show();
-                    $('#greenNotesSection').hide();
+
+                // TOC container click handler
+                $('.toc-container a').on('click', function(e) {
+                    e.preventDefault();
+                    showSection('toc');
+                    $('.toc-container span').text('TOC');
+                    // Reset to original TOC SVG
+                    $('.toc-container a svg').replaceWith(`
+                        <svg fill="#ffffff" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round">
+                            </g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path d="m4 3v2h11v-2zm0 6h7v-2h-7zm0 4h4v-2h-4zm-3 2h1.4v-14h-1.4z"></path>
+                            </g>
+                        </svg>
+                    `);
                 });
 
                 let expanded = null; // 'left', 'right', or null
