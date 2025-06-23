@@ -197,26 +197,27 @@
         }
 
         .dataTables_filter {
-            display: none; /* Hide default search box since we have our own */
+            display: none;
+            /* Hide default search box since we have our own */
         }
-        
+
         .dataTables_length {
             margin-bottom: 1rem;
         }
-        
+
         .table-responsive {
             padding: 1rem;
         }
-        
+
         .dataTables_info {
             font-size: 0.875rem;
             color: #6c757d;
         }
-        
+
         .pagination {
             margin: 0;
         }
-        
+
         .select-checkbox {
             width: 30px;
         }
@@ -938,81 +939,34 @@
                         {{-- All Section --}}
                         <div class="corespondense-card-body h-66" id="all-section"
                             style="padding-left:0px; display:none;">
-                            <div class="table-responsive" style="overflow-y:scroll !important;">
-                                <table class="table table-bordered table-hover">
-                                    <thead class="thead-light">
-                                        <tr>
-                                            <th>Type</th>
-                                            <th>Receipt/Issue No</th>
-                                            <th>Subject</th>
-                                            <th>Attachment</th>
-                                            <th>Issue On</th>
-                                            <th>Remarks</th>
-                                            <th>Created By</th>
-                                            <th>Created At</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        @foreach ($correspondence as $correspondences)
-                                            <tr>
-                                                <td>
-                                                    @if ($correspondences->receipt_id != null)
-                                                        Receipt
-                                                    @elseif($correspondences->doc_id != null)
-                                                        Document
-                                                    @elseif($correspondences->notes_id != null)
-                                                        Notes
-                                                    @else
-                                                        Other
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($correspondences->receipt_id != null)
-                                                        {{ $correspondences->receipt->letter_ref_no ?? 'N/A' }}
-                                                    @else
-                                                        N/A
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($correspondences->receipt_id != null)
-                                                        {{ $correspondences->receipt->subject ?? 'N/A' }}
-                                                    @elseif($correspondences->doc_id != null)
-                                                        {{ $correspondences->document->document_name ?? 'N/A' }}
-                                                    @elseif($correspondences->notes_id != null)
-                                                        {{ Str::limit(strip_tags($correspondences->notes->description ?? ''), 50) }}
-                                                    @else
-                                                        N/A
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($correspondences->receipt_id != null)
-                                                        {{ $correspondences->receipt->receved_date ?? 'N/A' }}
-                                                    @elseif($correspondences->doc_id != null)
-                                                        {{ $correspondences->document->documentpath ?? 'N/A' }}
-                                                    @else
-                                                        N/A
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($correspondences->receipt_id != null)
-                                                        {{ $correspondences->receipt->dairy_date ?? 'N/A' }}
-                                                    @else
-                                                        N/A
-                                                    @endif
-                                                </td>
-                                                <td>
-                                                    @if ($correspondences->receipt_id != null)
-                                                        {{ $correspondences->receipt->remarks ?? 'N/A' }}
-                                                    @else
-                                                        N/A
-                                                    @endif
-                                                </td>
-                                                <td>{{ $correspondences->creator->name ?? 'N/A' }}</td>
-                                                <td>{{ $correspondences->created_at->format('d-m-Y H:i:s') }}</td>
-                                            </tr>
-                                        @endforeach
-                                    </tbody>
-                                </table>
+                            <div class="row">
+                                @php
+                                    $receipts = $correspondence->where('receipt_id', '!=', null);
+                                @endphp
+                                @if ($receipts->count() > 0)
+                                    @foreach ($receipts as $correspondences)
+                                        @php
+                                            $fileUrl = $correspondences->receipt->receipt_file
+                                                ? asset(
+                                                    'public/assets/receipt/upload/' .
+                                                        $correspondences->receipt->receipt_file,
+                                                )
+                                                : null;
+                                        @endphp
+                                        @if ($fileUrl && $correspondences->receipt->receipt_file)
+                                            <div class="col-12 mb-3" style="overflow: auto;">
+                                                <object data="{{ $fileUrl }}" type="application/pdf" width="100%"
+                                                    height="100%">
+                                                    <a href="{{ $fileUrl }}" target="_blank">View file</a>
+                                                </object>
+                                            </div>
+                                        @endif
+                                    @endforeach
+                                @else
+                                    <div class="col-12">
+                                        <div class="alert alert-info">No receipts found.</div>
+                                    </div>
+                                @endif
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
@@ -1254,7 +1208,8 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn text-light" style="background: #dd932c !important;" id="attach-receipt-btn-modal">Attach</button>
+                        <button type="button" class="btn text-light" style="background: #dd932c !important;"
+                            id="attach-receipt-btn-modal">Attach</button>
                     </div>
                 </div>
             </div>
@@ -1653,17 +1608,18 @@
                             }).then((result) => {
                                 // Clear the modal
                                 $('#attachReceiptModal').modal('hide');
-                                
+
                                 // Clear the selected table
                                 selectedTable.clear().draw();
-                                
+
                                 // Clear remarks
                                 $('#remarks').val('');
-                                $('#remarks-char-count').text('Total 1000 | 1000 Character left');
-                                
+                                $('#remarks-char-count').text(
+                                    'Total 1000 | 1000 Character left');
+
                                 // Refresh the main table
-                                if (typeof window.LaravelDataTables !== 'undefined' 
-                                    && window.LaravelDataTables.dataTableBuilder) {
+                                if (typeof window.LaravelDataTables !== 'undefined' &&
+                                    window.LaravelDataTables.dataTableBuilder) {
                                     window.LaravelDataTables.dataTableBuilder.ajax.reload();
                                 } else {
                                     location.reload(); // Fallback to page reload
@@ -1687,20 +1643,20 @@
                 });
 
                 // Clean up modal on hide
-                $('#attachReceiptModal').on('hidden.bs.modal', function () {
+                $('#attachReceiptModal').on('hidden.bs.modal', function() {
                     // Clear selected table
                     if (typeof selectedTable !== 'undefined') {
                         selectedTable.clear().draw();
                     }
-                    
+
                     // Reset available table checkboxes
                     $('#select-all-receipts').prop('checked', false);
                     $('.receipt-checkbox').prop('checked', false);
-                    
+
                     // Clear remarks
                     $('#remarks').val('');
                     $('#remarks-char-count').text('Total 1000 | 1000 Character left');
-                    
+
                     // Re-enable the attach button if it was disabled
                     $('#attach-receipt-btn-modal').prop('disabled', false);
                 });
@@ -1716,29 +1672,37 @@
                 // Initialize Available Receipts DataTable
                 const availableTable = $('#available-receipts-table').DataTable({
                     pageLength: 5,
-                    lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    lengthMenu: [
+                        [5, 10, 25, -1],
+                        [5, 10, 25, "All"]
+                    ],
                     dom: '<"top"fl>rt<"bottom"ip>',
-                    order: [[2, 'asc']], // Sort by Comp. No by default
+                    order: [
+                        [2, 'asc']
+                    ], // Sort by Comp. No by default
                     language: {
                         search: "_INPUT_",
                         searchPlaceholder: "Search Here..."
                     },
-                    columnDefs: [
-                        {
-                            targets: 0,
-                            orderable: false,
-                            // Remove the select-checkbox class
-                            className: 'text-center' // Just center align the checkbox column
-                        }
-                    ]
+                    columnDefs: [{
+                        targets: 0,
+                        orderable: false,
+                        // Remove the select-checkbox class
+                        className: 'text-center' // Just center align the checkbox column
+                    }]
                 });
 
                 // Initialize Selected Receipts DataTable
                 const selectedTable = $('#selected-receipts-table').DataTable({
                     pageLength: 5,
-                    lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    lengthMenu: [
+                        [5, 10, 25, -1],
+                        [5, 10, 25, "All"]
+                    ],
                     dom: '<"top"fl>rt<"bottom"ip>',
-                    order: [[1, 'asc']], // Sort by Comp. No by default
+                    order: [
+                        [1, 'asc']
+                    ], // Sort by Comp. No by default
                 });
 
                 // Handle checkbox changes
@@ -1747,7 +1711,7 @@
                     if (this.checked) {
                         const rowData = availableTable.row(row).data();
                         const id = row.data('id');
-                        
+
                         // Create new row for selected table
                         const newRow = [
                             rowData[1], // Nature
@@ -1760,10 +1724,10 @@
                                 <button class="btn btn-sm btn-link remove-receipt text-danger"><i class="bi bi-x-lg"></i></button>
                             </div>`
                         ];
-                        
+
                         const newTr = selectedTable.row.add(newRow).draw().node();
                         $(newTr).attr('data-id', id);
-                        
+
                         // Hide row in available table
                         availableTable.row(row).remove().draw();
                     }
@@ -1787,22 +1751,22 @@
                 $('#selected-receipts-table').on('click', '.remove-receipt', function() {
                     const row = $(this).closest('tr');
                     const id = row.data('id');
-                    
+
                     // Get the original row data
                     const rowData = selectedTable.row(row).data();
-                    
+
                     // Create new row for available table
                     const newRow = [
                         `<input type="checkbox" class="receipt-checkbox" value="${id}">`,
                         rowData[0], // Nature
                         rowData[1], // Comp. No
                         rowData[2], // Receipt No
-                        rowData[3]  // Subject
+                        rowData[3] // Subject
                     ];
-                    
+
                     const newTr = availableTable.row.add(newRow).draw().node();
                     $(newTr).attr('data-id', id);
-                    
+
                     // Remove from selected table
                     selectedTable.row(row).remove().draw();
                 });
@@ -1811,7 +1775,7 @@
                 $('#selected-receipts-table').on('click', '.move-up, .move-down', function() {
                     const row = $(this).closest('tr');
                     const table = selectedTable;
-                    
+
                     if ($(this).hasClass('move-up')) {
                         if (row.prev().length) {
                             row.insertBefore(row.prev());
@@ -1821,7 +1785,7 @@
                             row.insertAfter(row.next());
                         }
                     }
-                    
+
                     table.draw(false);
                 });
 
