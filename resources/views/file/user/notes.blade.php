@@ -184,18 +184,17 @@
             border-bottom: 7px solid #636363 !important;
         }
 
-        #right-panel .card{
-            height:100% !important;
+        #right-panel .card {
+            height: 100% !important;
         }
 
         #right-panel .corespondense-card-body {
-            height:100% !important;
+            height: 100% !important;
         }
 
-        #right-panel .corespondense-card-body .table-responsive{
-            max-height:350px !important;
+        #right-panel .corespondense-card-body .table-responsive {
+            max-height: 350px !important;
         }
-
     </style>
     <div class="d-flex align-items-center p-1 gap-2 bg-dark flex-wrap" style="border-bottom: 1px solid #dee2e6;">
         <a href="{{ route('file.index') }}">
@@ -845,15 +844,15 @@
                         </div>
 
 
-                        <div class="corespondense-card-body h-66" id="toc" style="padding-left:0px;" >
+                        <div class="corespondense-card-body h-66" id="toc" style="padding-left:0px;">
 
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 {{ $dataTable->table() }}
                             </div>
 
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn font-bold text-light" style="background: #ab6c14;"
+                                    data-bs-toggle="modal" data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
 
                             <br>
@@ -862,8 +861,9 @@
                         </div>
 
                         {{-- Recent Section --}}
-                        <div class="corespondense-card-body h-66" id="recent-section" style="padding-left:0px; display:none;" >
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                        <div class="corespondense-card-body h-66" id="recent-section"
+                            style="padding-left:0px; display:none;">
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -894,14 +894,15 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
                         </div>
 
                         {{-- All Section --}}
-                        <div class="corespondense-card-body h-66" id="all-section" style="padding-left:0px; display:none;" >
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                        <div class="corespondense-card-body h-66" id="all-section"
+                            style="padding-left:0px; display:none;">
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -919,7 +920,7 @@
                                         @foreach ($correspondence as $correspondences)
                                             <tr>
                                                 <td>
-                                                    @if($correspondences->receipt_id != null)
+                                                    @if ($correspondences->receipt_id != null)
                                                         Receipt
                                                     @elseif($correspondences->doc_id != null)
                                                         Document
@@ -930,14 +931,14 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($correspondences->receipt_id != null)
+                                                    @if ($correspondences->receipt_id != null)
                                                         {{ $correspondences->receipt->letter_ref_no ?? 'N/A' }}
                                                     @else
                                                         N/A
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($correspondences->receipt_id != null)
+                                                    @if ($correspondences->receipt_id != null)
                                                         {{ $correspondences->receipt->subject ?? 'N/A' }}
                                                     @elseif($correspondences->doc_id != null)
                                                         {{ $correspondences->document->document_name ?? 'N/A' }}
@@ -948,7 +949,7 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($correspondences->receipt_id != null)
+                                                    @if ($correspondences->receipt_id != null)
                                                         {{ $correspondences->receipt->receved_date ?? 'N/A' }}
                                                     @elseif($correspondences->doc_id != null)
                                                         {{ $correspondences->document->documentpath ?? 'N/A' }}
@@ -957,14 +958,14 @@
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($correspondences->receipt_id != null)
+                                                    @if ($correspondences->receipt_id != null)
                                                         {{ $correspondences->receipt->dairy_date ?? 'N/A' }}
                                                     @else
                                                         N/A
                                                     @endif
                                                 </td>
                                                 <td>
-                                                    @if($correspondences->receipt_id != null)
+                                                    @if ($correspondences->receipt_id != null)
                                                         {{ $correspondences->receipt->remarks ?? 'N/A' }}
                                                     @else
                                                         N/A
@@ -978,14 +979,15 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
                         </div>
 
                         {{-- Previous Notes Section --}}
-                        <div class="corespondense-card-body h-66" id="previous-notes-section" style="padding-left:0px; display:none;" >
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                        <div class="corespondense-card-body h-66" id="previous-notes-section"
+                            style="padding-left:0px; display:none;">
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -1008,14 +1010,15 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
                         </div>
 
                         {{-- Migrated Notes Section --}}
-                        <div class="corespondense-card-body h-66" id="migrated-notes-section" style="padding-left:0px; display:none;" >
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                        <div class="corespondense-card-body h-66" id="migrated-notes-section"
+                            style="padding-left:0px; display:none;">
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -1036,14 +1039,15 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
                         </div>
 
                         {{-- Draft List Section --}}
-                        <div class="corespondense-card-body h-66" id="draft-list-section" style="padding-left:0px; display:none;" >
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                        <div class="corespondense-card-body h-66" id="draft-list-section"
+                            style="padding-left:0px; display:none;">
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -1061,14 +1065,15 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
                         </div>
 
                         {{-- Draft Document Section --}}
-                        <div class="corespondense-card-body h-66" id="draft-document-section" style="padding-left:0px; display:none;" >
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                        <div class="corespondense-card-body h-66" id="draft-document-section"
+                            style="padding-left:0px; display:none;">
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -1093,14 +1098,15 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
                         </div>
 
                         {{-- References Section --}}
-                        <div class="corespondense-card-body h-66" id="references-section" style="padding-left:0px; display:none;" >
-                            <div class="table-responsive" style="overflow-y:scroll !important;" >
+                        <div class="corespondense-card-body h-66" id="references-section"
+                            style="padding-left:0px; display:none;">
+                            <div class="table-responsive" style="overflow-y:scroll !important;">
                                 <table class="table table-bordered table-hover">
                                     <thead class="thead-light">
                                         <tr>
@@ -1118,8 +1124,8 @@
                                 </table>
                             </div>
                             <div class="d-flex justify-content-end mt-3 p-3">
-                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
+                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
+                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
                             </div>
                         </div>
 
@@ -1170,8 +1176,10 @@
                                                     <td><input type="checkbox" class="receipt-checkbox"
                                                             value="{{ $receipts->id }}"></td>
                                                     <td>{{ $receipts->nature ?? 'E' }}</td>
-                                                    <td>{{ $receipts->id }}</td>
-                                                    <td>{{ $receipts->receipt_no ?? $receipts->id . '/' . date('Y') . '/ESST' }}
+                                                    <td>{{ $receipts->computer_number }}</td>
+                                                    {{-- <td>{{ $receipts->letter_ref_no ?? $receipts->computer_number . '/' . date('Y') . '/ESST' }}
+                                                    </td> --}}
+                                                    <td>{{ $receipts->computer_number . '/' . date('Y') . '/ESST' }}
                                                     </td>
                                                     <td>{{ $receipts->subject }}</td>
                                                 </tr>
@@ -1206,8 +1214,9 @@
                         <div class="row mt-3">
                             <div class="col-12">
                                 <label for="remarks">Remarks <span class="text-danger">*</span></label>
-                                <textarea id="remarks" class="form-control" rows="3" placeholder="part..."></textarea>
-                                <small>Total 1000 | 995 Character left</small>
+                                <textarea id="remarks" class="form-control" name="attachreceiptremark" rows="3" maxlength="1000"
+                                    placeholder="Enter Remark"></textarea>
+                                <small id="remarks-char-count">Total 1000 | 1000 Character left</small>
                             </div>
                         </div>
                     </div>
@@ -1298,7 +1307,7 @@
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
-        
+
         {{ $dataTable->scripts() }}
 
         <script>
@@ -1341,7 +1350,8 @@
 
                 // Function to hide all sections
                 function hideAllSections() {
-                    $('#toc, #recent-section, #all-section, #previous-notes-section, #migrated-notes-section, #draft-list-section, #draft-document-section, #references-section').hide();
+                    $('#toc, #recent-section, #all-section, #previous-notes-section, #migrated-notes-section, #draft-list-section, #draft-document-section, #references-section')
+                        .hide();
                 }
 
                 // Function to show specific section
@@ -1355,13 +1365,13 @@
                     e.preventDefault();
                     const text = $(this).text().trim();
                     const svg = $(this).find('svg').clone();
-                    
+
                     // Update the TOC container only
                     $('.toc-container span').text(text);
                     $('.toc-container a svg').replaceWith(svg);
-                    
+
                     // Show appropriate section based on selection
-                    switch(text) {
+                    switch (text) {
                         case 'TOC':
                             showSection('toc');
                             break;
@@ -1492,9 +1502,11 @@
                         <td>${receiptNo}</td>
                         <td>${subject}</td>
                         <td>
-                            <button class="btn btn-sm btn-link move-up">🔼</button>
-                            <button class="btn btn-sm btn-link move-down">🔽</button>
-                            <button class="btn btn-sm btn-link remove-receipt text-danger">❌</button>
+                            <div style="display: flex; gap: 1px; align-items: center;">
+                                <button class="btn btn-sm btn-link move-up"><i class="bi bi-arrow-up" style="color: #ab6c14;"></i></button>
+                                <button class="btn btn-sm btn-link move-down"><i class="bi bi-arrow-down" style="color: #ab6c14;"></i></button>
+                                <button class="btn btn-sm btn-link remove-receipt text-danger"><i class="bi bi-x-lg"></i></button>
+                            </div>
                         </td>
                     </tr>
                 `;
@@ -1583,6 +1595,14 @@
                             alert('An error occurred while attaching receipts.');
                         }
                     });
+                });
+
+                // Character count for remarks textarea
+                const maxChars = 1000;
+                $('#remarks').on('input', function() {
+                    const currentLength = $(this).val().length;
+                    const charsLeft = maxChars - currentLength;
+                    $('#remarks-char-count').text(`Total 1000 | ${charsLeft} Character left`);
                 });
 
             });

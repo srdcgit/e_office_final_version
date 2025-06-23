@@ -361,6 +361,7 @@ class FileController extends Controller
                 $correspondence->createdBy = $userId;
                 $correspondence->receipt_id = $request->receipt_id[$i];
                 $correspondence->file_id = $request->file_id;
+                $correspondence->remarks = $request->remarks;
                 $correspondence->save();
             }
         } elseif ($request->document_id != null) {
@@ -370,6 +371,7 @@ class FileController extends Controller
                 $correspondence->createdBy = $userId;
                 $correspondence->doc_id = $request->document_id[$i];
                 $correspondence->file_id = $request->file_id;
+                $correspondence->remarks = $request->remarks;
                 $correspondence->save();
             }
         } elseif ($request->note_id != null) {
@@ -379,6 +381,7 @@ class FileController extends Controller
                 $correspondence->createdBy = $userId;
                 $correspondence->notes_id = $request->note_id[$i];
                 $correspondence->file_id = $request->file_id;
+                $correspondence->remarks = $request->remarks;
                 $correspondence->save();
             }
         }

@@ -27,6 +27,7 @@ use App\Http\Controllers\TemplateController;
 use App\Http\Controllers\TODOListController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VipController;
+use App\Http\Controllers\AttachReceiptController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -131,6 +132,8 @@ Route::get('receipt-details/view/{id}', [ReceiptController::class, 'receipt_deta
 Route::delete('receipt/{receipt}', [ReceiptController::class, 'destroy'])->name('receipt.destroy');
 
 Route::post('get-sender-detail', [MovementController::class, 'get_sender_detail'])->name('get.sender.detail');
+
+
 
 // Reciept Folder Create 
 Route::post('receipt/folders/create', [FolderController::class, 'create'])->name('receipt.folder.create');
