@@ -195,6 +195,42 @@
         #right-panel .corespondense-card-body .table-responsive {
             max-height: 350px !important;
         }
+
+        .dataTables_filter {
+            display: none; /* Hide default search box since we have our own */
+        }
+        
+        .dataTables_length {
+            margin-bottom: 1rem;
+        }
+        
+        .table-responsive {
+            padding: 1rem;
+        }
+        
+        .dataTables_info {
+            font-size: 0.875rem;
+            color: #6c757d;
+        }
+        
+        .pagination {
+            margin: 0;
+        }
+        
+        .select-checkbox {
+            width: 30px;
+        }
+
+        /* Add this to your existing styles */
+        #available-receipts-table .receipt-checkbox {
+            margin: 0;
+            vertical-align: middle;
+        }
+
+        #available-receipts-table thead th:first-child {
+            width: 40px;
+            text-align: center;
+        }
     </style>
     <div class="d-flex align-items-center p-1 gap-2 bg-dark flex-wrap" style="border-bottom: 1px solid #dee2e6;">
         <a href="{{ route('file.index') }}">
@@ -1139,7 +1175,7 @@
             aria-hidden="true">
             <div class="modal-dialog modal-xl">
                 <div class="modal-content">
-                    <div class="modal-header">
+                    <div class="modal-header text-light" style="background: #2e75bb !important;">
                         <h5 class="modal-title" id="attachReceiptModalLabel">Attach Receipt(s)</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
@@ -1171,16 +1207,13 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @foreach ($receipt as $receipts)
+                                            @foreach ($availableReceipts as $receipts)
                                                 <tr data-id="{{ $receipts->id }}">
                                                     <td><input type="checkbox" class="receipt-checkbox"
                                                             value="{{ $receipts->id }}"></td>
                                                     <td>{{ $receipts->nature ?? 'E' }}</td>
                                                     <td>{{ $receipts->computer_number }}</td>
-                                                    {{-- <td>{{ $receipts->letter_ref_no ?? $receipts->computer_number . '/' . date('Y') . '/ESST' }}
-                                                    </td> --}}
-                                                    <td>{{ $receipts->computer_number . '/' . date('Y') . '/ESST' }}
-                                                    </td>
+                                                    <td>{{ $receipts->letter_ref_no ?? 'Null' }}</td>
                                                     <td>{{ $receipts->subject }}</td>
                                                 </tr>
                                             @endforeach
@@ -1221,7 +1254,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" id="attach-receipt-btn-modal">Attach</button>
+                        <button type="button" class="btn text-light" style="background: #dd932c !important;" id="attach-receipt-btn-modal">Attach</button>
                     </div>
                 </div>
             </div>
@@ -1307,6 +1340,8 @@
         </style>
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
         <script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+        {{-- <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.4/js/dataTables.select.min.js"></script> --}}
 
         {{ $dataTable->scripts() }}
 
@@ -1556,24 +1591,48 @@
                     });
                 });
 
-                $('#attach-receipt-btn-modal').on('click', function() {
+                // Attach button click handler
+                $('#attach-receipt-btn-modal').off('click').on('click', function() {
                     const selectedIds = [];
-                    $('#selected-receipts-table tbody tr').each(function() {
-                        selectedIds.push($(this).data('id'));
+                    selectedTable.rows().every(function() {
+                        const $row = $(this.node());
+                        selectedIds.push($row.data('id'));
                     });
 
                     if (selectedIds.length === 0) {
-                        alert('Please select at least one receipt.');
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'No Receipts Selected',
+                            text: 'Please select at least one receipt.',
+                            confirmButtonColor: '#2e75bb'
+                        });
                         return;
                     }
 
                     const remarks = $('#remarks').val();
                     if (!remarks) {
-                        alert('Remarks field is required.');
+                        Swal.fire({
+                            icon: 'warning',
+                            title: 'Remarks Required',
+                            text: 'Please enter remarks.',
+                            confirmButtonColor: '#2e75bb'
+                        });
                         return;
                     }
 
-                    const fileId = '{{ $file->id }}';
+                    // Disable the button to prevent double submission
+                    $(this).prop('disabled', true);
+
+                    // Show loading state
+                    Swal.fire({
+                        title: 'Attaching Receipts',
+                        text: 'Please wait...',
+                        allowOutsideClick: false,
+                        showConfirmButton: false,
+                        willOpen: () => {
+                            Swal.showLoading();
+                        }
+                    });
 
                     $.ajax({
                         url: '{{ route('correspondance.store') }}',
@@ -1581,20 +1640,69 @@
                         data: {
                             _token: '{{ csrf_token() }}',
                             receipt_id: selectedIds,
-                            file_id: fileId,
-                            remarks: remarks, // you may need a remarks field
+                            file_id: '{{ $file->id }}',
+                            remarks: remarks
                         },
                         success: function(response) {
-                            // Handle success (e.g., close modal, refresh part of the page)
-                            $('#attachReceiptModal').modal('hide');
-                            location.reload(); // Simple page reload
+                            // Show success message
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Success!',
+                                text: 'Receipts attached successfully!',
+                                confirmButtonColor: '#2e75bb'
+                            }).then((result) => {
+                                // Clear the modal
+                                $('#attachReceiptModal').modal('hide');
+                                
+                                // Clear the selected table
+                                selectedTable.clear().draw();
+                                
+                                // Clear remarks
+                                $('#remarks').val('');
+                                $('#remarks-char-count').text('Total 1000 | 1000 Character left');
+                                
+                                // Refresh the main table
+                                if (typeof window.LaravelDataTables !== 'undefined' 
+                                    && window.LaravelDataTables.dataTableBuilder) {
+                                    window.LaravelDataTables.dataTableBuilder.ajax.reload();
+                                } else {
+                                    location.reload(); // Fallback to page reload
+                                }
+                            });
                         },
                         error: function(xhr, status, error) {
-                            // Handle error
                             console.error('Error attaching receipts:', error);
-                            alert('An error occurred while attaching receipts.');
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: 'An error occurred while attaching receipts.',
+                                confirmButtonColor: '#2e75bb'
+                            });
+                        },
+                        complete: function() {
+                            // Re-enable the button
+                            $('#attach-receipt-btn-modal').prop('disabled', false);
                         }
                     });
+                });
+
+                // Clean up modal on hide
+                $('#attachReceiptModal').on('hidden.bs.modal', function () {
+                    // Clear selected table
+                    if (typeof selectedTable !== 'undefined') {
+                        selectedTable.clear().draw();
+                    }
+                    
+                    // Reset available table checkboxes
+                    $('#select-all-receipts').prop('checked', false);
+                    $('.receipt-checkbox').prop('checked', false);
+                    
+                    // Clear remarks
+                    $('#remarks').val('');
+                    $('#remarks-char-count').text('Total 1000 | 1000 Character left');
+                    
+                    // Re-enable the attach button if it was disabled
+                    $('#attach-receipt-btn-modal').prop('disabled', false);
                 });
 
                 // Character count for remarks textarea
@@ -1605,6 +1713,127 @@
                     $('#remarks-char-count').text(`Total 1000 | ${charsLeft} Character left`);
                 });
 
+                // Initialize Available Receipts DataTable
+                const availableTable = $('#available-receipts-table').DataTable({
+                    pageLength: 5,
+                    lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    dom: '<"top"fl>rt<"bottom"ip>',
+                    order: [[2, 'asc']], // Sort by Comp. No by default
+                    language: {
+                        search: "_INPUT_",
+                        searchPlaceholder: "Search Here..."
+                    },
+                    columnDefs: [
+                        {
+                            targets: 0,
+                            orderable: false,
+                            // Remove the select-checkbox class
+                            className: 'text-center' // Just center align the checkbox column
+                        }
+                    ]
+                });
+
+                // Initialize Selected Receipts DataTable
+                const selectedTable = $('#selected-receipts-table').DataTable({
+                    pageLength: 5,
+                    lengthMenu: [[5, 10, 25, -1], [5, 10, 25, "All"]],
+                    dom: '<"top"fl>rt<"bottom"ip>',
+                    order: [[1, 'asc']], // Sort by Comp. No by default
+                });
+
+                // Handle checkbox changes
+                $('#available-receipts-table').on('change', '.receipt-checkbox', function() {
+                    const row = $(this).closest('tr');
+                    if (this.checked) {
+                        const rowData = availableTable.row(row).data();
+                        const id = row.data('id');
+                        
+                        // Create new row for selected table
+                        const newRow = [
+                            rowData[1], // Nature
+                            rowData[2], // Comp. No
+                            rowData[3], // Receipt No
+                            rowData[4], // Subject
+                            `<div style="display: flex; gap: 1px; align-items: center;">
+                                <button class="btn btn-sm btn-link move-up"><i class="bi bi-arrow-up" style="color: #ab6c14;"></i></button>
+                                <button class="btn btn-sm btn-link move-down"><i class="bi bi-arrow-down" style="color: #ab6c14;"></i></button>
+                                <button class="btn btn-sm btn-link remove-receipt text-danger"><i class="bi bi-x-lg"></i></button>
+                            </div>`
+                        ];
+                        
+                        const newTr = selectedTable.row.add(newRow).draw().node();
+                        $(newTr).attr('data-id', id);
+                        
+                        // Hide row in available table
+                        availableTable.row(row).remove().draw();
+                    }
+                });
+
+                // Handle "Select All" checkbox
+                $('#select-all-receipts').on('change', function() {
+                    const isChecked = $(this).prop('checked');
+                    if (isChecked) {
+                        availableTable.rows().every(function() {
+                            const $row = $(this.node());
+                            const checkbox = $row.find('.receipt-checkbox');
+                            if (!checkbox.prop('checked')) {
+                                checkbox.prop('checked', true).trigger('change');
+                            }
+                        });
+                    }
+                });
+
+                // Handle remove receipt
+                $('#selected-receipts-table').on('click', '.remove-receipt', function() {
+                    const row = $(this).closest('tr');
+                    const id = row.data('id');
+                    
+                    // Get the original row data
+                    const rowData = selectedTable.row(row).data();
+                    
+                    // Create new row for available table
+                    const newRow = [
+                        `<input type="checkbox" class="receipt-checkbox" value="${id}">`,
+                        rowData[0], // Nature
+                        rowData[1], // Comp. No
+                        rowData[2], // Receipt No
+                        rowData[3]  // Subject
+                    ];
+                    
+                    const newTr = availableTable.row.add(newRow).draw().node();
+                    $(newTr).attr('data-id', id);
+                    
+                    // Remove from selected table
+                    selectedTable.row(row).remove().draw();
+                });
+
+                // Handle move up/down
+                $('#selected-receipts-table').on('click', '.move-up, .move-down', function() {
+                    const row = $(this).closest('tr');
+                    const table = selectedTable;
+                    
+                    if ($(this).hasClass('move-up')) {
+                        if (row.prev().length) {
+                            row.insertBefore(row.prev());
+                        }
+                    } else {
+                        if (row.next().length) {
+                            row.insertAfter(row.next());
+                        }
+                    }
+                    
+                    table.draw(false);
+                });
+
+                // Override the default search box
+                $('#receipt-search-input').on('keyup', function() {
+                    availableTable.search(this.value).draw();
+                });
+
+                // Year filter
+                $('#year-filter').on('change', function() {
+                    availableTable.draw();
+                });
             });
         </script>
         <script>

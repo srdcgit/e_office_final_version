@@ -89,42 +89,41 @@
 
         /* code by sumit */
 
-        .sidebar-icon svg{
-            height:25px;
+        .sidebar-icon svg {
+            height: 25px;
         }
 
-        #sidebar:not(.collapsed) ul.nav > li:nth-child(2){
-                padding-left:10px !important;
-                
+        #sidebar:not(.collapsed) ul.nav>li:nth-child(2) {
+            padding-left: 10px !important;
+
         }
 
 
-        .dropdown-menu li{
-            width:100% !important;
+        .dropdown-menu li {
+            width: 100% !important;
         }
-         
+
         #sidebar.collapsed .dropdown-menu.show {
-            left:0px !important;
+            left: 0px !important;
         }
 
-         #sidebar:not(.collapsed) .dropdown-menu.show {
-            left:7px !important;
+        #sidebar:not(.collapsed) .dropdown-menu.show {
+            left: 7px !important;
         }
 
-        #sidebar.collapsed .sidebar-text
-        {
-            display:none !important;
+        #sidebar.collapsed .sidebar-text {
+            display: none !important;
         }
 
-         #sidebar:not(.collapsed) .nav-link
-        {
-            display:flex !important;
+        #sidebar:not(.collapsed) .nav-link {
+            display: flex !important;
             align-items: baseline !important;
-            gap:8px !important;
+            gap: 8px !important;
         }
-
-
     </style>
+    {{-- Bootstrap Data table  --}}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.5/css/dataTables.bootstrap5.min.css">
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/select/1.3.4/css/select.bootstrap5.min.css">
 </head>
 
 <body>
@@ -218,39 +217,72 @@
     <!-- Sidebar -->
     <div id="sidebar" class="collapsed">
         <ul class="nav flex-column">
-    
+
             <!-- Home Link -->
             <li class="nav-item">
                 <a href="{{ route('home') }}" class="nav-link">
                     {{-- <span class="sidebar-icon">🖥️ </span> --}}
 
-                     <span class="sidebar-icon">
-                       
-                       <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <path fill-rule="evenodd" clip-rule="evenodd" d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z" fill="#ffffff"></path> </g></svg>
+                    <span class="sidebar-icon">
+
+                        <svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <path fill-rule="evenodd" clip-rule="evenodd"
+                                    d="M8 0L0 6V8H1V15H4V10H7V15H15V8H16V6L14 4.5V1H11V2.25L8 0ZM9 10H12V13H9V10Z"
+                                    fill="#ffffff"></path>
+                            </g>
+                        </svg>
 
                     </span>
 
                     <span class="sidebar-text">Home</span>
                 </a>
             </li>
-    
+
             <!-- Receipts Dropdown -->
             <li class="btn-group dropend w-100">
-                <button type="button" class=" w-100 text-start d-flex align-items-center border-0  bg-transparent text-white" data-bs-toggle="dropdown" aria-expanded="false" >
+                <button type="button"
+                    class=" w-100 text-start d-flex align-items-center border-0  bg-transparent text-white"
+                    data-bs-toggle="dropdown" aria-expanded="false">
                     {{-- <span class="sidebar-icon ms-1">📂</span> --}}
                     <span class="sidebar-icon" style="margin-top:13px;">
-                         <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve" fill="#000000"><g id="SVGRepo_bgCarrier" stroke-width="0"></g><g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g><g id="SVGRepo_iconCarrier"> <style type="text/css"> .st0{fill:#ffffff;} </style> <g> <path class="st0" d="M412.61,0H99.383C71.261,0,48.465,22.796,48.465,50.917v413.164c0,13.108,5.37,25.649,14.856,34.687 c9.501,9.045,22.281,13.81,35.374,13.175l286.226-13.84v-0.008c10.651-0.09,20.869-2.285,30.168-6.222 c14.251-6.028,26.329-16.066,34.881-28.719c8.552-12.645,13.564-27.987,13.564-44.367V50.917C463.535,22.796,440.731,0,412.61,0z M433.949,418.788c-0.007,6.916-1.396,13.415-3.906,19.36c-3.764,8.904-10.098,16.537-18.046,21.9 c-7.948,5.37-17.441,8.478-27.793,8.485c-6.513-0.008-12.959-1.562-19.151-4.698c-9.254-4.705-17.979-13.056-24.499-25.306 c-6.506-12.234-10.763-28.36-10.771-48.184v-8.828c0-3.025-1.516-5.841-4.04-7.506c-2.525-1.658-5.722-1.942-8.493-0.74 l-222.477,95.86c-3.704,1.591-7.962,1.224-11.33-0.994c-3.368-2.218-5.393-5.983-5.393-10.009V53.546 c0-13.235,10.725-23.961,23.953-23.961H409.98c13.236,0,23.968,10.726,23.968,23.961V418.788z"></path> <rect x="143.988" y="107.772" class="st0" width="224.016" height="29.585"></rect> <rect x="143.988" y="198.65" class="st0" width="224.016" height="29.586"></rect> <rect x="143.988" y="289.52" class="st0" width="224.016" height="29.585"></rect> </g> </g></svg>
+                        <svg version="1.1" id="_x32_" xmlns="http://www.w3.org/2000/svg"
+                            xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 512 512" xml:space="preserve"
+                            fill="#000000">
+                            <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
+                            <g id="SVGRepo_tracerCarrier" stroke-linecap="round" stroke-linejoin="round"></g>
+                            <g id="SVGRepo_iconCarrier">
+                                <style type="text/css">
+                                    .st0 {
+                                        fill: #ffffff;
+                                    }
+                                </style>
+                                <g>
+                                    <path class="st0"
+                                        d="M412.61,0H99.383C71.261,0,48.465,22.796,48.465,50.917v413.164c0,13.108,5.37,25.649,14.856,34.687 c9.501,9.045,22.281,13.81,35.374,13.175l286.226-13.84v-0.008c10.651-0.09,20.869-2.285,30.168-6.222 c14.251-6.028,26.329-16.066,34.881-28.719c8.552-12.645,13.564-27.987,13.564-44.367V50.917C463.535,22.796,440.731,0,412.61,0z M433.949,418.788c-0.007,6.916-1.396,13.415-3.906,19.36c-3.764,8.904-10.098,16.537-18.046,21.9 c-7.948,5.37-17.441,8.478-27.793,8.485c-6.513-0.008-12.959-1.562-19.151-4.698c-9.254-4.705-17.979-13.056-24.499-25.306 c-6.506-12.234-10.763-28.36-10.771-48.184v-8.828c0-3.025-1.516-5.841-4.04-7.506c-2.525-1.658-5.722-1.942-8.493-0.74 l-222.477,95.86c-3.704,1.591-7.962,1.224-11.33-0.994c-3.368-2.218-5.393-5.983-5.393-10.009V53.546 c0-13.235,10.725-23.961,23.953-23.961H409.98c13.236,0,23.968,10.726,23.968,23.961V418.788z">
+                                    </path>
+                                    <rect x="143.988" y="107.772" class="st0" width="224.016" height="29.585">
+                                    </rect>
+                                    <rect x="143.988" y="198.65" class="st0" width="224.016" height="29.586">
+                                    </rect>
+                                    <rect x="143.988" y="289.52" class="st0" width="224.016" height="29.585">
+                                    </rect>
+                                </g>
+                            </g>
+                        </svg>
                     </span>
                     <span class="sidebar-text ms-2">Receipts</span>
                 </button>
-                
+
                 <ul class="dropdown-menu" style="left:6px !important;">
                     <li>
                         {{-- <a class="dropdown-item text-white" href="{{ route($url . '.index') }}">
                             🏠 Created
                         </a> --}}
-                         <a class="dropdown-item text-white" href="{{ route($url . '.index') }}">
-                             Created
+                        <a class="dropdown-item text-white" href="{{ route($url . '.index') }}">
+                            Created
                         </a>
                     </li>
                     @if (Route::has($url . '.inbox'))
@@ -259,7 +291,7 @@
                                 📧 Inbox
                             </a> --}}
                             <a class="dropdown-item text-white" href="{{ route($url . '.inbox') }}">
-                                 Inbox
+                                Inbox
                             </a>
                         </li>
                     @endif
@@ -269,17 +301,17 @@
                                 📤 Sent
                             </a> --}}
                             <a class="dropdown-item text-white" href="{{ route($url . '.sent') }}">
-                                 Sent
+                                Sent
                             </a>
                         </li>
                     @endif
                 </ul>
             </li>
-            
-            
+
+
 
             {{-- drop down end  --}}
-    
+
             <!-- Search -->
             {{-- <li class="nav-item">
                 <a href="#" class="nav-link">
@@ -287,10 +319,10 @@
                     <span class="sidebar-text">Search</span>
                 </a>
             </li> --}}
-    
+
         </ul>
     </div>
-    
+
 
     <!-- Content Area -->
     <div id="content" class="collapsed">
@@ -323,6 +355,7 @@
     <!-- DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+
 
     <!-- Select2 JS -->
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>

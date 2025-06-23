@@ -168,11 +168,19 @@ class FileController extends Controller
         return response()->json($template);
     }
 
-    public function file_notes(CorrespondenceDataTable $dataTable,$id)
+    public function file_notes(CorrespondenceDataTable $dataTable, $id)
     {
-        $receipt = Receipt::all();
         $file = File::findOrFail($id);
-        // dd($file);
+        
+        // Get IDs of receipts that are already attached to this file
+        $attachedReceiptIds = Correspondence::where('file_id', $id)
+            ->whereNotNull('receipt_id')
+            ->pluck('receipt_id')
+            ->toArray();
+
+        // Get only the receipts that are not already attached to this file
+        $availableReceipts = Receipt::whereNotIn('id', $attachedReceiptIds)->get();
+        
         $gnotes = Notes::where('file_id', $id)->orderBy('id', 'DESC')->first();
         $ynotes = Yellownotes::where('file_id', $id)->orderBy('id', 'DESC')->first();
         $greennote = Notes::where('file_id', $id)->get();
@@ -181,30 +189,24 @@ class FileController extends Controller
         $categories = Category::all();
         $template = Template::all();
         $notes = Notes::where('file_id', $id)->first();
-        $file_share =  Fileshare::where('file_id', $id)->latest()->first();
+        $file_share = Fileshare::where('file_id', $id)->latest()->first();
         $url = 'file';
-        // dd($file_share);
-        // $file_read_status = Fileshare::where('id', $file_share_id)
-        //     ->where('file_id', $id)
-        //     ->where('recever_id', Auth::id())
-        //     ->latest('id')
-        //     ->first();
-        // if ($file_read_status) {
-        //     $file_read_status->read_status = 1;
-        //     $file_read_status->save();
-        // }
-        // dd($file_share);
+
         if ($file || $file_share) {
             if (\Auth::user()->hasRole('admin')) {
-                return $dataTable->with('file_id', $id)->render('file.notes', compact('url', 'file_share', 'id', 'file', 'receipt', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render('file.notes', 
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
             } else {
-                return $dataTable->with('file_id', $id)->render('file.user.notes', compact('url', 'file_share', 'id', 'file', 'receipt', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render('file.user.notes', 
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
             }
         } else {
             if (\Auth::user()->hasRole('admin')) {
-                return $dataTable->with('file_id', $id)->render('file.notes', compact('url', 'file_share', 'id', 'file', 'receipt', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render('file.notes', 
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
             } else {
-                return $dataTable->with('file_id', $id)->render('file.user.notes', compact('url', 'file_share', 'id', 'file', 'receipt', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render('file.user.notes', 
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
             }
         }
     }
