@@ -930,10 +930,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
-                            </div>
+                           
                         </div>
 
                         {{-- All Section --}}
@@ -953,10 +950,7 @@
                                     <div class="alert alert-info">No receipts found.</div>
                                 </div>
                             @endif
-                            <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
-                            </div>
+                            
                         </div>
 
                         {{-- Previous Notes Section --}}
@@ -984,10 +978,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
-                            </div>
+                            
                         </div>
 
                         {{-- Migrated Notes Section --}}
@@ -1013,10 +1004,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
-                            </div>
+                            
                         </div>
 
                         {{-- Draft List Section --}}
@@ -1039,10 +1027,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
-                            </div>
+                           
                         </div>
 
                         {{-- Draft Document Section --}}
@@ -1072,10 +1057,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
-                            </div>
+                           
                         </div>
 
                         {{-- References Section --}}
@@ -1098,10 +1080,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            <div class="d-flex justify-content-end mt-3 p-3">
-                                <button class="btn btn-warning font-bold" data-bs-toggle="modal"
-                                    data-bs-target="#attachReceiptModal">Add Receipt</button>
-                            </div>
+                           
                         </div>
 
                     </div>

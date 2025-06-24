@@ -67,7 +67,7 @@ Route::group(['middleware' => ['auth', 'XSS']], function () {
     route::resource('template', TemplateController::class);
     route::resource('ministry', MinistryController::class);
     route::resource('notice', NoticeController::class);
-    Route::get('file/{id}/merge-receipts', [FileController::class, 'mergeAllReceipts'])->name('file.mergeReceipts');
+    Route::get('file/{id}/all-receipts', [FileController::class, 'mergeAllReceipts'])->name('file.mergeReceipts');
 });
 //dashboard routes for files
 Route::get('get-files', [HomeController::class, 'file_inbox']);

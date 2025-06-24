@@ -245,7 +245,7 @@ return [
 
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         'PDF' => Barryvdh\DomPDF\Facade\PDF::class,
-'PDFMerger' => GrofGraf\LaravelPDFMerger\Facades\PDFMergerFacade::class,
+        'PDFMerger' => GrofGraf\LaravelPDFMerger\Facades\PDFMergerFacade::class,
 
     ],
 
