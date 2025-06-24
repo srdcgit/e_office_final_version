@@ -24,6 +24,7 @@ use App\Models\User;
 use App\Models\Yellownotes;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use GrofGraf\LaravelPDFMerger\Facades\PDFMergerFacade as PDFMerger;
 
 class FileController extends Controller
 {
@@ -627,5 +628,33 @@ class FileController extends Controller
             $url = 'file';
             return $table->render('file.user.userInbox', compact('url'));
         }
+    }
+
+    /**
+     * Merge all receipt PDFs for a file and stream the result.
+     */
+    public function mergeAllReceipts($fileId)
+    {
+        $correspondence = \App\Models\Correspondence::where('file_id', $fileId)->whereNotNull('receipt_id')->get();
+        $pdfPaths = [];
+        foreach ($correspondence as $item) {
+            if ($item->receipt && $item->receipt->receipt_file) {
+                $path = public_path('assets/receipt/upload/' . $item->receipt->receipt_file);
+                if (file_exists($path)) {
+                    $pdfPaths[] = $path;
+                }
+            }
+        }
+        if (empty($pdfPaths)) {
+            return back()->with('error', 'No PDF receipts found to merge.');
+        }
+        $merger = PDFMerger::init();
+        foreach ($pdfPaths as $pdf) {
+            $merger->addPathToPDF($pdf, 'all', 'P');
+        }
+        $fileName = 'merged_receipts_' . $fileId . '.pdf';
+        // Stream the merged PDF inline
+        $merger->merge();
+        return $merger->inline();
     }
 }

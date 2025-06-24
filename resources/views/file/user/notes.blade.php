@@ -938,36 +938,21 @@
 
                         {{-- All Section --}}
                         <div class="corespondense-card-body h-66" id="all-section"
-                            style="padding-left:0px; display:none;">
-                            <div class="row">
-                                @php
-                                    $receipts = $correspondence->where('receipt_id', '!=', null);
-                                @endphp
-                                @if ($receipts->count() > 0)
-                                    @foreach ($receipts as $correspondences)
-                                        @php
-                                            $fileUrl = $correspondences->receipt->receipt_file
-                                                ? asset(
-                                                    'public/assets/receipt/upload/' .
-                                                        $correspondences->receipt->receipt_file,
-                                                )
-                                                : null;
-                                        @endphp
-                                        @if ($fileUrl && $correspondences->receipt->receipt_file)
-                                            <div class="col-12 mb-3" style="overflow: auto;">
-                                                <object data="{{ $fileUrl }}" type="application/pdf" width="100%"
-                                                    height="100%">
-                                                    <a href="{{ $fileUrl }}" target="_blank">View file</a>
-                                                </object>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                @else
-                                    <div class="col-12">
-                                        <div class="alert alert-info">No receipts found.</div>
-                                    </div>
-                                @endif
-                            </div>
+                            style="padding-left:0px; display:none; flex-direction: column;">
+                            @php
+                                $receipts = $correspondence->where('receipt_id', '!=', null);
+                            @endphp
+                            @if ($receipts->count() > 0)
+                                <div style="flex-grow: 1; overflow: auto;">
+                                    <object data="{{ route('file.mergeReceipts', $file->id) }}" type="application/pdf" width="100%" height="100%">
+                                        <p>Your browser does not support PDFs. <a href="{{ route('file.mergeReceipts', $file->id) }}">Download the PDF</a>.</p>
+                                    </object>
+                                </div>
+                            @else
+                                <div class="d-flex align-items-center justify-content-center" style="flex-grow: 1;">
+                                    <div class="alert alert-info">No receipts found.</div>
+                                </div>
+                            @endif
                             <div class="d-flex justify-content-end mt-3 p-3">
                                 <button class="btn btn-warning font-bold" data-bs-toggle="modal"
                                     data-bs-target="#attachReceiptModal">Add Receipt</button>
@@ -1347,7 +1332,11 @@
                 // Function to show specific section
                 function showSection(sectionId) {
                     hideAllSections();
-                    $('#' + sectionId).show();
+                    if (sectionId === 'all-section') {
+                        $('#' + sectionId).css('display', 'flex');
+                    } else {
+                        $('#' + sectionId).show();
+                    }
                 }
 
                 // Dropdown click handlers

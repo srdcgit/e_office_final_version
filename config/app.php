@@ -183,7 +183,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         App\Providers\UtilityFacadesServiceProvider::class,
-
+        GrofGraf\LaravelPDFMerger\Providers\PDFMergerServiceProvider::class,
     ],
 
     /*
@@ -245,7 +245,7 @@ return [
 
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
         'PDF' => Barryvdh\DomPDF\Facade\PDF::class,
-
+'PDFMerger' => GrofGraf\LaravelPDFMerger\Facades\PDFMergerFacade::class,
 
     ],
 
