@@ -26,7 +26,7 @@ class CorrespondenceDataTable extends DataTable
             })
             ->addIndexColumn()
             ->editColumn('created_at', function ($correspondence) {
-                return $correspondence->created_at->format('d-m-Y H:i:s');
+                return $correspondence->created_at->timezone('Asia/Kolkata')->format('d-m-Y h:i:s A');
             })
             ->editColumn('creator.name', function ($correspondence) {
                 return $correspondence->creator->name ?? 'N/A';
@@ -65,7 +65,7 @@ class CorrespondenceDataTable extends DataTable
             ->buttons([
                 Button::make('excel'),
                 Button::make('csv'),
-                Button::make('pdf'),
+                // Button::make('pdf'),
                 Button::make('print'),
                 Button::make('reset'),
                 Button::make('reload')
@@ -95,10 +95,9 @@ class CorrespondenceDataTable extends DataTable
             Column::make('DT_RowIndex')->title('Sl. No')->searchable(false)->orderable(false),
             Column::make('receipt.letter_ref_no')->title('Receipt/Issue No'),
             Column::make('receipt.subject')->title('Subject'),
-            Column::make('receipt.receved_date')->title('Attachment'),
+            Column::make('creator.name')->title('Attached By'),
+            Column::make('created_at')->title('Attached On'),
             Column::make('receipt.remarks')->title('Remarks'),
-            Column::make('creator.name')->title('Created By'),
-            Column::make('created_at'),
         ];
     }
 

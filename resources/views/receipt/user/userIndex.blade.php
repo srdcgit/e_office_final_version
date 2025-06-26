@@ -42,10 +42,7 @@
             right: 10px;
         }
 
-        html,
-        body {
-            overflow-x: hidden;
-        }
+       
     </style>
 
 

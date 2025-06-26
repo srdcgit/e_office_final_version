@@ -255,8 +255,9 @@
             <button class="btn btnn  btn-sm shadow-sm">Movement</button>
         </a>
         <button class="btn btnn  btn-sm shadow-sm">Copy</button>
-        <a href=""><button class="btn btnn  btn-sm shadow-sm">Send</button></a>
-
+        @if ($gnotes != null)
+            <a href="{{ route('file.share', $gnotes->id) }}"><button class="btn btnn  btn-sm shadow-sm">Send</button></a>
+        @endif
         <a href="javascript:void(0);"><button id="put-in-file-btn" data-toggle="modal" data-target="#put_in_file_modal"
                 data-id="" class="btn btnn  shadow-sm">Put in a file</button></a>
 
@@ -930,7 +931,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                           
+
                         </div>
 
                         {{-- All Section --}}
@@ -941,8 +942,11 @@
                             @endphp
                             @if ($receipts->count() > 0)
                                 <div style="flex-grow: 1; overflow: auto;">
-                                    <object data="{{ route('file.mergeReceipts', $file->id) }}" type="application/pdf" width="100%" height="100%">
-                                        <p>Your browser does not support PDFs. <a href="{{ route('file.mergeReceipts', $file->id) }}">Download the PDF</a>.</p>
+                                    <object data="{{ route('file.mergeReceipts', $file->id) }}" type="application/pdf"
+                                        width="100%" height="100%">
+                                        <p>Your browser does not support PDFs. <a
+                                                href="{{ route('file.mergeReceipts', $file->id) }}">Download the PDF</a>.
+                                        </p>
                                     </object>
                                 </div>
                             @else
@@ -950,7 +954,7 @@
                                     <div class="alert alert-info">No receipts found.</div>
                                 </div>
                             @endif
-                            
+
                         </div>
 
                         {{-- Previous Notes Section --}}
@@ -978,7 +982,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                         </div>
 
                         {{-- Migrated Notes Section --}}
@@ -1004,7 +1008,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                         </div>
 
                         {{-- Draft List Section --}}
@@ -1027,7 +1031,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                           
+
                         </div>
 
                         {{-- Draft Document Section --}}
@@ -1057,7 +1061,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                           
+
                         </div>
 
                         {{-- References Section --}}
@@ -1080,7 +1084,7 @@
                                     </tbody>
                                 </table>
                             </div>
-                           
+
                         </div>
 
                     </div>
@@ -1129,10 +1133,22 @@
                                                 <tr data-id="{{ $receipts->id }}">
                                                     <td><input type="checkbox" class="receipt-checkbox"
                                                             value="{{ $receipts->id }}"></td>
-                                                    <td>{{ $receipts->nature ?? 'E' }}</td>
-                                                    <td>{{ $receipts->computer_number }}</td>
+                                                            @php
+                                                                $nature = $receipts->receipt_status;
+                                                                if ($nature === 'Electronics') {
+                                                                    $nature = 'E';
+                                                                } 
+                                                                elseif ($nature === 'Physical') {
+                                                                    $nature = 'P';
+                                                                } 
+                                                                else{
+                                                                    $nature = 'Null';
+                                                                }
+                                                            @endphp
+                                                    <td>{{ $nature }}</td>
+                                                    <td>{{ $receipts->computer_number ?? 'Null' }}</td>
                                                     <td>{{ $receipts->letter_ref_no ?? 'Null' }}</td>
-                                                    <td>{{ $receipts->subject }}</td>
+                                                    <td>{{ $receipts->subject ?? 'Null' }}</td>
                                                 </tr>
                                             @endforeach
                                         </tbody>
@@ -1179,193 +1195,199 @@
             </div>
         </div>
         {{-- End Attach Receipt Modal --}}
+    </div>
+    <style>
+        #resizable-container {
+            min-width: 400px;
+            max-width: 100vw;
+            height: 70vh;
+            background: #f8f9fa;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            overflow: hidden;
+        }
 
-        <style>
+        #divider {
+            min-width: 16px;
+            max-width: 24px;
+            background: #eee;
+            cursor: ew-resize;
+            user-select: none;
+            z-index: 10;
+            transition: background 0.2s;
+        }
+
+        #divider:hover span {
+            background: #ffe066;
+            border-color: #e0c97f;
+        }
+
+        #divider span {
+            margin: 0 auto;
+            transition: background 0.2s, border-color 0.2s;
+        }
+
+        #left-panel,
+        #right-panel {
+            transition: flex-basis 0.2s, width 0.2s;
+            overflow-y: hidden;
+            overflow-x: hidden;
+        }
+
+        @media (max-width: 900px) {
             #resizable-container {
-                min-width: 400px;
-                max-width: 100vw;
-                height: 70vh;
-                background: #f8f9fa;
-                border-radius: 8px;
-                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-                overflow: hidden;
+                flex-direction: column;
+                height: auto;
             }
 
             #divider {
-                min-width: 16px;
-                max-width: 24px;
-                background: #eee;
-                cursor: ew-resize;
-                user-select: none;
-                z-index: 10;
-                transition: background 0.2s;
-            }
-
-            #divider:hover span {
-                background: #ffe066;
-                border-color: #e0c97f;
-            }
-
-            #divider span {
-                margin: 0 auto;
-                transition: background 0.2s, border-color 0.2s;
+                display: none;
             }
 
             #left-panel,
             #right-panel {
-                transition: flex-basis 0.2s, width 0.2s;
-                overflow-y: hidden;
-                overflow-x: hidden;
+                min-width: 100px;
+                width: 100% !important;
+            }
+        }
+
+        .expand-btn {
+            position: absolute;
+            top: 8px;
+            right: 8px;
+            z-index: 20;
+            background: #fffbe6;
+            border: 1px solid #e0c97f;
+            border-radius: 50%;
+            width: 32px;
+            height: 32px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 1px 4px #ccc;
+        }
+
+        #left-panel,
+        #right-panel {
+            position: relative;
+        }
+    </style>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
+    {{-- <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.4/js/dataTables.select.min.js"></script> --}}
+
+    {{ $dataTable->scripts() }}
+
+    <script>
+        $(document).ready(function() {
+            CKEDITOR.replace('ydescription');
+
+            // Resizable divider logic
+            const container = document.getElementById('resizable-container');
+            const left = document.getElementById('left-panel');
+            const right = document.getElementById('right-panel');
+            const divider = document.getElementById('divider');
+            let isDragging = false;
+
+            divider.addEventListener('mousedown', function(e) {
+                isDragging = true;
+                document.body.style.cursor = 'ew-resize';
+                document.body.style.userSelect = 'none';
+            });
+            document.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                const rect = container.getBoundingClientRect();
+                let offsetX = e.clientX - rect.left;
+                // Minimum and maximum widths
+                const min = 180;
+                const max = rect.width - 180;
+                if (offsetX < min) offsetX = min;
+                if (offsetX > max) offsetX = max;
+                left.style.flex = 'none';
+                right.style.flex = 'none';
+                left.style.width = offsetX + 'px';
+                right.style.width = (rect.width - offsetX - divider.offsetWidth) + 'px';
+            });
+            document.addEventListener('mouseup', function(e) {
+                if (isDragging) {
+                    isDragging = false;
+                    document.body.style.cursor = '';
+                    document.body.style.userSelect = '';
+                }
+            });
+
+            // Function to hide all sections
+            function hideAllSections() {
+                $('#toc, #recent-section, #all-section, #previous-notes-section, #migrated-notes-section, #draft-list-section, #draft-document-section, #references-section')
+                    .hide();
             }
 
-            @media (max-width: 900px) {
-                #resizable-container {
-                    flex-direction: column;
-                    height: auto;
-                }
-
-                #divider {
-                    display: none;
-                }
-
-                #left-panel,
-                #right-panel {
-                    min-width: 100px;
-                    width: 100% !important;
+            // Function to show specific section
+            function showSection(sectionId) {
+                hideAllSections();
+                if (sectionId === 'all-section') {
+                    $('#' + sectionId).css('display', 'flex');
+                } else {
+                    $('#' + sectionId).show();
                 }
             }
 
-            .expand-btn {
-                position: absolute;
-                top: 8px;
-                right: 8px;
-                z-index: 20;
-                background: #fffbe6;
-                border: 1px solid #e0c97f;
-                border-radius: 50%;
-                width: 32px;
-                height: 32px;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                box-shadow: 0 1px 4px #ccc;
-            }
+            // Dropdown click handlers
+            $('.bars-dropdown-menu .dropdown-item').on('click', function(e) {
+                e.preventDefault();
+                const text = $(this).text().trim();
+                const svg = $(this).find('svg').clone();
 
-            #left-panel,
-            #right-panel {
-                position: relative;
-            }
-        </style>
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11.7.32/dist/sweetalert2.all.min.js"></script>
-        {{-- <script type="text/javascript" src="https://cdn.datatables.net/select/1.3.4/js/dataTables.select.min.js"></script> --}}
-
-        {{ $dataTable->scripts() }}
-
-        <script>
-            $(document).ready(function() {
-                CKEDITOR.replace('ydescription');
-
-                // Resizable divider logic
-                const container = document.getElementById('resizable-container');
-                const left = document.getElementById('left-panel');
-                const right = document.getElementById('right-panel');
-                const divider = document.getElementById('divider');
-                let isDragging = false;
-
-                divider.addEventListener('mousedown', function(e) {
-                    isDragging = true;
-                    document.body.style.cursor = 'ew-resize';
-                    document.body.style.userSelect = 'none';
-                });
-                document.addEventListener('mousemove', function(e) {
-                    if (!isDragging) return;
-                    const rect = container.getBoundingClientRect();
-                    let offsetX = e.clientX - rect.left;
-                    // Minimum and maximum widths
-                    const min = 180;
-                    const max = rect.width - 180;
-                    if (offsetX < min) offsetX = min;
-                    if (offsetX > max) offsetX = max;
-                    left.style.flex = 'none';
-                    right.style.flex = 'none';
-                    left.style.width = offsetX + 'px';
-                    right.style.width = (rect.width - offsetX - divider.offsetWidth) + 'px';
-                });
-                document.addEventListener('mouseup', function(e) {
-                    if (isDragging) {
-                        isDragging = false;
-                        document.body.style.cursor = '';
-                        document.body.style.userSelect = '';
-                    }
-                });
-
-                // Function to hide all sections
-                function hideAllSections() {
-                    $('#toc, #recent-section, #all-section, #previous-notes-section, #migrated-notes-section, #draft-list-section, #draft-document-section, #references-section')
-                        .hide();
+                let ctext;
+                if ($(this).text().trim() === 'TOC') {
+                    ctext = 'Table of Correspondences (TOC)';
+                } else {
+                    ctext = $(this).text().trim();
                 }
-
-                // Function to show specific section
-                function showSection(sectionId) {
-                    hideAllSections();
-                    if (sectionId === 'all-section') {
-                        $('#' + sectionId).css('display', 'flex');
-                    } else {
-                        $('#' + sectionId).show();
-                    }
+                // Update the TOC container only
+                $('.toc-container span').text(text);
+                $('.toc-container a svg').replaceWith(svg);
+                $('.left-part h5').text(ctext);
+                // Show appropriate section based on selection
+                switch (text) {
+                    case 'TOC':
+                        showSection('toc');
+                        break;
+                    case 'Recent':
+                        showSection('recent-section');
+                        break;
+                    case 'All':
+                        showSection('all-section');
+                        break;
+                    case 'Previous Notes':
+                        showSection('previous-notes-section');
+                        break;
+                    case 'Migrated Notes':
+                        showSection('migrated-notes-section');
+                        break;
+                    case 'Draft List':
+                        showSection('draft-list-section');
+                        break;
+                    case 'Draft Document':
+                        showSection('draft-document-section');
+                        break;
+                    case 'References':
+                        showSection('references-section');
+                        break;
+                    default:
+                        showSection('toc'); // Default to TOC
                 }
+            });
 
-                // Dropdown click handlers
-                $('.bars-dropdown-menu .dropdown-item').on('click', function(e) {
-                    e.preventDefault();
-                    const text = $(this).text().trim();
-                    const svg = $(this).find('svg').clone();
-
-                    // Update the TOC container only
-                    $('.toc-container span').text(text);
-                    $('.toc-container a svg').replaceWith(svg);
-
-                    // Show appropriate section based on selection
-                    switch (text) {
-                        case 'TOC':
-                            showSection('toc');
-                            break;
-                        case 'Recent':
-                            showSection('recent-section');
-                            break;
-                        case 'All':
-                            showSection('all-section');
-                            break;
-                        case 'Previous Notes':
-                            showSection('previous-notes-section');
-                            break;
-                        case 'Migrated Notes':
-                            showSection('migrated-notes-section');
-                            break;
-                        case 'Draft List':
-                            showSection('draft-list-section');
-                            break;
-                        case 'Draft Document':
-                            showSection('draft-document-section');
-                            break;
-                        case 'References':
-                            showSection('references-section');
-                            break;
-                        default:
-                            showSection('toc'); // Default to TOC
-                    }
-                });
-
-                // TOC container click handler
-                $('.toc-container a').on('click', function(e) {
-                    e.preventDefault();
-                    showSection('toc');
-                    $('.toc-container span').text('TOC');
-                    // Reset to original TOC SVG
-                    $('.toc-container a svg').replaceWith(`
+            // TOC container click handler
+            $('.toc-container a').on('click', function(e) {
+                e.preventDefault();
+                showSection('toc');
+                $('.toc-container span').text('TOC');
+                // Reset to original TOC SVG
+                $('.toc-container a svg').replaceWith(`
                         <svg fill="#ffffff" viewBox="0 0 16 16" xmlns="http://www.w3.org/2000/svg"
                             xmlns:xlink="http://www.w3.org/1999/xlink" stroke="#ffffff">
                             <g id="SVGRepo_bgCarrier" stroke-width="0"></g>
@@ -1376,84 +1398,84 @@
                             </g>
                         </svg>
                     `);
-                });
+            });
 
-                let expanded = null; // 'left', 'right', or null
+            let expanded = null; // 'left', 'right', or null
 
-                $('#expand-left').on('click', function() {
-                    if (expanded === 'left') {
-                        // Restore
-                        $('#left-panel').css({
-                            width: '',
-                            flex: '1 1 0'
-                        });
-                        $('#right-panel').css({
-                            width: '',
-                            flex: '1 1 0',
-                            display: ''
-                        });
-                        $('#divider').show();
-                        $(this).find('i').removeClass('fa-compress').addClass('fa-expand');
-                        expanded = null;
-                    } else {
-                        // Expand left
-                        $('#left-panel').css({
-                            width: 'calc(100% - 16px)',
-                            flex: 'none'
-                        });
-                        $('#right-panel').css({
-                            display: 'none'
-                        });
-                        $('#divider').hide();
-                        $(this).find('i').removeClass('fa-expand').addClass('fa-compress');
-                        $('#expand-right').find('i').removeClass('fa-compress').addClass('fa-expand');
-                        expanded = 'left';
-                    }
-                });
+            $('#expand-left').on('click', function() {
+                if (expanded === 'left') {
+                    // Restore
+                    $('#left-panel').css({
+                        width: '',
+                        flex: '1 1 0'
+                    });
+                    $('#right-panel').css({
+                        width: '',
+                        flex: '1 1 0',
+                        display: ''
+                    });
+                    $('#divider').show();
+                    $(this).find('i').removeClass('fa-compress').addClass('fa-expand');
+                    expanded = null;
+                } else {
+                    // Expand left
+                    $('#left-panel').css({
+                        width: 'calc(100% - 16px)',
+                        flex: 'none'
+                    });
+                    $('#right-panel').css({
+                        display: 'none'
+                    });
+                    $('#divider').hide();
+                    $(this).find('i').removeClass('fa-expand').addClass('fa-compress');
+                    $('#expand-right').find('i').removeClass('fa-compress').addClass('fa-expand');
+                    expanded = 'left';
+                }
+            });
 
-                $('#expand-right').on('click', function() {
-                    if (expanded === 'right') {
-                        // Restore
-                        $('#right-panel').css({
-                            width: '',
-                            flex: '1 1 0'
-                        });
-                        $('#left-panel').css({
-                            width: '',
-                            flex: '1 1 0',
-                            display: ''
-                        });
-                        $('#divider').show();
-                        $(this).find('i').removeClass('fa-compress').addClass('fa-expand');
-                        expanded = null;
-                    } else {
-                        // Expand right
-                        $('#right-panel').css({
-                            width: 'calc(100% - 16px)',
-                            flex: 'none'
-                        });
-                        $('#left-panel').css({
-                            display: 'none'
-                        });
-                        $('#divider').hide();
-                        $(this).find('i').removeClass('fa-expand').addClass('fa-compress');
-                        $('#expand-left').find('i').removeClass('fa-compress').addClass('fa-expand');
-                        expanded = 'right';
-                    }
-                });
+            $('#expand-right').on('click', function() {
+                if (expanded === 'right') {
+                    // Restore
+                    $('#right-panel').css({
+                        width: '',
+                        flex: '1 1 0'
+                    });
+                    $('#left-panel').css({
+                        width: '',
+                        flex: '1 1 0',
+                        display: ''
+                    });
+                    $('#divider').show();
+                    $(this).find('i').removeClass('fa-compress').addClass('fa-expand');
+                    expanded = null;
+                } else {
+                    // Expand right
+                    $('#right-panel').css({
+                        width: 'calc(100% - 16px)',
+                        flex: 'none'
+                    });
+                    $('#left-panel').css({
+                        display: 'none'
+                    });
+                    $('#divider').hide();
+                    $(this).find('i').removeClass('fa-expand').addClass('fa-compress');
+                    $('#expand-left').find('i').removeClass('fa-compress').addClass('fa-expand');
+                    expanded = 'right';
+                }
+            });
 
 
-                // New modal logic for attaching receipts
-                function updateSelectedReceiptsTable() {
-                    $('#selected-receipts-table tbody').empty();
-                    $('#available-receipts-table tbody tr:hidden').each(function() {
-                        const id = $(this).data('id');
-                        const nature = $(this).find('td:eq(1)').text();
-                        const compNo = $(this).find('td:eq(2)').text();
-                        const receiptNo = $(this).find('td:eq(3)').text();
-                        const subject = $(this).find('td:eq(4)').text();
+            // New modal logic for attaching receipts
+            function updateSelectedReceiptsTable() {
+                $('#selected-receipts-table tbody').empty();
+                $('#available-receipts-table tbody tr:hidden').each(function() {
+                    const id = $(this).data('id');
+                    const nature = $(this).find('td:eq(1)').text();
+                    const compNo = $(this).find('td:eq(2)').text();
+                    const receiptNo = $(this).find('td:eq(3)').text();
+                    const subject = $(this).find('td:eq(4)').text();
 
-                        const newRow = `
+                    const newRow = `
                     <tr data-id="${id}">
                         <td>${nature}</td>
                         <td>${compNo}</td>
@@ -1468,387 +1490,423 @@
                         </td>
                     </tr>
                 `;
-                        $('#selected-receipts-table tbody').append(newRow);
+                    $('#selected-receipts-table tbody').append(newRow);
+                });
+            }
+
+            $('#available-receipts-table').on('change', '.receipt-checkbox', function() {
+                const row = $(this).closest('tr');
+                if (this.checked) {
+                    row.hide();
+                } else {
+                    row.show();
+                }
+                updateSelectedReceiptsTable();
+            });
+
+            $('#select-all-receipts').on('change', function() {
+                const isChecked = $(this).prop('checked');
+                $('#available-receipts-table .receipt-checkbox').prop('checked', isChecked).trigger(
+                    'change');
+            });
+
+            $('#selected-receipts-table').on('click', '.remove-receipt', function() {
+                const row = $(this).closest('tr');
+                const id = row.data('id');
+                row.remove();
+                const availableRow = $(`#available-receipts-table tr[data-id="${id}"]`);
+                availableRow.show();
+                availableRow.find('.receipt-checkbox').prop('checked', false);
+            });
+
+            $('#selected-receipts-table').on('click', '.move-up', function() {
+                const row = $(this).closest('tr');
+                row.prev().before(row);
+            });
+
+            $('#selected-receipts-table').on('click', '.move-down', function() {
+                const row = $(this).closest('tr');
+                row.next().after(row);
+            });
+
+            $('#receipt-search-input').on('keyup', function() {
+                const value = $(this).val().toLowerCase();
+                $("#available-receipts-table tbody tr").filter(function() {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            });
+
+            // Attach button click handler
+            $('#attach-receipt-btn-modal').off('click').on('click', function() {
+                const selectedIds = [];
+                selectedTable.rows().every(function() {
+                    const $row = $(this.node());
+                    selectedIds.push($row.data('id'));
+                });
+
+                if (selectedIds.length === 0) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'No Receipts Selected',
+                        text: 'Please select at least one receipt.',
+                        confirmButtonColor: '#2e75bb'
                     });
+                    return;
                 }
 
-                $('#available-receipts-table').on('change', '.receipt-checkbox', function() {
-                    const row = $(this).closest('tr');
-                    if (this.checked) {
-                        row.hide();
-                    } else {
-                        row.show();
-                    }
-                    updateSelectedReceiptsTable();
-                });
-
-                $('#select-all-receipts').on('change', function() {
-                    const isChecked = $(this).prop('checked');
-                    $('#available-receipts-table .receipt-checkbox').prop('checked', isChecked).trigger(
-                        'change');
-                });
-
-                $('#selected-receipts-table').on('click', '.remove-receipt', function() {
-                    const row = $(this).closest('tr');
-                    const id = row.data('id');
-                    row.remove();
-                    const availableRow = $(`#available-receipts-table tr[data-id="${id}"]`);
-                    availableRow.show();
-                    availableRow.find('.receipt-checkbox').prop('checked', false);
-                });
-
-                $('#selected-receipts-table').on('click', '.move-up', function() {
-                    const row = $(this).closest('tr');
-                    row.prev().before(row);
-                });
-
-                $('#selected-receipts-table').on('click', '.move-down', function() {
-                    const row = $(this).closest('tr');
-                    row.next().after(row);
-                });
-
-                $('#receipt-search-input').on('keyup', function() {
-                    const value = $(this).val().toLowerCase();
-                    $("#available-receipts-table tbody tr").filter(function() {
-                        $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                    });
-                });
-
-                // Attach button click handler
-                $('#attach-receipt-btn-modal').off('click').on('click', function() {
-                    const selectedIds = [];
-                    selectedTable.rows().every(function() {
-                        const $row = $(this.node());
-                        selectedIds.push($row.data('id'));
-                    });
-
-                    if (selectedIds.length === 0) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'No Receipts Selected',
-                            text: 'Please select at least one receipt.',
-                            confirmButtonColor: '#2e75bb'
-                        });
-                        return;
-                    }
-
-                    const remarks = $('#remarks').val();
-                    if (!remarks) {
-                        Swal.fire({
-                            icon: 'warning',
-                            title: 'Remarks Required',
-                            text: 'Please enter remarks.',
-                            confirmButtonColor: '#2e75bb'
-                        });
-                        return;
-                    }
-
-                    // Disable the button to prevent double submission
-                    $(this).prop('disabled', true);
-
-                    // Show loading state
+                const remarks = $('#remarks').val();
+                if (!remarks) {
                     Swal.fire({
-                        title: 'Attaching Receipts',
-                        text: 'Please wait...',
-                        allowOutsideClick: false,
-                        showConfirmButton: false,
-                        willOpen: () => {
-                            Swal.showLoading();
-                        }
+                        icon: 'warning',
+                        title: 'Remarks Required',
+                        text: 'Please enter remarks.',
+                        confirmButtonColor: '#2e75bb'
                     });
+                    return;
+                }
 
-                    $.ajax({
-                        url: '{{ route('correspondance.store') }}',
-                        type: 'POST',
-                        data: {
-                            _token: '{{ csrf_token() }}',
-                            receipt_id: selectedIds,
-                            file_id: '{{ $file->id }}',
-                            remarks: remarks
-                        },
-                        success: function(response) {
-                            // Show success message
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Success!',
-                                text: 'Receipts attached successfully!',
-                                confirmButtonColor: '#2e75bb'
-                            }).then((result) => {
-                                // Clear the modal
-                                $('#attachReceiptModal').modal('hide');
+                // Disable the button to prevent double submission
+                $(this).prop('disabled', true);
 
-                                // Clear the selected table
-                                selectedTable.clear().draw();
-
-                                // Clear remarks
-                                $('#remarks').val('');
-                                $('#remarks-char-count').text(
-                                    'Total 1000 | 1000 Character left');
-
-                                // Refresh the main table
-                                if (typeof window.LaravelDataTables !== 'undefined' &&
-                                    window.LaravelDataTables.dataTableBuilder) {
-                                    window.LaravelDataTables.dataTableBuilder.ajax.reload();
-                                } else {
-                                    location.reload(); // Fallback to page reload
-                                }
-                            });
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error attaching receipts:', error);
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error!',
-                                text: 'An error occurred while attaching receipts.',
-                                confirmButtonColor: '#2e75bb'
-                            });
-                        },
-                        complete: function() {
-                            // Re-enable the button
-                            $('#attach-receipt-btn-modal').prop('disabled', false);
-                        }
-                    });
-                });
-
-                // Clean up modal on hide
-                $('#attachReceiptModal').on('hidden.bs.modal', function() {
-                    // Clear selected table
-                    if (typeof selectedTable !== 'undefined') {
-                        selectedTable.clear().draw();
+                // Show loading state
+                Swal.fire({
+                    title: 'Attaching Receipts',
+                    text: 'Please wait...',
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    willOpen: () => {
+                        Swal.showLoading();
                     }
-
-                    // Reset available table checkboxes
-                    $('#select-all-receipts').prop('checked', false);
-                    $('.receipt-checkbox').prop('checked', false);
-
-                    // Clear remarks
-                    $('#remarks').val('');
-                    $('#remarks-char-count').text('Total 1000 | 1000 Character left');
-
-                    // Re-enable the attach button if it was disabled
-                    $('#attach-receipt-btn-modal').prop('disabled', false);
                 });
 
-                // Character count for remarks textarea
-                const maxChars = 1000;
-                $('#remarks').on('input', function() {
-                    const currentLength = $(this).val().length;
-                    const charsLeft = maxChars - currentLength;
-                    $('#remarks-char-count').text(`Total 1000 | ${charsLeft} Character left`);
-                });
-
-                // Initialize Available Receipts DataTable
-                const availableTable = $('#available-receipts-table').DataTable({
-                    pageLength: 5,
-                    lengthMenu: [
-                        [5, 10, 25, -1],
-                        [5, 10, 25, "All"]
-                    ],
-                    dom: '<"top"fl>rt<"bottom"ip>',
-                    order: [
-                        [2, 'asc']
-                    ], // Sort by Comp. No by default
-                    language: {
-                        search: "_INPUT_",
-                        searchPlaceholder: "Search Here..."
+                $.ajax({
+                    url: '{{ route('correspondance.store') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}',
+                        receipt_id: selectedIds,
+                        file_id: '{{ $file->id }}',
+                        remarks: remarks
                     },
-                    columnDefs: [{
-                        targets: 0,
-                        orderable: false,
-                        // Remove the select-checkbox class
-                        className: 'text-center' // Just center align the checkbox column
-                    }]
+                    success: function(response) {
+                        // Show success message
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Success!',
+                            text: 'Receipts attached successfully!',
+                            confirmButtonColor: '#2e75bb'
+                        }).then((result) => {
+                            // Clear the modal
+                            $('#attachReceiptModal').modal('hide');
+
+                            // Clear the selected table
+                            selectedTable.clear().draw();
+
+                            // Clear remarks
+                            $('#remarks').val('');
+                            $('#remarks-char-count').text(
+                                'Total 1000 | 1000 Character left');
+
+                            // Refresh the main table
+                            if (typeof window.LaravelDataTables !== 'undefined' &&
+                                window.LaravelDataTables.dataTableBuilder) {
+                                window.LaravelDataTables.dataTableBuilder.ajax.reload();
+                            } else {
+                                location.reload(); // Fallback to page reload
+                            }
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error attaching receipts:', error);
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Error!',
+                            text: 'An error occurred while attaching receipts.',
+                            confirmButtonColor: '#2e75bb'
+                        });
+                    },
+                    complete: function() {
+                        // Re-enable the button
+                        $('#attach-receipt-btn-modal').prop('disabled', false);
+                    }
                 });
+            });
 
-                // Initialize Selected Receipts DataTable
-                const selectedTable = $('#selected-receipts-table').DataTable({
-                    pageLength: 5,
-                    lengthMenu: [
-                        [5, 10, 25, -1],
-                        [5, 10, 25, "All"]
-                    ],
-                    dom: '<"top"fl>rt<"bottom"ip>',
-                    order: [
-                        [1, 'asc']
-                    ], // Sort by Comp. No by default
-                });
+            // Clean up modal on hide
+            $('#attachReceiptModal').on('hidden.bs.modal', function() {
+                // Clear selected table
+                if (typeof selectedTable !== 'undefined') {
+                    selectedTable.clear().draw();
+                }
 
-                // Handle checkbox changes
-                $('#available-receipts-table').on('change', '.receipt-checkbox', function() {
-                    const row = $(this).closest('tr');
-                    if (this.checked) {
-                        const rowData = availableTable.row(row).data();
-                        const id = row.data('id');
+                // Reset available table checkboxes
+                $('#select-all-receipts').prop('checked', false);
+                $('.receipt-checkbox').prop('checked', false);
 
-                        // Create new row for selected table
-                        const newRow = [
-                            rowData[1], // Nature
-                            rowData[2], // Comp. No
-                            rowData[3], // Receipt No
-                            rowData[4], // Subject
-                            `<div style="display: flex; gap: 1px; align-items: center;">
+                // Clear remarks
+                $('#remarks').val('');
+                $('#remarks-char-count').text('Total 1000 | 1000 Character left');
+
+                // Re-enable the attach button if it was disabled
+                $('#attach-receipt-btn-modal').prop('disabled', false);
+            });
+
+            // Character count for remarks textarea
+            const maxChars = 1000;
+            $('#remarks').on('input', function() {
+                const currentLength = $(this).val().length;
+                const charsLeft = maxChars - currentLength;
+                $('#remarks-char-count').text(`Total 1000 | ${charsLeft} Character left`);
+            });
+
+            // Initialize Available Receipts DataTable
+            const availableTable = $('#available-receipts-table').DataTable({
+                pageLength: 5,
+                lengthMenu: [
+                    [5, 10, 25, -1],
+                    [5, 10, 25, "All"]
+                ],
+                dom: '<"top"fl>rt<"bottom"ip>',
+                order: [
+                    [2, 'asc']
+                ], // Sort by Comp. No by default
+                language: {
+                    search: "_INPUT_",
+                    searchPlaceholder: "Search Here..."
+                },
+                columnDefs: [{
+                    targets: 0,
+                    orderable: false,
+                    // Remove the select-checkbox class
+                    className: 'text-center' // Just center align the checkbox column
+                }]
+            });
+
+            // Initialize Selected Receipts DataTable
+            const selectedTable = $('#selected-receipts-table').DataTable({
+                pageLength: 5,
+                lengthMenu: [
+                    [5, 10, 25, -1],
+                    [5, 10, 25, "All"]
+                ],
+                dom: '<"top"fl>rt<"bottom"ip>',
+                order: [
+                    [1, 'asc']
+                ], // Sort by Comp. No by default
+            });
+
+            // Handle checkbox changes
+            $('#available-receipts-table').on('change', '.receipt-checkbox', function() {
+                const row = $(this).closest('tr');
+                if (this.checked) {
+                    const rowData = availableTable.row(row).data();
+                    const id = row.data('id');
+
+                    // Create new row for selected table
+                    const newRow = [
+                        rowData[1], // Nature
+                        rowData[2], // Comp. No
+                        rowData[3], // Receipt No
+                        rowData[4], // Subject
+                        `<div style="display: flex; gap: 1px; align-items: center;">
                                 <button class="btn btn-sm btn-link move-up"><i class="bi bi-arrow-up" style="color: #ab6c14;"></i></button>
                                 <button class="btn btn-sm btn-link move-down"><i class="bi bi-arrow-down" style="color: #ab6c14;"></i></button>
                                 <button class="btn btn-sm btn-link remove-receipt text-danger"><i class="bi bi-x-lg"></i></button>
                             </div>`
-                        ];
-
-                        const newTr = selectedTable.row.add(newRow).draw().node();
-                        $(newTr).attr('data-id', id);
-
-                        // Hide row in available table
-                        availableTable.row(row).remove().draw();
-                    }
-                });
-
-                // Handle "Select All" checkbox
-                $('#select-all-receipts').on('change', function() {
-                    const isChecked = $(this).prop('checked');
-                    if (isChecked) {
-                        availableTable.rows().every(function() {
-                            const $row = $(this.node());
-                            const checkbox = $row.find('.receipt-checkbox');
-                            if (!checkbox.prop('checked')) {
-                                checkbox.prop('checked', true).trigger('change');
-                            }
-                        });
-                    }
-                });
-
-                // Handle remove receipt
-                $('#selected-receipts-table').on('click', '.remove-receipt', function() {
-                    const row = $(this).closest('tr');
-                    const id = row.data('id');
-
-                    // Get the original row data
-                    const rowData = selectedTable.row(row).data();
-
-                    // Create new row for available table
-                    const newRow = [
-                        `<input type="checkbox" class="receipt-checkbox" value="${id}">`,
-                        rowData[0], // Nature
-                        rowData[1], // Comp. No
-                        rowData[2], // Receipt No
-                        rowData[3] // Subject
                     ];
 
-                    const newTr = availableTable.row.add(newRow).draw().node();
+                    const newTr = selectedTable.row.add(newRow).draw().node();
                     $(newTr).attr('data-id', id);
 
-                    // Remove from selected table
-                    selectedTable.row(row).remove().draw();
-                });
+                    // Hide row in available table
+                    availableTable.row(row).remove().draw();
+                }
+            });
 
-                // Handle move up/down
-                $('#selected-receipts-table').on('click', '.move-up, .move-down', function() {
-                    const row = $(this).closest('tr');
-                    const table = selectedTable;
+            // Handle "Select All" checkbox
+            $('#select-all-receipts').on('change', function() {
+                const isChecked = $(this).prop('checked');
+                if (isChecked) {
+                    availableTable.rows().every(function() {
+                        const $row = $(this.node());
+                        const checkbox = $row.find('.receipt-checkbox');
+                        if (!checkbox.prop('checked')) {
+                            checkbox.prop('checked', true).trigger('change');
+                        }
+                    });
+                }
+            });
 
-                    if ($(this).hasClass('move-up')) {
-                        if (row.prev().length) {
-                            row.insertBefore(row.prev());
-                        }
-                    } else {
-                        if (row.next().length) {
-                            row.insertAfter(row.next());
-                        }
+            // Handle remove receipt
+            $('#selected-receipts-table').on('click', '.remove-receipt', function() {
+                const row = $(this).closest('tr');
+                const id = row.data('id');
+
+                // Get the original row data
+                const rowData = selectedTable.row(row).data();
+
+                // Create new row for available table
+                const newRow = [
+                    `<input type="checkbox" class="receipt-checkbox" value="${id}">`,
+                    rowData[0], // Nature
+                    rowData[1], // Comp. No
+                    rowData[2], // Receipt No
+                    rowData[3] // Subject
+                ];
+
+                const newTr = availableTable.row.add(newRow).draw().node();
+                $(newTr).attr('data-id', id);
+
+                // Remove from selected table
+                selectedTable.row(row).remove().draw();
+            });
+
+            // Handle move up/down
+            $('#selected-receipts-table').on('click', '.move-up, .move-down', function() {
+                const row = $(this).closest('tr');
+                const table = selectedTable;
+
+                if ($(this).hasClass('move-up')) {
+                    if (row.prev().length) {
+                        row.insertBefore(row.prev());
                     }
+                } else {
+                    if (row.next().length) {
+                        row.insertAfter(row.next());
+                    }
+                }
 
-                    table.draw(false);
-                });
+                table.draw(false);
+            });
 
-                // Override the default search box
-                $('#receipt-search-input').on('keyup', function() {
-                    availableTable.search(this.value).draw();
-                });
+            // Override the default search box
+            $('#receipt-search-input').on('keyup', function() {
+                availableTable.search(this.value).draw();
+            });
 
-                // Year filter
-                $('#year-filter').on('change', function() {
-                    availableTable.draw();
+            // Year filter
+            $('#year-filter').on('change', function() {
+                availableTable.draw();
+            });
+        });
+    </script>
+    <script>
+        // Include jQuery library in your HTML
+        $(document).ready(function() {
+            $('#category').change(function() {
+                var categoryId = $(this).val();
+                $.ajax({
+                    url: "{{ url('get-subcategory') }}",
+                    type: 'GET',
+                    data: {
+                        category_id: categoryId,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        var subcategories = response;
+                        $('#subcategory').empty();
+                        $('#subcategory').append(
+                            '<option value="">Select Subcategory</option>');
+                        $.each(subcategories, function(index, subcategory) {
+                            $('#subcategory').append('<option value="' + subcategory
+                                .id + '">' + subcategory.name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+
+                    }
                 });
             });
-        </script>
-        <script>
-            // Include jQuery library in your HTML
-            $(document).ready(function() {
-                $('#category').change(function() {
-                    var categoryId = $(this).val();
-                    $.ajax({
-                        url: "{{ url('get-subcategory') }}",
-                        type: 'GET',
-                        data: {
-                            category_id: categoryId,
-                        },
-                        success: function(response) {
-                            console.log(response);
-                            var subcategories = response;
-                            $('#subcategory').empty();
-                            $('#subcategory').append(
-                                '<option value="">Select Subcategory</option>');
-                            $.each(subcategories, function(index, subcategory) {
-                                $('#subcategory').append('<option value="' + subcategory
-                                    .id + '">' + subcategory.name + '</option>');
-                            });
-                        },
-                        error: function(xhr, status, error) {
+            $('#subcategory').change(function() {
+                var sub_id = $(this).val();
+                $.ajax({
+                    url: "{{ url('get-template') }}",
+                    type: 'GET',
+                    data: {
+                        sub_id: sub_id,
+                    },
+                    success: function(response) {
+                        console.log(response);
+                        var subcategory = response;
+                        $('#template').empty();
+                        $('#template').append('<option value="">Select Template</option>');
+                        $.each(subcategory, function(index, subcategory) {
+                            $('#template').append('<option value="' + subcategory.id +
+                                '">' + subcategory.title + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
 
-                        }
-                    });
-                });
-                $('#subcategory').change(function() {
-                    var sub_id = $(this).val();
-                    $.ajax({
-                        url: "{{ url('get-template') }}",
-                        type: 'GET',
-                        data: {
-                            sub_id: sub_id,
-                        },
-                        success: function(response) {
-                            console.log(response);
-                            var subcategory = response;
-                            $('#template').empty();
-                            $('#template').append('<option value="">Select Template</option>');
-                            $.each(subcategory, function(index, subcategory) {
-                                $('#template').append('<option value="' + subcategory.id +
-                                    '">' + subcategory.title + '</option>');
-                            });
-                        },
-                        error: function(xhr, status, error) {
-
-                        }
-                    });
+                    }
                 });
             });
-        </script>
-        <script>
-            $(document).ready(function() {
-                var tdescriptionInstance = CKEDITOR.replace('gdescription');
-                $('#upload').click(function() {
-                    $('#uploadtemplate').toggleClass('d-none');
-                });
-                $('#template').change(function() {
-                    var tem_id = $(this).val();
-                    $.ajax({
-                        url: "{{ url('get-description') }}",
-                        type: 'GET',
-                        data: {
-                            tem_id: tem_id
-                        },
-                        success: function(response) {
-                            if (response.description) {
-                                tdescriptionInstance.setData(response.description);
-                            }
-                        },
-                        error: function(xhr, status, error) {
-                            console.error('Error fetching data:', error);
+        });
+    </script>
+    <script>
+        $(document).ready(function() {
+            var tdescriptionInstance = CKEDITOR.replace('gdescription');
+            $('#upload').click(function() {
+                $('#uploadtemplate').toggleClass('d-none');
+            });
+            $('#template').change(function() {
+                var tem_id = $(this).val();
+                $.ajax({
+                    url: "{{ url('get-description') }}",
+                    type: 'GET',
+                    data: {
+                        tem_id: tem_id
+                    },
+                    success: function(response) {
+                        if (response.description) {
+                            tdescriptionInstance.setData(response.description);
                         }
-                    });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching data:', error);
+                    }
                 });
             });
-        </script>
-        <script>
-            function refreshPage() {
-                window.location.reload();
-            }
-        </script>
-    @endsection
+        });
+    </script>
+    <script>
+        function refreshPage() {
+            window.location.reload();
+        }
+    </script>
+      <script>
+        function updateSelectAllCheckbox() {
+            var allChecked = true;
+            var anyChecked = false;
+            $('.correspondence-checkbox').each(function() {
+                if (!$(this).prop('checked')) {
+                    allChecked = false;
+                } else {
+                    anyChecked = true;
+                }
+            });
+            $('.select-all-checkbox').prop('checked', allChecked && anyChecked);
+        }
+
+        $(document).on('click', '.select-all-checkbox', function() {
+            $('.correspondence-checkbox').prop('checked', $(this).prop('checked'));
+        });
+
+        $(document).on('click', '.correspondence-checkbox', function() {
+            updateSelectAllCheckbox();
+        });
+
+        // On DataTable redraw, update the select-all checkbox state
+        $(document).on('draw.dt', function() {
+            updateSelectAllCheckbox();
+        });
+
+        // Function to get selected IDs
+        window.getSelectedIds = function() {
+            var selectedIds = [];
+            $('.correspondence-checkbox:checked').each(function() {
+                selectedIds.push($(this).val());
+            });
+            return selectedIds;
+        }
+    </script>
+@endsection
