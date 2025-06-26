@@ -232,6 +232,18 @@
             width: 40px;
             text-align: center;
         }
+
+        .dropdown-menu {
+    min-width: 150px;
+}
+.dropdown-item {
+    display: block;
+    padding: 8px 16px;
+    color: #333; 
+    text-decoration: none;
+    cursor: pointer;
+}
+
     </style>
     <div class="d-flex align-items-center p-1 gap-2 bg-dark flex-wrap" style="border-bottom: 1px solid #dee2e6;">
         <a href="{{ route('file.index') }}">
@@ -1133,18 +1145,16 @@
                                                 <tr data-id="{{ $receipts->id }}">
                                                     <td><input type="checkbox" class="receipt-checkbox"
                                                             value="{{ $receipts->id }}"></td>
-                                                            @php
-                                                                $nature = $receipts->receipt_status;
-                                                                if ($nature === 'Electronics') {
-                                                                    $nature = 'E';
-                                                                } 
-                                                                elseif ($nature === 'Physical') {
-                                                                    $nature = 'P';
-                                                                } 
-                                                                else{
-                                                                    $nature = 'Null';
-                                                                }
-                                                            @endphp
+                                                    @php
+                                                        $nature = $receipts->receipt_status;
+                                                        if ($nature === 'Electronics') {
+                                                            $nature = 'E';
+                                                        } elseif ($nature === 'Physical') {
+                                                            $nature = 'P';
+                                                        } else {
+                                                            $nature = 'Null';
+                                                        }
+                                                    @endphp
                                                     <td>{{ $nature }}</td>
                                                     <td>{{ $receipts->computer_number ?? 'Null' }}</td>
                                                     <td>{{ $receipts->letter_ref_no ?? 'Null' }}</td>
@@ -1873,7 +1883,7 @@
             window.location.reload();
         }
     </script>
-      <script>
+    <script>
         function updateSelectAllCheckbox() {
             var allChecked = true;
             var anyChecked = false;
@@ -1898,6 +1908,17 @@
         // On DataTable redraw, update the select-all checkbox state
         $(document).on('draw.dt', function() {
             updateSelectAllCheckbox();
+        });
+
+        $(document).on('click', '.dropdown-toggle', function(e) {
+            e.stopPropagation();
+            var $menu = $(this).siblings('.dropdown-menu');
+            $('.dropdown-menu').not($menu).hide(); // Hide other open menus
+            $menu.toggle();
+        });
+
+        $(document).on('click', function() {
+            $('.dropdown-menu').hide(); // Hide dropdown when clicking outside
         });
 
         // Function to get selected IDs

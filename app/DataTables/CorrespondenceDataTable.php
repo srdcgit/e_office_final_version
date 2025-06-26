@@ -87,7 +87,22 @@ class CorrespondenceDataTable extends DataTable
     {
         return [
             Column::computed('checkbox')
-                ->title('<input type="checkbox" class="select-all-checkbox">')
+                ->title('
+                    <div style="display: flex; align-items: center; padding: 5px; padding-top: 0px; padding-bottom: 0px; background-color: rgb(11, 88, 165);">
+                        <input type="checkbox" class="select-all-checkbox" style="margin-right: 5px;">
+                        <div class="dropdown" style="position: relative; ">
+                            <button class="dropdown-toggle" type="button" style="background: none; border: none; cursor: pointer; color: white; padding: 0;">
+                            </button>
+                            <ul class="dropdown-menu" style="color: black; display: none; position: absolute; left: 0; top: 100%; z-index: 1000; background: #fff; border: 1px solid #ccc; padding: 0; margin: 0; list-style: none;">
+                                <li><a href="#" class="dropdown-item">Mark As PUC</a></li>
+                                <li><a href="#" class="dropdown-item">Mark As FR</a></li>
+                                <li><a href="#" class="dropdown-item">Unmark</a></li>
+                                <li><a href="#" class="dropdown-item">Detach</a></li>
+                                <li><a href="#" class="dropdown-item">Close</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                ')
                 ->exportable(false)
                 ->printable(false)
                 ->width(20)
