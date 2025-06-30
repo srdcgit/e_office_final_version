@@ -64,11 +64,11 @@ class CorrespondenceDataTable extends DataTable
             ->selectStyleSingle()
             ->buttons([
                 Button::make('excel'),
-                Button::make('csv'),
+                // Button::make('csv'),
                 // Button::make('pdf'),
                 Button::make('print'),
-                Button::make('reset'),
-                Button::make('reload')
+                // Button::make('reset'),
+                // Button::make('reload'),
             ])
             ->dom('Bfrtip')
             ->parameters([
@@ -88,17 +88,17 @@ class CorrespondenceDataTable extends DataTable
         return [
             Column::computed('checkbox')
                 ->title('
-                    <div style="display: flex; align-items: center; padding: 5px; padding-top: 0px; padding-bottom: 0px; background-color: rgb(11, 88, 165);">
-                        <input type="checkbox" class="select-all-checkbox" style="margin-right: 5px;">
+                    <div title="Check Box Menu" style="display: flex; align-items: center; padding: 5px; padding-top: 0px; padding-bottom: 0px; background-color: rgb(11, 88, 165);">
+                        <input type="checkbox" class="select-all-checkbox" title="Check Box" style="margin-right: 5px;">
                         <div class="dropdown" style="position: relative; ">
-                            <button class="dropdown-toggle" id="dropdown-toggle-checkbox" type="button" style="background: none; border: none; cursor: pointer; color: white; padding: 0;">
+                            <button class="dropdown-toggle" title="Action" id="dropdown-toggle-checkbox" type="button" style="background: none; border: none; cursor: pointer; color: white; padding: 0;">
                             </button>
                             <ul class="dropdown-menu" id="dropdown-menu-check" style="color: black; display: none; position: absolute; left: 0; top: 100%; z-index: 1000; background: #fff; border: 1px solid #ccc; padding: 0; margin: 0; list-style: none;">
-                                <li><a href="#" class="dropdown-item">Mark As PUC</a></li>
-                                <li><a href="#" class="dropdown-item">Mark As FR</a></li>
-                                <li><a href="#" class="dropdown-item">Unmark</a></li>
-                                <li><a href="#" class="dropdown-item">Detach</a></li>
-                                <li><a href="#" class="dropdown-item">Close</a></li>
+                                <li><a href="#" class="dropdown-item" title="Mark As PUC">Mark As PUC</a></li>
+                                <li><a href="#" class="dropdown-item" title="Mark As FR">Mark As FR</a></li>
+                                <li><a href="#" class="dropdown-item" title="Unmark" id="unmark-all">Unmark</a></li>
+                                <li><a href="#" class="dropdown-item" title="Detach" id="detach-selected">Detach</a></li>
+                                <li><a href="#" class="dropdown-item" title="Close">Close</a></li>
                             </ul>
                         </div>
                     </div>

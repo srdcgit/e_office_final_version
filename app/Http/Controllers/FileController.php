@@ -657,4 +657,14 @@ class FileController extends Controller
         $merger->merge();
         return $merger->inline();
     }
+
+    public function bulkDelete(Request $request)
+{
+    $ids = $request->input('ids', []);
+    if (!empty($ids)) {
+        \App\Models\Correspondence::whereIn('id', $ids)->delete();
+        return response()->json(['success' => true]);
+    }
+    return response()->json(['success' => false, 'message' => 'No IDs provided'], 400);
+}
 }

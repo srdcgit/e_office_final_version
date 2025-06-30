@@ -1772,7 +1772,7 @@
             });
 
             // Handle move up/down
-            $('#selected-receipts-table').on('click', '.move-up, .move-down', function() {
+            $('#selected-receipts-table').on('click', '.move-up', '.move-down', function() {
                 const row = $(this).closest('tr');
                 const table = selectedTable;
 
@@ -1929,5 +1929,73 @@
             });
             return selectedIds;
         }
+    </script>
+    <script>
+
+        // Unmark all checkboxes
+        $(document).on('click', '#unmark-all', function(e) {
+            e.preventDefault();
+            $('.correspondence-checkbox, .select-all-checkbox').prop('checked', false);
+            $('#dropdown-menu-check').hide();
+        });
+
+        // Detach (delete) selected
+        $(document).on('click', '#detach-selected', function(e) {
+            e.preventDefault();
+            var ids = $('.correspondence-checkbox:checked').map(function() {
+                return $(this).val();
+            }).get();
+
+            if (ids.length === 0) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'No Selection',
+                    text: 'Please select at least one correspondence to detach.',
+                    confirmButtonColor: '#2e75bb'
+                });
+                return;
+            }
+
+            Swal.fire({
+                title: 'Are you sure?',
+                text: 'Do you want to detach the selected correspondence?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Yes, detach!'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '{{ route("correspondence.bulkDelete") }}',
+                        method: 'POST',
+                        data: {
+                            ids: ids,
+                            _token: $('meta[name="csrf-token"]').attr('content')
+                        },
+                        success: function(response) {
+                            Swal.fire({
+                                icon: 'success',
+                                title: 'Detached!',
+                                text: 'Selected correspondence has been detached.',
+                                confirmButtonColor: '#2e75bb'
+                            }).then(() => {
+                                location.reload();
+                            });
+                        },
+                        error: function(xhr) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error',
+                                text: 'An error occurred while detaching.',
+                                confirmButtonColor: '#2e75bb'
+                            });
+                        }
+                    });
+                }
+            });
+
+            $('#dropdown-menu-check').hide();
+        });
     </script>
 @endsection

@@ -28,6 +28,7 @@ use App\Http\Controllers\TODOListController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VipController;
 use App\Http\Controllers\AttachReceiptController;
+// use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
@@ -101,6 +102,7 @@ Route::get('forward_file/{id}', [FileController::class, 'forwardfile'])->name('f
 Route::post('/comments', [FileController::class, 'commentstore'])->name('comments.store');
 Route::get('file_view/{id}/{file_share_id}', [FileController::class, 'viewfile'])->name('file.view');
 // Route::put('/filestatus/{id}', [FileController::class, 'filesharestatusupdate'])->name('filestatus.update');
+Route::post('correspondence/bulk-delete', [FileController::class, 'bulkDelete'])->name('correspondence.bulkDelete');
 Route::get('notes_activity/{id}', [FileController::class, 'notesactivity'])->name('notes.activity');
 Route::get('file_inbox', [FileController::class, 'fileinbox'])->name('file.inbox');
 Route::get('file_sent', [FileController::class, 'filesent'])->name('file.sent');
@@ -228,3 +230,5 @@ Route::group(['prefix' => '2fa'], function () {
     })->name('2faVerify')->middleware('2fa');
 });
 // Route::resource('tests', App\Http\Controllers\TestController::class)->middleware(['auth', 'XSS']);
+
+
