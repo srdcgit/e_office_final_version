@@ -108,6 +108,7 @@ class CorrespondenceDataTable extends DataTable
                 ->width(20)
                 ->addClass('text-center'),
             Column::make('DT_RowIndex')->title('Sl. No')->searchable(false)->orderable(false),
+            Column::make('receipt.computer_number')->title('Comp. No'),
             Column::make('receipt.letter_ref_no')->title('Receipt/Issue No'),
             Column::make('receipt.subject')->title('Subject'),
             Column::make('creator.name')->title('Attached By'),
