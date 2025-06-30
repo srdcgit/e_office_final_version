@@ -1910,15 +1910,15 @@
             updateSelectAllCheckbox();
         });
 
-        $(document).on('click', '.dropdown-toggle', function(e) {
+        $(document).on('click', '#dropdown-toggle-checkbox', function(e) {
             e.stopPropagation();
-            var $menu = $(this).siblings('.dropdown-menu');
-            $('.dropdown-menu').not($menu).hide(); // Hide other open menus
+            var $menu = $(this).siblings('#dropdown-menu-check');
+            $('#dropdown-menu-check').not($menu).hide(); // Hide other open menus
             $menu.toggle();
         });
 
         $(document).on('click', function() {
-            $('.dropdown-menu').hide(); // Hide dropdown when clicking outside
+            $('#dropdown-menu-check').hide(); // Hide dropdown when clicking outside
         });
 
         // Function to get selected IDs
