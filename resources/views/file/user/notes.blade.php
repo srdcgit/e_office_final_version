@@ -234,16 +234,16 @@
         }
 
         .dropdown-menu {
-    min-width: 150px;
-}
-.dropdown-item {
-    display: block;
-    padding: 8px 16px;
-    color: #333; 
-    text-decoration: none;
-    cursor: pointer;
-}
+            min-width: 150px;
+        }
 
+        .dropdown-item {
+            display: block;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
     <div class="d-flex align-items-center p-1 gap-2 bg-dark flex-wrap" style="border-bottom: 1px solid #dee2e6;">
         <a href="{{ route('file.index') }}">
@@ -263,8 +263,8 @@
                 </svg>
             </button>
         </a>
-        <a href="{{ route('movements.index') }}">
-            <button class="btn btnn  btn-sm shadow-sm">Movement</button>
+        <a href="{{ route('correspondence-movement.index', $file->id) }}">
+            <button class="btn btnn btn-sm shadow-sm">Movement</button>
         </a>
         <button class="btn btnn  btn-sm shadow-sm">Copy</button>
         @if ($gnotes != null)
@@ -1205,6 +1205,27 @@
             </div>
         </div>
         {{-- End Attach Receipt Modal --}}
+
+        {{-- Correspondence Movement Modal --}}
+        <!-- Detach Remark Modal -->
+        <div class="modal fade" id="detachRemarkModal" tabindex="-1" aria-labelledby="detachRemarkModalLabel"
+            aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="detachRemarkModalLabel">Detach Remark</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <textarea id="detach-remark-input" class="form-control" rows="3" placeholder="Enter remark for movement"></textarea>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" id="submit-detach-remark">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {{-- End Correspondence Movement Modal --}}
     </div>
     <style>
         #resizable-container {
@@ -1931,7 +1952,6 @@
         }
     </script>
     <script>
-
         // Unmark all checkboxes
         $(document).on('click', '#unmark-all', function(e) {
             e.preventDefault();
@@ -1940,9 +1960,10 @@
         });
 
         // Detach (delete) selected
+        var ids = []; // Declare globally
         $(document).on('click', '#detach-selected', function(e) {
             e.preventDefault();
-            var ids = $('.correspondence-checkbox:checked').map(function() {
+            ids = $('.correspondence-checkbox:checked').map(function() {
                 return $(this).val();
             }).get();
 
@@ -1966,36 +1987,56 @@
                 confirmButtonText: 'Yes, detach!'
             }).then((result) => {
                 if (result.isConfirmed) {
-                    $.ajax({
-                        url: '{{ route("correspondence.bulkDelete") }}',
-                        method: 'POST',
-                        data: {
-                            ids: ids,
-                            _token: $('meta[name="csrf-token"]').attr('content')
-                        },
-                        success: function(response) {
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Detached!',
-                                text: 'Selected correspondence has been detached.',
-                                confirmButtonColor: '#2e75bb'
-                            }).then(() => {
-                                location.reload();
-                            });
-                        },
-                        error: function(xhr) {
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Error',
-                                text: 'An error occurred while detaching.',
-                                confirmButtonColor: '#2e75bb'
-                            });
-                        }
-                    });
+                    // Show remark modal
+                    $('#detachRemarkModal').modal('show');
                 }
             });
 
             $('#dropdown-menu-check').hide();
+        });
+
+        // Handle remark modal submit
+        $('#submit-detach-remark').on('click', function() {
+            const remark = $('#detach-remark-input').val();
+            if (!remark) {
+                Swal.fire({
+                    icon: 'warning',
+                    title: 'Remark Required',
+                    text: 'Please enter a remark for the movement.',
+                    confirmButtonColor: '#2e75bb'
+                });
+                return;
+            }
+
+            $.ajax({
+                url: '{{ route('correspondencemovement.store') }}',
+                method: 'POST',
+                data: {
+                    file_notes_id: '{{ $file->id }}',
+                    correspondence_ids: ids,
+                    remark: remark,
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(response) {
+                    $('#detachRemarkModal').modal('hide');
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Detached!',
+                        text: 'Selected correspondence has been detached and movement recorded.',
+                        confirmButtonColor: '#2e75bb'
+                    }).then(() => {
+                        location.reload();
+                    });
+                },
+                error: function(xhr) {
+                    Swal.fire({
+                        icon: 'error',
+                        title: 'Error',
+                        text: 'An error occurred while detaching.',
+                        confirmButtonColor: '#2e75bb'
+                    });
+                }
+            });
         });
     </script>
 @endsection

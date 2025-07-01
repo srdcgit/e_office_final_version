@@ -28,6 +28,7 @@ use App\Http\Controllers\TODOListController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\VipController;
 use App\Http\Controllers\AttachReceiptController;
+use App\Http\Controllers\CorrespondenceMovementController;
 // use App\Http\Controllers\FileController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -68,6 +69,7 @@ Route::group(['middleware' => ['auth', 'XSS']], function () {
     route::resource('template', TemplateController::class);
     route::resource('ministry', MinistryController::class);
     route::resource('notice', NoticeController::class);
+    route::resource('correspondencemovement', CorrespondenceMovementController::class);
     Route::get('file/{id}/all-receipts', [FileController::class, 'mergeAllReceipts'])->name('file.mergeReceipts');
 });
 //dashboard routes for files
@@ -103,6 +105,10 @@ Route::post('/comments', [FileController::class, 'commentstore'])->name('comment
 Route::get('file_view/{id}/{file_share_id}', [FileController::class, 'viewfile'])->name('file.view');
 // Route::put('/filestatus/{id}', [FileController::class, 'filesharestatusupdate'])->name('filestatus.update');
 Route::post('correspondence/bulk-delete', [FileController::class, 'bulkDelete'])->name('correspondence.bulkDelete');
+
+// Route::post('/correspondence/movement', [CorrespondenceMovementController::class, 'store'])->name('correspondence.movement.store');
+Route::get('/correspondence/file-movement/{file_notes_id}', [CorrespondenceMovementController::class, 'index'])->name('correspondence-movement.index');
+
 Route::get('notes_activity/{id}', [FileController::class, 'notesactivity'])->name('notes.activity');
 Route::get('file_inbox', [FileController::class, 'fileinbox'])->name('file.inbox');
 Route::get('file_sent', [FileController::class, 'filesent'])->name('file.sent');

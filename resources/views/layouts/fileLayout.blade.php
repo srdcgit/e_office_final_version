@@ -282,30 +282,30 @@
                         {{-- <a class="dropdown-item text-white" href="{{ route($url . '.index') }}">
                             🏠 Created
                         </a> --}}
-                        <a class="dropdown-item text-white" href="{{ route($url . '.index') }}">
+                        <a class="dropdown-item text-white" href="{{ route('receipt.index') }}">
                             Created
                         </a>
                     </li>
-                    @if (Route::has($url . '.inbox'))
+                    {{-- @if (Route::has('receipt.inbox')) --}}
                         <li>
                             {{-- <a class="dropdown-item text-white" href="{{ route($url . '.inbox') }}">
                                 📧 Inbox
                             </a> --}}
-                            <a class="dropdown-item text-white" href="{{ route($url . '.inbox') }}">
+                            <a class="dropdown-item text-white" href="{{ route('receipt.inbox') }}">
                                 Inbox
                             </a>
                         </li>
-                    @endif
-                    @if (Route::has($url . '.sent'))
+                    {{-- @endif --}}
+                    {{-- @if (Route::has('receipt.sent')) --}}
                         <li>
                             {{-- <a class="dropdown-item text-white" href="{{ route($url . '.sent') }}">
                                 📤 Sent
                             </a> --}}
-                            <a class="dropdown-item text-white" href="{{ route($url . '.sent') }}">
+                            <a class="dropdown-item text-white" href="{{ route('receipt.sent') }}">
                                 Sent
                             </a>
                         </li>
-                    @endif
+                    {{-- @endif --}}
                 </ul>
             </li>
 
