@@ -107,7 +107,8 @@ Route::get('file_view/{id}/{file_share_id}', [FileController::class, 'viewfile']
 Route::post('correspondence/bulk-delete', [FileController::class, 'bulkDelete'])->name('correspondence.bulkDelete');
 
 // Route::post('/correspondence/movement', [CorrespondenceMovementController::class, 'store'])->name('correspondence.movement.store');
-Route::get('/correspondence/file-movement/{file_notes_id}', [CorrespondenceMovementController::class, 'index'])->name('correspondence-movement.index');
+// Route::get('/correspondence/file-movement/{file_notes_id}', [CorrespondenceMovementController::class, 'index'])->name('correspondence-movement.index');
+Route::get('correspondence-movements/{file_notes_id}', [App\Http\Controllers\CorrespondenceMovementController::class, 'index'])->name('correspondence-movements.index');
 
 Route::get('notes_activity/{id}', [FileController::class, 'notesactivity'])->name('notes.activity');
 Route::get('file_inbox', [FileController::class, 'fileinbox'])->name('file.inbox');

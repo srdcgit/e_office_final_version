@@ -263,7 +263,7 @@
                 </svg>
             </button>
         </a>
-        <a href="{{ route('correspondence-movement.index', $file->id) }}">
+        <a href="{{ route('correspondence-movements.index', $file->id) }}">
             <button class="btn btnn btn-sm shadow-sm">Movement</button>
         </a>
         <button class="btn btnn  btn-sm shadow-sm">Copy</button>

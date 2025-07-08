@@ -5,19 +5,20 @@ namespace App\Http\Controllers;
 use App\Models\CorrespondenceMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use App\DataTables\CorrespondenceMovementDataTable;
 
 class CorrespondenceMovementController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
+     * @param  \App\DataTables\CorrespondenceMovementDataTable  $dataTable
+     * @param  int $file_notes_id
      * @return \Illuminate\Http\Response
      */
-    public function index($file_notes_id)
+    public function index(CorrespondenceMovementDataTable $dataTable, $file_notes_id)
     {
-        $url = 'correspondence-movement';
-        $movements = CorrespondenceMovement::where('file_notes_id', $file_notes_id)->with('user')->get();
-        return view('file.user.correspondence_movement', compact('movements', 'url'));
+        return $dataTable->with('file_notes_id', $file_notes_id)->render('file.user.correspondence_movement_datatable', ['file_notes_id' => $file_notes_id]);
     }
 
     /**
