@@ -1,325 +1,302 @@
 @extends('layouts.fileLayout')
 @section('file_title', 'File Share')
+
 @section('file_content')
-<!-- @section('breadcrumb')
-<ul class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Dashboard') }}</a></li>
-    <li class="breadcrumb-item"><a href="{{ route('file.index') }}">{{ __('Share') }}</a></li>
-    <li class="breadcrumb-item">{{ __('Share') }}
-    </li>
-</ul>
-<style>
-    #pdf-viewer,
-    #doc-viewer {
-        width: 100%;
-        height: 500px;
-        border: 1px solid #ccc;
-        margin-top: 10px;
-    }
-</style>
-@endsection -->
-<div class="row">
-    <div class="section-body col-lg-6" style="padding-right:0">
-        <div class="col-md-12 m-auto">
-            <div class="card">
-                <div class="card-header">
-                    <h5>{{ __('File Share') }}</h5>
-                </div>
-                {{ Form::open(['route' => 'storefile.share', 'method' => 'post']) }}
-                <input type="hidden" name="file_id" id="file_id" value="{{ $file->id }}">
-                <input type="hidden" name="notes_id" id="notes_id" value="{{ $notes->id }}">
-                <div class="file-share-card-body">
-                    <div class="form-group mb-3">
-                        <label class="form-label">Status</label>
-                        <div class="form-check">
-                            <input type="radio" name="status" value="1" class="form-check-input" checked>
-                            <label class="form-check-label">Internal</label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        {{ Form::label('department_id', __('Department')), ['class' => 'form-label'] }}
-                        <select name="department_id" id="department" class="form-control">
-                            <option value="">Select Department</option>
-                            @foreach ($department as $departments)
-                            <option value="{{ $departments->id }}">{{ $departments->name }}</option>
-                            @endforeach
-                        </select>
-                        @error('department_id')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        {{ Form::label('section_id', __('Section')), ['class' => 'form-label'] }}
-                        <select name="section_id" id="section" class="form-control">
-                            <option value="">Select Section</option>
-                        </select>
-                        @error('section_id')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        {{ Form::label('user', __('TO')), ['class' => 'form-label'] }}
-                        <select name="user" id="user" class="form-control">
-                            <option value="">Select User</option>
+    @php
+        $file = $file ?? null;
+    @endphp
 
-                        </select>
-                        @error('User_id')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label">Notify Through</label>
-                        <div class="form-check">
-                            <input type="radio" name="notify" value="email" class="form-check-input" checked>
-                            <label class="form-check-label">Email</label>
-                        </div>
-                        <div class="form-check">
-                            <input type="radio" name="notify" value="sms" class="form-check-input">
-                            <label class="form-check-label">SMS</label>
-                        </div>
-                    </div>
-                    <div class="mb-3">
-                        {{ Form::label('remarks', __('Remarks'), ['class' => 'form-label']) }}
-                        {{ Form::textarea('remarks', null, ['class' => 'form-control', 'rows' => 3, 'placeholder' => '']) }}
-                        @error('remarks')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        {{ Form::label('duedate', __('Set Due Date'), ['class' => 'form-label']) }}
-                        {{ Form::date('duedate', null, ['class' => 'form-control']) }}
-                        @error('duedate')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                    <div class="mb-3">
-                        {{ Form::label('action', __('Action'), ['class' => 'form-label']) }}
-                        {{ Form::select('action', ['view' => 'view', 'edit' => 'edit'], null, ['class' => 'form-select', 'placeholder' => 'Select Action']) }}
-                    </div>
-                    <div class="mb-3">
-                        {{ Form::label('priority', __('Priority'), ['class' => 'form-label']) }}
-                        {{ Form::select('priority', ['Low' => 'Low', 'Medium' => 'Medium', 'High' => 'High'], null, ['class' => 'form-select', 'placeholder' => 'Select Priority']) }}
-                        @error('priority')
-                        <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                </div>
-                <div class="card-footer">
-                    <div class="d-flex justify-content-end ">
-                        <button type="submit" class="btn btn-primary mb-3 mr-1">{{ __('Send') }}</button>
-                        &nbsp;&nbsp;&nbsp;
-                        <a href="{{ route('file.index') }}" type="submit"
-                            class="btn btn-success mb-3 ml-1">{{ __('Revert') }}</a>
-                    </div>
-                </div>
+    @if ($file)
+        <div class="d-flex justify-content-between align-items-center bg-light p-2 border rounded mb-3">
+            <div class="text-primary">
+                <strong>File Created</strong> / {{ $file->fileno ?? '' }}
+            </div>
+            <div>
+                <span class="ms-3"><strong>File No.:</strong> {{ $file->fileno ?? '' }}</span>
+                <span class="ms-3 text-light p-1"
+                    style="border-radius: 5px !important; background-color: #474b4f !important;">Subject:
+                    {{ $file->description ?? '' }}</span>
             </div>
         </div>
-    </div>
-    <div class="section-body col-lg-6" style="padding-right:0">
-        <div class="col-md-12 m-auto">
-            <div class="card">
-                <div class="card-header">
-                </div>
-                <div class="card-body">
-                    <div class="form-group">
-                        <div class="table-responsive">
-                            <table class="table table-bordered" id="receipttable">
-                                <thead>
-                                    <tr>
-                                        <th>{{ __('File/Receipt.No') }}</th>
-                                        <th>{{ __('Subject') }}</th>
-                                        <th>{{ __('NoteType') }}</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    @foreach ($fileview as $fileviews)
-                                    <tr>
-                                        <th scope="row">{{ $fileviews->files->fileno }}</th>
-                                        <td>{{ $fileviews->remarks }}</td>
-                                        <td>{{ __('Green Note') }}</td>
+    @endif
 
-                                    </tr>
-                                    @endforeach
-                                </tbody>
-                            </table>
-                        </div>
+    <div class="row p-4">
+        <div class="col-md-7">
+            <div class="card p-3 mb-3">
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label"><b>Organisation</b></label>
+                        <select class="form-select" name="organisation" id="organisation">
+                            <option selected>Choose One</option>
+                            @if (isset($organisations))
+                                @foreach ($organisations as $org)
+                                    <option value="{{ $org->id }}">{{ $org->name }}</option>
+                                @endforeach
+                            @endif
+                        </select>
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><b>Secondary Dropdown</b></label>
+                        <select class="form-select" name="secondary_dropdown" id="secondary_dropdown">
+                            <option selected>Choose One</option>
+                            <!-- Populate as needed -->
+                        </select>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="section-body col-lg-12" style="padding-right:0">
-            <div class="col-md-12 m-auto">
-                <div class="card">
-                    <div class="card-header">
+                <ul class="nav nav-tabs mb-3" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link active text-dark" id="all-tab" data-bs-toggle="tab"
+                            data-bs-target="#all-tab-pane" type="button" role="tab" aria-controls="all-tab-pane"
+                            aria-selected="true">All</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-dark" id="preferred-tab" data-bs-toggle="tab"
+                            data-bs-target="#preferred-tab-pane" type="button" role="tab"
+                            aria-controls="preferred-tab-pane" aria-selected="false">Preferred List</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-dark" id="recent-tab" data-bs-toggle="tab"
+                            data-bs-target="#recent-tab-pane" type="button" role="tab" aria-controls="recent-tab-pane"
+                            aria-selected="false">Recent 10</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-dark" id="channel-tab" data-bs-toggle="tab"
+                            data-bs-target="#channel-tab-pane" type="button" role="tab"
+                            aria-controls="channel-tab-pane" aria-selected="false">In Channel</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-dark" id="subordinates-tab" data-bs-toggle="tab"
+                            data-bs-target="#subordinates-tab-pane" type="button" role="tab"
+                            aria-controls="subordinates-tab-pane" aria-selected="false">Sub-ordinates</button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link text-dark" id="sendback-tab" data-bs-toggle="tab"
+                            data-bs-target="#sendback-tab-pane" type="button" role="tab"
+                            aria-controls="sendback-tab-pane" aria-selected="false">Send Back</button>
+                    </li>
+                </ul>
+                <div class="tab-content mb-3" id="myTabContent">
+                    <div class="tab-pane fade show active" id="all-tab-pane" role="tabpanel" aria-labelledby="all-tab"
+                        tabindex="0">Reporting Officer</div>
+                    <div class="tab-pane fade" id="preferred-tab-pane" role="tabpanel" aria-labelledby="preferred-tab"
+                        tabindex="0">...</div>
+                    <div class="tab-pane fade" id="recent-tab-pane" role="tabpanel" aria-labelledby="recent-tab"
+                        tabindex="0">...</div>
+                    <div class="tab-pane fade" id="channel-tab-pane" role="tabpanel" aria-labelledby="channel-tab"
+                        tabindex="0">...</div>
+                    <div class="tab-pane fade" id="subordinates-tab-pane" role="tabpanel"
+                        aria-labelledby="subordinates-tab" tabindex="0">...</div>
+                    <div class="tab-pane fade" id="sendback-tab-pane" role="tabpanel" aria-labelledby="sendback-tab"
+                        tabindex="0">...</div>
+                </div>
+                <div class="row mb-2 align-items-center">
+                    <div class="col-md-8">
+                        <label class="form-label"><b>To</b> <span class="text-danger">*</span></label>
+                        <select class="form-control" name="user" id="contactInput" style="width: 100%;"></select>
                     </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="row-20">
-                                {{ Form::label('description', __('Current Note')) }}
-                                {{ Form::textarea('description', $notes->description, ['class' => 'form-control ckeditor-textarea', 'id' => 'description', 'rows' => '8']) }}
-                                @error('description')
-                                <span class="invalid-name" role="alert">
-                                    <strong class="text-danger">{{ $message }}</strong>
-                                </span>
-                                @enderror
+                    <div class="col-md-4">
+                        <label class="form-label d-block"><b>Notify Through:</b></label>
+                        <div class="row">
+                            <div class="col">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="notify[]" id="notifyEmail"
+                                        value="email">
+                                    <label class="form-check-label" for="notifyEmail"><b>Email</b></label>
+                                </div>
                             </div>
-
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        {{ Form::open(['route' => 'store.notes', 'method' => 'post']) }}
-        <input type="hidden" name="note_id" value="{{ $notes->id }}">
-
-        <div class="section-body col-lg-12" style="padding-right: 0;">
-            <div class="col-md-12 m-auto">
-                <div class="card">
-                    <div class="card-header">
-                        <h4>{{ __('Notes Approval') }}</h4>
-                    </div>
-                    <div class="card-body">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col-12">
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shareStatus"
-                                            id="shareYes" value="1" checked>
-                                        <label class="form-check-label" for="shareYes">
-                                            {{ __('Yes') }}
-                                        </label>
-                                    </div>
-                                    <div class="form-check">
-                                        <input class="form-check-input" type="radio" name="shareStatus"
-                                            id="shareNo" value="0" checked>
-                                        <label class="form-check-label" for="shareNo">
-                                            {{ __('No') }}
-                                        </label>
-                                    </div>
+                            <div class="col">
+                                <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="checkbox" name="notify[]" id="notifySms"
+                                        value="sms">
+                                    <label class="form-check-label" for="notifySms"><b>SMS</b></label>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="row mb-1">
+                    <div class="col-12">
+                        <span class="form-text text-muted" style="font-style:italic"><b>Note :</b> Email/SMS will be sent
+                            based on checkbox selection (Notify Through), irrespective of User Preference and Instance
+                            Configuration.</span>
+                    </div>
+                </div> 
+                <div class="mb-3">
+                    <label class="form-label"><b>Remarks</b></label>
+                    <textarea class="form-control" name="remark" id="remarkTextarea" rows="2" maxlength="1000"
+                        placeholder="Add your remarks here..."></textarea>
+                    <p class="mb-0">Total 1000 | <span id="charCount">1000</span> Character left</p>
+                </div>
+                <div class="row mb-3">
+                    <div class="col-md-6">
+                        <label class="form-label"><b>Set Due Date</b></label>
+                        <input type="date" name="duedate" class="form-control" style="cursor: pointer;">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label"><b>Action</b></label>
+                        <select class="form-select" name="action" style="cursor: pointer;">
+                            <option selected>Choose One</option>
+                            <option value="Call For Meeting">Call For Meeting</option>
+                            <option value="FNA">FNA</option>
+                            <option value="Give Time">Give Time</option>
+                            <option value="Please CAll">Please CAll</option>
+                            <option value="Please Discuss">Please Discuss</option>
+                            <option value="Please Examine">Please Examine</option>
+                            <option value="Please Examine Putup">Please Examine Putup</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="text-end mt-3">
+                    <button class="btn btn-primary" disabled>DSC Sign & Send</button>
+                    <button type="submit" class="btn btn-success">Send</button>
+                </div>
             </div>
         </div>
-
-        {!! Form::close() !!}
-        <!-- Custom CSS for styling -->
-        <style>
-            .form-check {
-                display: flex;
-                align-items: center;
-                margin-bottom: 15px;
-            }
-
-            .form-check-input {
-                margin-right: 10px;
-            }
-
-            .form-check-label {
-                font-weight: bold;
-            }
-
-            .card {
-                margin-top: 20px;
-                border-radius: 8px;
-                box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            }
-
-            /* .card-header {
-                background-color: #f8f9fa;
-                border-bottom: 1px solid #e9ecef;
-                padding: 10px 20px;
-                border-top-left-radius: 8px;
-                border-top-right-radius: 8px;
-            } */
-
-            .card-header h4 {
-                margin: 0;
-            }
-
-            .card-body {
-                padding: 20px;
-            }
-        </style>
+        <div class="col-md-5">
+            <div class="table-responsive mb-3">
+                <table class="table table-bordered align-middle">
+                    <thead class="table-secondary">
+                        <tr>
+                            <th><input type="checkbox" /></th>
+                            <th>File Components</th>
+                            <th>File No.</th>
+                            <th>Description</th>
+                            <th>Note</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><input type="checkbox" checked /></td>
+                            <td>{{ $file->component ?? 'File' }}</td>
+                            <td>{{ $file->fileno ?? 'not found' }}</td>
+                            <td>{{ $file->description ?? 'not found' }}</td>
+                            <td>{!! $notes->description ?? 'not found' !!}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="card mb-3">
+                <div class="card-header">Intimate To</div>
+                <div class="card-body p-0">
+                    <table class="table mb-0">
+                        <thead>
+                            <tr>
+                                <th>S. No.</th>
+                                <th>Employee Name</th>
+                                <th>Marking Abbreviation</th>
+                                <th>Section</th>
+                                <th>Email</th>
+                                <th>SMS</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="6" class="text-center text-muted">No Record(s) Found</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
-{!! Form::close() !!}
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-<script src="https://code.jquery.com/jquery-3.7.1.js" integrity="sha256-eKhayi8LEQwp4NKxN+CfCh+3qOVUtJn3QNZ0TciWLP4="
-    crossorigin="anonymous"></script>
-<script type="text/javascript" src="{{ asset('assets/ckeditor/ckeditor.js') }}"></script>
-<script>
-    CKEDITOR.replace('description');
-</script>
-<style>
-    .ckeditor-textarea {
-        width: 100%;
-    }
-</style>
-{{-- <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script> --}}
-{{-- <script>
-        ClassicEditor
-            .create(document.querySelector('#description'))
-            .then(editor => {
-                console.log(editor);
-            })
-            .catch(error => {
-                console.error(error);
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $('#contactInput').select2({
+                placeholder: 'Select User',
+                allowClear: true
             });
-    </script> --}}
-<script>
-    $(document).ready(function() {
-        $('#department').change(function() {
-            var departmentId = $(this).val();
-            $.ajax({
-                url: "{{ url('get-section') }}",
-                type: 'GET',
-                data: {
-                    department_id: departmentId,
-                },
-                success: function(response) {
-                    var sections = response;
-                    $('#section').empty();
-                    $('#section').html('<option value="">Select Section</option>');
-                    $.each(sections, function(index, section) {
-                        $('#section').append('<option value="' + section.id + '">' +
-                            section.name + '</option>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
+            $('#organisation').change(function() {
+                var organisationId = $(this).val();
+                $.ajax({
+                    url: "{{ url('get-secondary-dropdown') }}",
+                    type: 'GET',
+                    data: {
+                        organisation_id: organisationId,
+                    },
+                    success: function(response) {
+                        var secondaryDropdown = response;
+                        $('#secondary_dropdown').empty();
+                        $('#secondary_dropdown').html(
+                            '<option value="">Select Secondary</option>');
+                        $.each(secondaryDropdown, function(index, item) {
+                            $('#secondary_dropdown').append('<option value="' + item
+                                .id + '">' + item.name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
             });
-        });
-
-        $('#section').change(function() {
-            var sectionId = $(this).val();
-            var departmentId = $('#department').val();
-            $.ajax({
-                url: "{{ url('select-user-for-file-share') }}",
-                type: 'GET',
-                data: {
-                    section_id: sectionId,
-                    department_id: departmentId
-                },
-                success: function(response) {
-                    var users = response;
-                    $('#user').empty();
-                    $('#user').html('<option value="">Select User</option>');
-                    $.each(users, function(index, user) {
-                        $('#user').append('<option value="' + user.id + '">' + user
-                            .name + '</option>');
-                    });
-                },
-                error: function(xhr, status, error) {
-                    console.error(error);
-                }
+            $('#secondary_dropdown').change(function() {
+                var secondaryId = $(this).val();
+                var organisationId = $('#organisation').val();
+                $.ajax({
+                    url: "{{ url('select-user-for-file-share') }}",
+                    type: 'GET',
+                    data: {
+                        secondary_id: secondaryId,
+                        organisation_id: organisationId
+                    },
+                    success: function(response) {
+                        var users = response;
+                        $('#contactInput').empty();
+                        $('#contactInput').html('<option value="">Select User</option>');
+                        $.each(users, function(index, user) {
+                            $('#contactInput').append('<option value="' + user.id +
+                                '">' + user.name + '</option>');
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(error);
+                    }
+                });
+            });
+            // Character count for remarks
+            const textarea = document.getElementById('remarkTextarea');
+            const charCount = document.getElementById('charCount');
+            const maxChars = 1000;
+            textarea.addEventListener('input', function() {
+                const remaining = maxChars - textarea.value.length;
+                charCount.textContent = remaining;
             });
         });
-    });
-</script>
+    </script>
+    <style>
+        .card {
+            margin-top: 2%;
+        }
 
+        .card-footer {
+            margin-top: 1%;
+            height: 8vh;
+        }
+
+        .select2-container .select2-selection--single {
+            height: 38px;
+            padding: 6px 12px;
+        }
+
+        .select2-container--default .select2-selection--multiple {
+            min-height: 38px;
+            padding: 6px 12px;
+        }
+
+        .form-check {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .form-check-input {
+            margin-right: 10px;
+        }
+
+        .form-check-label {
+            font-weight: bold;
+        }
+    </style>
 @endsection

@@ -279,7 +279,6 @@
 
                 <ul class="dropdown-menu" style="left:6px !important;">
                     <li>
-
                         <a class="dropdown-item text-white" href="{{ route('receipt.index') }}">
                             Created
                         </a>
