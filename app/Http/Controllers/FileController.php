@@ -172,7 +172,7 @@ class FileController extends Controller
     public function file_notes(CorrespondenceDataTable $dataTable, $id)
     {
         $file = File::findOrFail($id);
-        
+
         // Get IDs of receipts that are already attached to this file
         $attachedReceiptIds = Correspondence::where('file_id', $id)
             ->whereNotNull('receipt_id')
@@ -181,7 +181,7 @@ class FileController extends Controller
 
         // Get only the receipts that are not already attached to this file
         $availableReceipts = Receipt::whereNotIn('id', $attachedReceiptIds)->get();
-        
+
         $gnotes = Notes::where('file_id', $id)->orderBy('id', 'DESC')->first();
         $ynotes = Yellownotes::where('file_id', $id)->orderBy('id', 'DESC')->first();
         $greennote = Notes::where('file_id', $id)->get();
@@ -195,19 +195,27 @@ class FileController extends Controller
 
         if ($file || $file_share) {
             if (\Auth::user()->hasRole('admin')) {
-                return $dataTable->with('file_id', $id)->render('file.notes', 
-                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render(
+                    'file.notes',
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes')
+                );
             } else {
-                return $dataTable->with('file_id', $id)->render('file.user.notes', 
-                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render(
+                    'file.user.notes',
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes')
+                );
             }
         } else {
             if (\Auth::user()->hasRole('admin')) {
-                return $dataTable->with('file_id', $id)->render('file.notes', 
-                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render(
+                    'file.notes',
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes')
+                );
             } else {
-                return $dataTable->with('file_id', $id)->render('file.user.notes', 
-                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes'));
+                return $dataTable->with('file_id', $id)->render(
+                    'file.user.notes',
+                    compact('url', 'file_share', 'id', 'file', 'availableReceipts', 'gnotes', 'ynotes', 'greennote', 'correspondence', 'document', 'template', 'categories', 'notes')
+                );
             }
         }
     }
@@ -228,7 +236,7 @@ class FileController extends Controller
         $file_share =  Fileshare::where('file_id', $id)->latest()->first();
         $file_read_status = Fileshare::where('id', $file_share_id)
             ->where('file_id', $id)
-            
+
             ->where('recever_id', Auth::id())
             ->latest('id')
             ->first();
@@ -659,12 +667,12 @@ class FileController extends Controller
     }
 
     public function bulkDelete(Request $request)
-{
-    $ids = $request->input('ids', []);
-    if (!empty($ids)) {
-        \App\Models\Correspondence::whereIn('id', $ids)->delete();
-        return response()->json(['success' => true]);
+    {
+        $ids = $request->input('ids', []);
+        if (!empty($ids)) {
+            \App\Models\Correspondence::whereIn('id', $ids)->delete();
+            return response()->json(['success' => true]);
+        }
+        return response()->json(['success' => false, 'message' => 'No IDs provided'], 400);
     }
-    return response()->json(['success' => false, 'message' => 'No IDs provided'], 400);
-}
 }
