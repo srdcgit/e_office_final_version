@@ -22,14 +22,26 @@ class CorrespondenceMovementDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->addIndexColumn()
             ->editColumn('correspondence_ids', function ($movement) {
-                return is_array($movement->correspondence_ids) ? implode(', ', $movement->correspondence_ids) : $movement->correspondence_ids;
+                if (is_array($movement->correspondence_ids)) {
+                    return collect($movement->correspondence_ids)->map(function($id) {
+                        return '<span class="correspondence-id text-primary" style="cursor:pointer; text-decoration:underline;" data-id="' . $id . '">' . $id . '</span>';
+                    })->implode(', ');
+                } else {
+                    return '<span class="correspondence-id text-primary" style="cursor:pointer; text-decoration:underline;" data-id="' . $movement->correspondence_ids . '">' . $movement->correspondence_ids . '</span>';
+                }
             })
             ->editColumn('user.name', function ($movement) {
-                return $movement->user->name ?? 'N/A';
+                if ($movement->user) {
+                    // return '<a href="javascript:void(0);" class="show-user-detail" data-user-id="' . $movement->user->id . '">' . e($movement->user->name) . '</a>';
+
+                    return '<p class="receiver text-primary" style="cursor: pointer; text-decoration: underline;" data-id="' . $movement->user->id . '">' . $movement->user->name . '</p>';
+                }
+                return 'N/A';
             })
             ->editColumn('created_at', function ($movement) {
                 return $movement->created_at ? $movement->created_at->format('d-m-Y H:i:s') : '';
-            });
+            })
+            ->rawColumns(['user.name', 'correspondence_ids']); // Add this to allow HTML in this column
     }
 
     /**
@@ -62,6 +74,7 @@ class CorrespondenceMovementDataTable extends DataTable
      * Get the dataTable columns definition.
      *
      * @return array
+     * 
      */
     public function getColumns(): array
     {
@@ -69,7 +82,7 @@ class CorrespondenceMovementDataTable extends DataTable
             Column::make('DT_RowIndex')->title('Sl. No')->searchable(false)->orderable(false),
             Column::make('correspondence_ids')->title('Correspondence IDs'),
             Column::make('remark')->title('Remark'),
-            Column::make('user.name')->title('Moved By'),
+            Column::make('user.name')->title('Moved/Detached By'),
             Column::make('created_at')->title('Moved At'),
         ];
     }

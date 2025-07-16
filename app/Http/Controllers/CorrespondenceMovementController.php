@@ -6,6 +6,8 @@ use App\Models\CorrespondenceMovement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\DataTables\CorrespondenceMovementDataTable;
+use App\Models\User;
+use Illuminate\Support\Facades\Log;
 
 class CorrespondenceMovementController extends Controller
 {
@@ -102,5 +104,31 @@ class CorrespondenceMovementController extends Controller
     public function destroy($id)
     {
         //
+    }
+
+   
+
+    
+
+    public function showModalSent($id)
+    {
+        $user = User::find($id);
+
+        if (!$user) {
+            return "<p class='text-danger'>User not found....</p>";
+        }
+
+        return view('file.user.usermodal', compact('user'));
+    }
+
+    public function showCorrespondenceDetail($id)
+    {
+        $correspondence = \App\Models\Correspondence::with(['receipt', 'document', 'file', 'notes', 'creator'])->find($id);
+
+        if (!$correspondence) {
+            return "<p class='text-danger'>Correspondence not found.</p>";
+        }
+
+        return view('file.user.correspondencemodal', compact('correspondence'));
     }
 }

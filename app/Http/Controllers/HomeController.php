@@ -69,6 +69,7 @@ class HomeController extends Controller
             die;
         } else {
             $user = User::count();
+            
             $modual = Modual::count();
             $role = Role::count();
             $user_details = Auth::user();
