@@ -438,7 +438,7 @@ class FileController extends Controller
             'department_id' => $request->input('department_id'),
             'section_id' => $request->input('section_id'),
             'sender_id' => $userId,
-            'notifyby' => $request->input('notify'),
+            'notifyby' => is_array($request->input('notify')) ? implode(',', $request->input('notify')) : $request->input('notify'),
             'share_file_status' => $request->input('status'),
             'remarks' => $request->input('remarks'),
             'recever_id' => $request->input('user'),

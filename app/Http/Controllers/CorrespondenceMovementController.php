@@ -106,9 +106,9 @@ class CorrespondenceMovementController extends Controller
         //
     }
 
-   
 
-    
+
+
 
     public function showModalSent($id)
     {
@@ -123,8 +123,9 @@ class CorrespondenceMovementController extends Controller
 
     public function showCorrespondenceDetail($id)
     {
-        $correspondence = \App\Models\Correspondence::with(['receipt', 'document', 'file', 'notes', 'creator'])->find($id);
+        // dd($id);
 
+        $correspondence = \App\Models\CorrespondenceMovement::with(['fileNotes', 'user'])->find($id);
         if (!$correspondence) {
             return "<p class='text-danger'>Correspondence not found.</p>";
         }

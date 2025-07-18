@@ -33,14 +33,14 @@
                                     <div class="form-group">
                                         <label class="form-label">Department Name</label>
                                         <input type="text" class="form-control"
-                                            value="{{ $viewfile->department->name }}" disabled>
+                                            value="{{ $viewfile->department->name ?? 'null' }}" disabled>
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <label class="form-label">Section Name</label>
                                         <input type="text" class="form-control"
-                                            value="{{ $viewfile->section->name }}" disabled>
+                                            value="{{ $viewfile->section->name ?? 'null' }}" disabled>
                                     </div>
                                 </div>
 

@@ -25,10 +25,12 @@
             <div class="col-md-7">
                 <div class="card p-3 mb-3">
                     @csrf
+                    <input type="hidden" name="file_id" value="{{ $file->id ?? '' }}">
+                    <input type="hidden" name="notes_id" value="{{ $notes->id ?? '' }}">
                     <div class="row mb-3">
                         <div class="col-md-6">
                             <label class="form-label"><b>Organisation</b></label>
-                            <select class="form-select" name="organisation" id="organisation">
+                            <select class="form-select" name="department_id" id="organisation">
                                 <option selected>Choose One</option>
                                 @if (isset($organisations))
                                     @foreach ($organisations as $org)
@@ -39,7 +41,7 @@
                         </div>
                         <div class="col-md-6">
                             <label class="form-label"><b>Secondary Dropdown</b></label>
-                            <select class="form-select" name="secondary_dropdown" id="secondary_dropdown">
+                            <select class="form-select" name="section_id" id="secondary_dropdown">
                                 <option selected>Choose One</option>
                                 <!-- Populate as needed -->
                             </select>
@@ -126,16 +128,17 @@
                     </div>
                     <div class="mb-3">
                         <label class="form-label"><b>Remarks</b></label>
-                        <textarea class="form-control" name="remark" id="remarkTextarea" rows="2" maxlength="1000"
+                        <textarea class="form-control" name="remarks" id="remarkTextarea" rows="2" maxlength="1000"
                             placeholder="Add your remarks here..."></textarea>
                         <p class="mb-0">Total 1000 | <span id="charCount">1000</span> Character left</p>
                     </div>
-                    <div class="row mb-3">
-                        <div class="col-md-6">
+
+                    <div class="row">
+                        <div class="col">
                             <label class="form-label"><b>Set Due Date</b></label>
                             <input type="date" name="duedate" class="form-control" style="cursor: pointer;">
                         </div>
-                        <div class="col-md-6">
+                        <div class="col">
                             <label class="form-label"><b>Action</b></label>
                             <select class="form-select" name="action" style="cursor: pointer;">
                                 <option selected>Choose One</option>
@@ -146,6 +149,15 @@
                                 <option value="Please Discuss">Please Discuss</option>
                                 <option value="Please Examine">Please Examine</option>
                                 <option value="Please Examine Putup">Please Examine Putup</option>
+                            </select>
+                        </div>
+                        <div class="col">
+                            <label class="form-label"><b>Priority</b></label>
+                            <select class="form-select" name="priority" required>
+                                <option value="">Select Priority</option>
+                                <option value="Low">Low</option>
+                                <option value="Medium">Medium</option>
+                                <option value="High">High</option>
                             </select>
                         </div>
                     </div>
