@@ -366,7 +366,7 @@ $settings = Utility::settings();
                         <span class="dash-mtext custom-weight">{{ __('Ministry') }}</span>
                     </a>
                 </li>
-                <li class="dash-item dash-hasmenu {{ request()->is('ministry*') ? 'active' : '' }}">
+                <li class="dash-item dash-hasmenu {{ request()->is('notice*') ? 'active' : '' }}">
                     <a class="dash-link" href="{{ route('notice.index') }}">
                         <span class="dash-micon"><i class="ti ti-target"></i></span>
                         <span class="dash-mtext custom-weight">{{ __('Notice') }}</span>

@@ -47,10 +47,18 @@ class TemplateDataTable extends DataTable
                                 ",
 
                 'buttons' => [
-                    ['extend' => 'create', 'className' => 'btn btn-primary btn-sm no-corner'],
-                    ['extend' => 'export', 'className' => 'btn btn-primary btn-sm no-corner'],
-                    ['extend' => 'reset', 'className' => 'btn btn-primary btn-sm no-corner'],
-                    ['extend' => 'reload', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    // ['extend' => 'create', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    // ['extend' => 'export', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    // ['extend' => 'reset', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    // ['extend' => 'reload', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    // ['extend' => 'pageLength', 'className' => 'btn btn-primary btn-sm no-corner'],
+
+                    ['extend' => 'copy', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    ['extend' => 'csv', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    ['extend' => 'excel', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    ['extend' => 'pdf', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    ['extend' => 'print', 'className' => 'btn btn-primary btn-sm no-corner'],
+                    ['extend' => 'colvis', 'className' => 'btn btn-primary btn-sm no-corner'],
                     ['extend' => 'pageLength', 'className' => 'btn btn-primary btn-sm no-corner'],
                 ],
 
