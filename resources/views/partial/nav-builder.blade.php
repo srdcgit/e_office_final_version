@@ -347,7 +347,7 @@ $settings = Utility::settings();
                         <span class="dash-micon"><i class=" ti ti-target"></i></span>
                         <span class="dash-mtext custom-weight">{{ __('SenderType') }}</span>
                     </a>
-                </li>
+                </li> 
                 <li class="dash-item dash-hasmenu {{ request()->is('communication*') ? 'active' : '' }}">
                     <a class="dash-link" href="{{ route('communication.index') }}">
                         <span class="dash-micon"><i class="ti ti-target"></i></span>
@@ -371,7 +371,7 @@ $settings = Utility::settings();
                         <span class="dash-micon"><i class="ti ti-target"></i></span>
                         <span class="dash-mtext custom-weight">{{ __('Notice') }}</span>
                     </a>
-                </li>
+                </li> 
                 @endrole
                 <!-- @can('manage-langauge')
     <li class="dash-item dash-hasmenu {{ request()->is('index') ? 'active' : '' }}">

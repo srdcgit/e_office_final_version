@@ -180,7 +180,8 @@ class FileController extends Controller
             ->toArray();
 
         // Get only the receipts that are not already attached to this file
-        $availableReceipts = Receipt::whereNotIn('id', $attachedReceiptIds)->get();
+        $authId = Auth::id();
+        $availableReceipts = Receipt::where('createdBy', $authId)->whereNotIn('id', $attachedReceiptIds)->get();
 
         $gnotes = Notes::where('file_id', $id)->orderBy('id', 'DESC')->first();
         $ynotes = Yellownotes::where('file_id', $id)->orderBy('id', 'DESC')->first();
