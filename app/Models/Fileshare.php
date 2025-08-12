@@ -8,7 +8,36 @@ use Illuminate\Database\Eloquent\Model;
 class Fileshare extends Model
 {
     use HasFactory;
-    protected $fillable = ['file_id', 'gnotes_id', 'department_id', 'section_id', 'sender_id', 'notifyby', 'share_file_status', 'remarks', 'recever_id', 'duedate', 'actiontype', 'priority', 'comments', 'status', 'read_status','createdBy', 'created_at', 'updated_at'];
+    protected $fillable = [
+        'file_id',
+        'gnotes_id',
+        'department_id',
+        'section_id',
+        'sender_id',
+        'notifyby',
+        'share_file_status',
+        'remarks',
+        'recever_id',
+        'duedate',
+        'actiontype',
+        'priority',
+        'comments',
+        'status',
+        'read_status',
+        'is_read',
+        'read_at',
+        'is_pulled_back',
+        'pull_back_remark',
+        'createdBy',
+        'created_at',
+        'updated_at'
+    ];
+
+    protected $casts = [
+        'read_at' => 'datetime',
+        'is_read' => 'boolean',
+        'is_pulled_back' => 'boolean',
+    ];
 
     // public function fileshare()
     // {

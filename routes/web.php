@@ -123,6 +123,7 @@ Route::get('file_greennotes', [FileController::class, 'greennotes'])->name('file
 Route::get('file_yellownotes', [FileController::class, 'yellownotes'])->name('file.yellownontes');
 Route::get('fileshare/{id}', [FileController::class, 'fileshare'])->name('file.share');
 Route::post('storeshare-file', [FileController::class, 'store_file_share'])->name('storefile.share');
+Route::post('fileshares/pullback/{id}', [FileController::class, 'pullBack'])->name('fileshares.pullback');
 Route::get('discard-notes/{id}', [FileController::class, 'discardnote'])->name('discard.notes');
 Route::post('correspondance', [FileController::class, 'store_correspondance'])->name('correspondance.store');
 Route::get('file-notes/{id}', [FileController::class, 'file_notes'])->name('file.notes');

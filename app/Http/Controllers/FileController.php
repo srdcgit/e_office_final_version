@@ -35,6 +35,7 @@ class FileController extends Controller
             ->orderBy('id', 'DESC')
             ->get();
         $url = 'file';
+        // @phpstan-ignore-next-line
         if (\Auth::user()->hasRole('admin')) {
             return $table->render('file.index');
         } else {
@@ -49,6 +50,7 @@ class FileController extends Controller
         $department = Department::all();
         $file = File::all();
         $url = 'file';
+        // @phpstan-ignore-next-line
         if (\Auth::user()->hasRole('admin')) {
             return view('file.create', compact('file', 'categories', 'department'));
         } else {
@@ -195,6 +197,7 @@ class FileController extends Controller
         $url = 'file';
 
         if ($file || $file_share) {
+            // @phpstan-ignore-next-line
             if (\Auth::user()->hasRole('admin')) {
                 return $dataTable->with('file_id', $id)->render(
                     'file.notes',
@@ -207,6 +210,7 @@ class FileController extends Controller
                 );
             }
         } else {
+            // @phpstan-ignore-next-line
             if (\Auth::user()->hasRole('admin')) {
                 return $dataTable->with('file_id', $id)->render(
                     'file.notes',
@@ -237,12 +241,18 @@ class FileController extends Controller
         $file_share =  Fileshare::where('file_id', $id)->latest()->first();
         $file_read_status = Fileshare::where('id', $file_share_id)
             ->where('file_id', $id)
-
             ->where('recever_id', Auth::id())
+            ->where(function($q){
+                $q->where('is_pulled_back', false)->orWhereNull('is_pulled_back');
+            })
             ->latest('id')
             ->first();
         if ($file_read_status) {
+            // legacy flag
             $file_read_status->read_status = 1;
+            // new flags
+            $file_read_status->is_read = true;
+            $file_read_status->read_at = now();
             $file_read_status->save();
         }
         // dd($file_share);
@@ -271,14 +281,39 @@ class FileController extends Controller
         $file_read_status = Fileshare::where('id', $file_share_id)
             ->where('file_id', $id)
             ->where('recever_id', Auth::id())
+            ->where(function($q){
+                $q->where('is_pulled_back', false)->orWhereNull('is_pulled_back');
+            })
             ->latest('id')
             ->first();
-        // dd($file_read_status);
         if ($file_read_status) {
+            // legacy flag
             $file_read_status->read_status = 1;
+            // new flags
+            $file_read_status->is_read = true;
+            $file_read_status->read_at = now();
             $file_read_status->save();
         }
         return view('file.shareviewfile', compact('url', 'check_revert', 'file_share', 'categories', 'gnotes', 'revert_file', 'viewfile', 'notes', 'correspondence', 'approvedNote', 'file', 'department'));
+    }
+
+    public function pullBack(Request $request, $id)
+    {
+        $share = Fileshare::findOrFail($id);
+
+        if ($share->sender_id != auth()->id()) {
+            return response()->json(['message' => 'Unauthorized.'], 403);
+        }
+
+        if ($share->is_read) {
+            return response()->json(['message' => 'Cannot pull back. Receiver has already read the file.'], 400);
+        }
+
+        $share->is_pulled_back = true;
+        $share->pull_back_remark = $request->input('reason');
+        $share->save();
+
+        return response()->json(['message' => 'File pulled back successfully.']);
     }
 
     // public function store_notes(Request $request)
@@ -602,6 +637,7 @@ class FileController extends Controller
                 return $item;
             });
         $url = 'file';
+        // @phpstan-ignore-next-line
         if (\Auth::user()->hasRole('admin')) {
             return $table->render('file.sentfile');
         } else {
@@ -631,6 +667,7 @@ class FileController extends Controller
         $files = Fileshare::whereIn('id', $subQuery)
             ->latest()->get();
 
+        // @phpstan-ignore-next-line
         if (\Auth::user()->hasRole('admin')) {
             return $table->render('file.inbox', compact('url', 'files'));
         } else {

@@ -29,7 +29,24 @@ class FileDataTable extends DataTable
         if (\Auth::user()->hasRole('admin')) {
             return $model->newQuery()->orderBy('id', 'DESC');
         } else {
-            return $model->newQuery()->where('createdBy', Auth::user()->id)->orderBy('id', 'DESC');
+            // Hide files that are currently shared and not pulled back (similar to receipts index behavior)
+            return $model->newQuery()
+                ->where('createdBy', Auth::user()->id)
+                ->where(function ($q) {
+                    $q->whereNotIn('id', function ($sub) {
+                        $sub->select('file_id')
+                            ->from('fileshares')
+                            ->where('sender_id', Auth::id());
+                    })
+                    ->orWhereIn('id', function ($sub) {
+                        $sub->select('file_id')
+                            ->from('fileshares as fs')
+                            ->where('sender_id', Auth::id())
+                            ->whereRaw('created_at = (SELECT MAX(created_at) FROM fileshares fs2 WHERE fs2.file_id = fs.file_id)')
+                            ->where('is_pulled_back', true);
+                    });
+                })
+                ->orderBy('id', 'DESC');
         }
         
     }

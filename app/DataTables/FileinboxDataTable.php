@@ -24,7 +24,7 @@ class FileinboxDataTable extends DataTable
             })
             ->editColumn('file_id', function (Fileshare $share) {
                 $url = '';
-                if ($share->status == 0 || $share->status == 2) {
+                if (($share->status == 0 || $share->status == 2)) {
                     $url = route('file.view', ['id' => $share->file_id, 'file_share_id' => $share->id]);
                     // return '<a href="' . $url . '">' . $share->files->file_name . '</a>';
                 } elseif ($share->status == 1  || $share->status == 3) {
@@ -85,10 +85,16 @@ class FileinboxDataTable extends DataTable
         $subQuery = $model->newQuery()
             ->selectRaw('MAX(id) as id')
             ->where('recever_id', Auth::user()->id)
+            ->where(function($q){
+                $q->where('is_pulled_back', false)->orWhereNull('is_pulled_back');
+            })
             ->groupBy('file_id');
 
         return $model->newQuery()
             ->whereIn('id', $subQuery)
+            ->where(function($q){
+                $q->where('is_pulled_back', false)->orWhereNull('is_pulled_back');
+            })
             ->latest();
     }
 

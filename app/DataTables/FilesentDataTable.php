@@ -32,12 +32,26 @@ class FilesentDataTable extends DataTable
                 Log::info($fileshare->created_at);
                 return date('d-m-Y H:i A', strtotime($fileshare->created_at));
             })
-            ->rawColumns(['file_id']);
+            ->addColumn('action', function (Fileshare $fileshare) {
+                if ($fileshare->is_read) {
+                    return '<span class="text-muted"><i class="fas fa-lock"></i> Viewed</span>';
+                }
+                if ($fileshare->is_pulled_back) {
+                    return '<span class="badge bg-secondary">Pulled Back</span>';
+                }
+                return '<button class="btn btn-sm btn-danger pullback-btn" data-id="' . $fileshare->id . '"><i class="fas fa-undo-alt"></i> Pull Back</button>';
+            })
+            ->rawColumns(['file_id', 'action']);
     }
 
     public function query(Fileshare $model)
     {
-        return $model->newQuery()->where('sender_id', Auth::user()->id)->orderBy('id', 'DESC');
+        return $model->newQuery()
+            ->where('sender_id', Auth::user()->id)
+            ->where(function($q){
+                $q->where('is_pulled_back', false)->orWhereNull('is_pulled_back');
+            })
+            ->orderBy('id', 'DESC');
     }
 
     public function html()
@@ -62,6 +76,7 @@ class FilesentDataTable extends DataTable
             Column::make('section_id')->title('Section'),
             Column::make('duedate'),
             Column::make('priority'),
+            Column::computed('action')->exportable(false)->printable(false)->addClass('text-center')->title('Actions'),
         ];
     }
     protected function filename()
