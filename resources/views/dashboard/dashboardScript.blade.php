@@ -148,11 +148,12 @@
                                             <tbody>
                                         `;
                     if (response.data != null) {
+                        let rowNumber = 1;
                         for (const index of response.data) {
                             let url = `{{ url('file-notes') }}/1`;
 
                             fileInboxHTML += ` <tr>
-                                                    <td>${index.id}</td>
+                                                    <td>${rowNumber++}</td>
                                                     <td>${index.files.file_name}</td>
                                                     <td>${index.send_date}</td>
                                                     <td>${index.duedate}</td>
@@ -187,11 +188,12 @@
                                             </thead>
                                             <tbody>`;
                     if (response.data != null) {
+                        let rowNumber = 1;
                         for (const index of response.data) {
                             let url = `{{ url('file-notes') }}/1`;
 
                             receiptInboxHTML += ` <tr>
-                                                <td>${index.id}</td>
+                                                <td>${rowNumber++}</td>
                                                     <td>${index.receipts.subject}</td>
                                                     <td>${index.receipts.receipt_file}</td>
                                                     <td>${index.receipts.dairy_date}</td>
@@ -229,11 +231,12 @@
                                             <tbody>
                                         `;
                     if (response.data != null) {
+                        let rowNumber = 1;
                         for (const index of response.data) {
                             var notice_documents = index.notice_documents;
                             if (notice_documents.length > 0 && index.file_type != 0) {
                                 noticeHTML += ` <tr>
-                                                    <td>${index.id}</td>
+                                                    <td>${rowNumber++}</td>
                                                     <td>${index.title}</td>
                                                     <td><a class="file_description" href="public/${index.file_path}" target="_blank"">${index.description}</a></td>
                                                     <td>${index.date}</td>
@@ -242,7 +245,7 @@
                                 noticeHTML += `</tbody>`;
                             } else {
                                 noticeHTML += ` <tr>
-                                                    <td>${index.id}</td>
+                                                    <td>${rowNumber++}</td>
                                                     <td>${index.title}</td>
                                                     <td><a class="file_description notice_description" data-id="${index.id}" data-toggle="modal" data-target="#noticeViewModal" href="#">${index.description}</a></td>
                                                     <td>${index.date}</td>
@@ -275,11 +278,12 @@
                                             </thead>
                                             <tbody>`;
                     if (response.data != null) {
+                        let rowNumber = 1;
                         for (const index of response.data) {
                             let url = `{{ url('file-notes') }}/1`;
 
                             documentInboxHTML += ` <tr>
-                                                <td>${index.id}</td>
+                                                <td>${rowNumber++}</td>
                                                     <td>${index.document_name}</td>
                                                     <td>${index.username}</td>
                                                     <td>${index.description}</td>
@@ -315,11 +319,12 @@
                                             <tbody>
                                         `;
                 if (response.data != null) {
+                    let rowNumber = 1;
                     for (const index of response.data) {
                         let url = `{{ url('file-notes') }}/1`;
 
                         notesInboxHTML += ` <tr>
-                                                    <td>${index.id}</td>
+                                                    <td>${rowNumber++}</td>
                                                     <td>${index.title}</td>
                                                     <td>${index.description}</td>
                                                 </tr>`;
@@ -348,7 +353,7 @@
         // if (myeFileButton.className == 'active') {
         console.log(myeFileButton.className);
         $.ajax({
-            url: "{{url('get-todo-details')}}",
+            url: "{{url('get-todo-history')}}",
             type: "GET",
             success: function(response) {
                 console.log(response.data);
@@ -365,9 +370,10 @@
                                             <tbody>
                                         `;
                 if (response.data != null) {
+                    let rowNumber = 1;
                     for (const index of response.data) {
                         todoDetailsHTML += ` <tr>
-                                                <td>${index.id}</td>
+                                                <td>${rowNumber++}</td>
                                                 <td>${index.title}</td>
                                                 <td>${index.date}</td>
                                                 <td>${index.description}</td>   
@@ -511,7 +517,7 @@
                         // Append the new content for each item
                         document_details.innerHTML += fileInboxHTML;
                     }
-
+   
                 } else {
                     var fileInboxHTML =
                         `<div class="file_card">
@@ -582,7 +588,7 @@
         })
     }
 
-    function getTodo() {
+    function getTodo() { 
         var fileDetailsElement = document.getElementById('todo_details');
         fileDetailsElement.innerHTML = '';
 
@@ -591,7 +597,7 @@
             type: "GET",
             success: function(response) {
                 var todos = response.data;
-                if (todos != null) {
+                if (todos != null) { 
                     for (const index of todos) {
                         var fileInboxHTML =
                             `<li style="display: flex; justify-content: space-between; align-items: center; position: relative; padding-left: 20px;">

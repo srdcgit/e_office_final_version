@@ -2,20 +2,20 @@
 @section('file_title', __('Create Physical Receipt'))
 @section('file_content')
 <!-- @section('breadcrumb')
-    <ul class="breadcrumb">
-        <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Dashboard') }}</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('receipt.index') }}">{{ __('Receipt') }}</a></li>
-        <li class="breadcrumb-item">{{ __('Create') }}</li>
-    </ul>
-    <style>
-        #pdf-viewer,
-        #doc-viewer {
-            width: 100%;
-            height: 500px;
-            border: 1px solid #ccc;
-            margin-top: 10px;
-        }
-    </style>
+        <ul class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('home') }}">{{ __('Dashboard') }}</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('receipt.index') }}">{{ __('Receipt') }}</a></li>
+            <li class="breadcrumb-item">{{ __('Create') }}</li>
+        </ul>
+        <style>
+            #pdf-viewer,
+            #doc-viewer {
+                width: 100%;
+                height: 500px;
+                border: 1px solid #ccc;
+                margin-top: 10px;
+            }
+        </style>
 @endsection -->
 
 <div class="row" style="padding-left:5px">
@@ -40,27 +40,27 @@
                                     {{ Form::label('letter_ref_no', __('Letter Ref.no'), ['class' => 'form-label']) }}
                                     {{ Form::text('letter_ref_no', $letter_reference_no, ['class' => 'form-control', 'placeholder' => __('Referance.No'), 'readonly' => true]) }}
                                     @error('letter_ref_no')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('computer_number', __('Computer.no'), ['class' => 'form-label']) }}
                                     {{ Form::text('computer_number', $com_num, ['class' => 'form-control', 'placeholder' => __('Referance.No'), 'readonly' => true]) }}
                                     @error('computer_number')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('dairy_date', __('DairyDate'), ['class' => 'form-label']) }}
                                     {{ Form::date('dairy_date', date('Y-m-d'), ['class' => 'form-control', 'placeholder' => __('DairyDate'), 'readonly']) }}
                                     @error('dairy_date')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -69,12 +69,13 @@
                                     <select name="form_of_communication" id="communication" class="form-control">
                                         <option value="">Choose one</option>
                                         @foreach ($communication as $communications)
-                                        <option value="{{ $communications->id }}">{{ $communications->communication }}
-                                            @endforeach
+                                            <option value="{{ $communications->id }}">
+                                                {{ $communications->communication }}
+                                        @endforeach
 
                                     </select>
                                     @error('form_of_communication')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -86,7 +87,7 @@
                                         <option value="Hindi">Hindi</option>
                                     </select>
                                     @error('language')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -94,9 +95,9 @@
                                         class="text-danger">*</span>
                                     {{ Form::date('receved_date', null, ['class' => 'form-control', 'placeholder' => __('Received Date')]) }}
                                     @error('receved_date')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -104,9 +105,9 @@
                                         class="text-danger">*</span>
                                     {{ Form::date('letter_date', null, ['class' => 'form-control', 'placeholder' => __('Received Date')]) }}
                                     @error('letter_date')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -115,20 +116,20 @@
                                     <select name="delivery_mode" id="delivery_mode" class="form-control">
                                         <option value="">Select one</option>
                                         @foreach ($deliverymode as $deliverymodes)
-                                        <option value="{{ $deliverymodes->id }}">{{ $deliverymodes->mode }}
-                                            @endforeach
+                                            <option value="{{ $deliverymodes->id }}">{{ $deliverymodes->mode }}
+                                        @endforeach
                                     </select>
                                     @error('delivery_mode')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('mode_number', __('Mode Number'), ['class' => 'form-label']) }}
                                     {{ Form::text('mode_number', null, ['class' => 'form-control', 'placeholder' => __('Referance.No')]) }}
                                     @error('mode_number')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -137,11 +138,11 @@
                                     <select name="sender_type" id="sender_type" class="form-control">
                                         <option value="">Select one</option>
                                         @foreach ($sendertype as $sendertypes)
-                                        <option value="{{ $sendertypes->id }}">{{ $sendertypes->sendertype }}
-                                            @endforeach
+                                            <option value="{{ $sendertypes->id }}">{{ $sendertypes->sendertype }}
+                                        @endforeach
                                     </select>
                                     @error('sender_type')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -149,11 +150,11 @@
                                     <select name="vip" id="vip" class="form-control">
                                         <option value="">Select one</option>
                                         @foreach ($vip as $vips)
-                                        <option value="{{ $vips->id }}">{{ $vips->name }}
-                                            @endforeach
+                                            <option value="{{ $vips->id }}">{{ $vips->name }}
+                                        @endforeach
                                     </select>
                                     @error('vip')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                             </div>
@@ -167,20 +168,23 @@
                             <!-- checkbox div -->
                             <div class="form-check form-switch" style="margin-top: 0.4%;">
                                 <label class="form-check-label" for="flexSwitchCheckDefault">Save Contact</label>
-                                <input class="form-check-input" name="saveContact" type="checkbox" role="switch" id="flexSwitchCheckDefault">
+                                <input class="form-check-input" name="saveContact" type="checkbox" role="switch"
+                                    id="flexSwitchCheckDefault">
                             </div>
                             <div class="row g-3">
-                                <div class="col-md-4 " id="contactDropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="col-md-4 " id="contactDropdown" type="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
                                     {{ Form::label('name', __('Name:'), ['class' => 'form-label']) }}<span
                                         class="text-danger">*</span>
-                                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => __('Enter Name'),'autocomplete' => 'off','oninput' => 'get_contact_name()']) }}
+                                    {{ Form::text('name', null, ['class' => 'form-control', 'placeholder' => __('Enter Name'), 'autocomplete' => 'off', 'oninput' => 'get_contact_name()']) }}
                                     <!-- dropdown div -->
-                                    <div style="display: none;" class="dropdown-menu" id="autoComeplete-dropdown-menu" aria-labelledby="contactDropdown">
+                                    <div style="display: none;" class="dropdown-menu"
+                                        id="autoComeplete-dropdown-menu" aria-labelledby="contactDropdown">
                                     </div>
                                     @error('name')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -188,69 +192,71 @@
                                     <select name="ministry_department" id="ministry_department" class="form-control">
                                         <option value="">Select Department</option>
                                         @foreach ($ministry as $ministrys)
-                                        <option value="{{ $ministrys->id }}">
-                                            {{ $ministrys->ministryname }}
-                                            @endforeach
+                                            <option value="{{ $ministrys->id }}">
+                                                {{ $ministrys->ministryname }}
+                                        @endforeach
                                     </select>
                                     @error('department')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('designation', __('Designation:'), ['class' => 'form-label']) }}
                                     {{ Form::text('designation', null, ['class' => 'form-control', 'placeholder' => __('Enter Designation')]) }}
                                     @error('designation')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('organitation', __('Organization:'), ['class' => 'form-label']) }}
                                     {{ Form::text('organitation', null, ['class' => 'form-control', 'placeholder' => __('Enter organitation')]) }}
                                     @error('organitation')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('email', __('Email:'), ['class' => 'form-label']) }}
                                     {{ Form::email('email', null, ['class' => 'form-control', 'placeholder' => __('Enter Email')]) }}
                                     @error('email')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('address', __('Address:'), ['class' => 'form-label']) }}
                                     {{ Form::text('address', null, ['class' => 'form-control', 'placeholder' => __('Enter Address')]) }}
                                     @error('address')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('pin_code', __('Pin Code:'), ['class' => 'form-label']) }}
                                     {{ Form::text('pin_code', null, ['class' => 'form-control', 'placeholder' => __('Enter Pin')]) }}
                                     @error('pin_code')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
-                                <div class="col-md-4" id="phoneDropdown" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <div class="col-md-4" id="phoneDropdown" type="button" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="false">
                                     {{ Form::label('phone_number', __('Phone Number:'), ['class' => 'form-label']) }}
                                     {{ Form::text('phone_number', null, ['class' => 'form-control', 'placeholder' => __('Enter Phone no'), 'autocomplete' => 'off', 'oninput' => 'get_contact_phone()']) }}
                                     <!-- dropdown div -->
-                                    <div style="display: none;" class="dropdown-menu phone-dropdown" id="phone-autoComplete-dropdown-menu" aria-labelledby="phoneDropdown">
+                                    <div style="display: none;" class="dropdown-menu phone-dropdown"
+                                        id="phone-autoComplete-dropdown-menu" aria-labelledby="phoneDropdown">
                                     </div>
                                     @error('phone_number')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -258,11 +264,11 @@
                                     <select name="country" id="country" class="form-control">
                                         <option value="">Select Country</option>
                                         @foreach ($country as $countrys)
-                                        <option value="{{ $countrys->id }}">{{ $countrys->name }}
-                                            @endforeach
+                                            <option value="{{ $countrys->id }}">{{ $countrys->name }}
+                                        @endforeach
                                     </select>
                                     @error('country')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -270,20 +276,20 @@
                                     <select name="state" id="state" class="form-control">
                                         <option value="">Select State</option>
                                         @foreach ($state as $states)
-                                        <option value="{{ $states->id }}">{{ $states->name }}
-                                            @endforeach
+                                            <option value="{{ $states->id }}">{{ $states->name }}
+                                        @endforeach
                                     </select>
                                     @error('State')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('city', __('City:'), ['class' => 'form-label']) }}
                                     {{ Form::text('city', null, ['class' => 'form-control', 'placeholder' => __('Enter City')]) }}
                                     @error('city')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                             </div>
@@ -301,11 +307,11 @@
                                     <select name="category" id="category" class="form-control">
                                         <option value="">Category</option>
                                         @foreach ($category as $categorys)
-                                        <option value="{{ $categorys->id }}">{{ $categorys->name }}
-                                            @endforeach
+                                            <option value="{{ $categorys->id }}">{{ $categorys->name }}
+                                        @endforeach
                                     </select>
                                     @error('category')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -313,11 +319,11 @@
                                     <select name="subcategory" id="subcategory" class="form-control">
                                         <option value="">SubCategory</option>
                                         @foreach ($subcategory as $subcategorys)
-                                        <option value="{{ $subcategorys->id }}">{{ $subcategorys->name }}
-                                            @endforeach
+                                            <option value="{{ $subcategorys->id }}">{{ $subcategorys->name }}
+                                        @endforeach
                                     </select>
                                     @error('subcategory')
-                                    <span class="text-danger">{{ $message }}</span>
+                                        <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
@@ -325,23 +331,23 @@
                                         class="text-danger">*</span>
                                     {{ Form::text('subject', null, ['class' => 'form-control', 'placeholder' => __('Enter Subject')]) }}
                                     @error('subject')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="col-md-4">
                                     {{ Form::label('remarks', __('Remarks'), ['class' => 'form-label']) }}
                                     {{ Form::text('remarks', null, ['class' => 'form-control', 'placeholder' => __('Enter Remarks')]) }}
                                     @error('remarks')
-                                    <span class="invalid-name" role="alert">
-                                        <strong class="text-danger">{{ $message }}</strong>
-                                    </span>
+                                        <span class="invalid-name" role="alert">
+                                            <strong class="text-danger">{{ $message }}</strong>
+                                        </span>
                                     @enderror
                                 </div>
                                 <div class="card-footer">
                                     <div class="float-end" style="height: 5vh;">
-                                        <a href="{{ route('receipt.index') }}"
+                                        {{-- <a href="{{ route('receipt.index') }}"
                                             class="btn btn-secondary mb-3">{{ __('Cancel') }}</a>
                                         <a href="{{ route('receipt.index') }}"
                                             class="btn btn-secondary mb-3">{{ __('Attach') }}</a>
@@ -350,7 +356,16 @@
                                         <a href="{{ route('receipt.index') }}"
                                             class="btn btn-secondary mb-3">{{ __('Convert') }}</a>
                                         <button type="submit"
-                                            class="btn btn-primary mb-3">{{ __('Save') }}</button>
+                                            class="btn btn-primary mb-3">{{ __('Save') }}</button> --}}
+
+                                        <div class="float-end" style="height: 5 vh;">
+                                            <a href="{{ route('receipt.index') }}"
+                                                class="btn btn-secondary mb-3">{{ __('Cancel') }}</a>
+                                            <button type="submit" name="action" value="generate"
+                                                class="btn btn-primary mb-3">{{ __('Gernerate') }}</button>
+                                            <button type="submit" name="action" value="generate&send"
+                                                class="btn btn-primary mb-3">{{ __('Generate & Send') }}</button>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

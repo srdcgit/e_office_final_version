@@ -60,6 +60,8 @@
 
     <a href="{{ route('receipt.edit', $receipt->id) }}"><button class="btn btnn  btn-sm shadow-sm">Edit</button></a>
 
+    <a href="{{ route('receeipt.convert', ['id' => encrypt($receipt->id)]) }}"><button class="btn btnn  btn-sm shadow-sm">Convert to Digital</button></a>
+
 
     <!-- Attach Dropdown -->
     <div class="dropdown">
@@ -84,11 +86,11 @@
             <li><a class="dropdown-item" href="#">View Drafts</a></li>
         </ul>
     </div>
-    <a href="{{ route('home') }}">
-        <button class="btn btnn  btn-sm shadow-sm">Close</button>
-    </a>
     <a href="">
         <button class="btn btnn  btn-sm shadow-sm">Generate Acknowledgement</button>
+    </a>
+    <a href="{{ route('receipt.index') }}">
+        <button class="btn btnn  btn-sm shadow-sm">Close</button>
     </a>
 
     <!-- Print Icon -->
@@ -385,7 +387,7 @@
                                         </span>
                                     @enderror
                                 </div>
-                                <div class="card-footer">
+                                {{-- <div class="card-footer">
                                     <div class="float-end" style="height: 5vh;">
                                         <a href="{{ route('receipt.index') }}"
                                             class="btn btn-secondary mb-3">{{ __('Cancel') }}</a>
@@ -398,7 +400,7 @@
                                         <button type="submit"
                                             class="btn btn-primary mb-3">{{ __('Save') }}</button>
                                     </div>
-                                </div>
+                                </div> --}}
                             </div>
                         </div>
                     </div>

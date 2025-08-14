@@ -93,6 +93,7 @@ Route::post('update-personal-notes', [PersonalNotesController::class, 'update_pn
 
 //dashboard routes for todo
 Route::get('get-todo-details', [TODOListController::class, 'get_todo']);
+Route::get('get-todo-history', [TODOListController::class, 'get_todo_history']);
 Route::get('get-todo-details/{id}', [TODOListController::class, 'get_todo_details_by_id']);
 Route::post('delete-todo-details', [TODOListController::class, 'delete_todo']);
 Route::post('done-todo', [TODOListController::class, 'change_status']);

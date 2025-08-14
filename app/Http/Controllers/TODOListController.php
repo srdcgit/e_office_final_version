@@ -7,6 +7,7 @@ use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
+use Carbon\Carbon;
 
 class TODOListController extends Controller
 {
@@ -40,7 +41,36 @@ class TODOListController extends Controller
 
     public function get_todo()
     {
-        $todo_data = TODOList::where('status', 0)->take(4)->orderBy('id', 'DESC')->get()->map(function ($item) {
+        $user_id = Auth::user()->id;
+        $todo_data = TODOList::where('status', 0)
+            ->whereDate('date', Carbon::today()->toDateString())
+            ->orderBy('id', 'DESC')
+            ->where('user_id', $user_id)
+            ->get()->map(function ($item) {
+            $dateInput = $item->date; // Original date in 'Y-m-d H:i' format
+            $dateTime = new DateTime($dateInput);
+
+            // Format the date as 'dS M Y h:iA'
+            $formattedDate = $dateTime->format('jS M Y h:i A');
+
+            // Convert the time to uppercase for AM/PM
+            // $formattedDate = strtoupper($formattedDate);
+            $item->date = $formattedDate;
+            return $item; // Output: 9th Sept 2024 12:09AM
+        });
+        return response()->json([
+            'data' => $todo_data->isEmpty() ? null : $todo_data,
+        ]);
+    }
+
+    public function get_todo_history()
+    {
+        $user_id = Auth::user()->id;
+        $todo_data = TODOList::where('status', 0)
+            
+            ->orderBy('id', 'DESC')
+            ->where('user_id', $user_id)
+            ->get()->map(function ($item) {
             $dateInput = $item->date; // Original date in 'Y-m-d H:i' format
             $dateTime = new DateTime($dateInput);
 
